@@ -89,24 +89,24 @@ docs/developer-portal.md
 
 ## Sprint 1 — Issues + Heatmap + Attendance (Top Priority)
 
-> ⏳ Wait for: Sid's S0 push (scaffold + shared-types + shared infra)
+> ✅ Sid's S0+S1+S2 pushed. Dev's D4 pushed (karma ready).
 
 ### Issues Module
 
-- [ ] `issues.service.ts`:
-  - [ ] `createIssue(reporterId, data: {title, description, category, building, locationX, locationY}, imageFile?)`:
+- [x] `issues.service.ts`:
+  - [x] `createIssue(reporterId, data: {title, description, category, building, locationX, locationY}, imageFile?)`:
     1. If image provided → upload to Cloudinary via `shared/storage/cloudinary.service.ts` (Sid's file — import it)
     2. INSERT into `issues` table with auto-priority based on category
     3. Emit `issue:created` WebSocket event via `emitToRoom('support', ...)`
     4. Emit `heatmap:update` WebSocket event with new point data
-    5. *(After Dev pushes D4)* Call `karmaService.addKarmaEvent(reporterId, 'issue_reported', 10)` — add import from Dev's karma module
-  - [ ] `getIssues(filters)` → List issues, filterable by category/status/building
-  - [ ] `getIssueById(issueId)` → Single issue with image URL
-  - [ ] `updateStatus(issueId, status)` → Update issue status (support staff only)
-- [ ] `heatmap.service.ts`:
-  - [ ] `getHeatmapData()` → Aggregate issues by location (x,y coordinates + count + category). Return `HeatmapPoint[]`
-- [ ] `issues.controller.ts` — HTTP handlers (multipart form via Multer for image uploads)
-- [ ] `issues.routes.ts` — Replace stub:
+    5. ✅ Karma wired: `addKarmaEvent(reporterId, 'issue_reported', 10)` — imported from Dev's karma module
+  - [x] `getIssues(filters)` → List issues, filterable by category/status/building
+  - [x] `getIssueById(issueId)` → Single issue with image URL
+  - [x] `updateStatus(issueId, status)` → Update issue status (support staff only)
+- [x] `heatmap.service.ts`:
+  - [x] `getHeatmapData()` → Aggregate issues by location (x,y coordinates + count + category). Return `HeatmapPoint[]`
+- [x] `issues.controller.ts` — HTTP handlers (multipart form via Multer for image uploads)
+- [x] `issues.routes.ts` — Replace stub:
   - POST `/` — report issue (multipart: image + JSON data)
   - GET `/` — list issues
   - GET `/heatmap` — heatmap data
@@ -116,14 +116,14 @@ docs/developer-portal.md
 
 ### Attendance Module
 
-- [ ] `attendance.service.ts`:
-  - [ ] `markAttendance(professorId, classId, subject, date, students: {studentId, isPresent}[])` → Bulk insert into `attendance_records`
-  - [ ] `getClassAttendance(classId)` → List attendance records for a class
-  - [ ] `getStudentSummary(studentId)` → Attendance percentage across all classes
-  - [ ] `getTrends(professorId)` → Aggregate trends for professor's classes
-  - [ ] After marking: emit `attendance:updated` WebSocket event
-- [ ] `attendance.controller.ts` — HTTP handlers
-- [ ] `attendance.routes.ts` — Replace stub:
+- [x] `attendance.service.ts`:
+  - [x] `markAttendance(professorId, classId, subject, date, students: {studentId, isPresent}[])` → Bulk insert into `attendance_records`
+  - [x] `getClassAttendance(classId)` → List attendance records for a class
+  - [x] `getStudentSummary(studentId)` → Attendance percentage across all classes
+  - [x] `getTrends(professorId)` → Aggregate trends for professor's classes
+  - [x] After marking: emit `attendance:updated` WebSocket event
+- [x] `attendance.controller.ts` — HTTP handlers
+- [x] `attendance.routes.ts` — Replace stub:
   - POST `/mark` — mark attendance
   - GET `/class/:classId` — get class attendance
   - GET `/student/:studentId` — student summary
@@ -141,28 +141,28 @@ git add -A && git commit -m "feat: issues + heatmap + attendance modules" && git
 
 ### Finance Module
 
-- [ ] `payment.service.ts`:
-  - [ ] `createOrder(dueId, amount)` → Call Razorpay API to create an order, return `orderId`
-  - [ ] `verifyPayment(razorpayPaymentId, razorpayOrderId, razorpaySignature)` → Verify HMAC signature server-side. If valid → mark due as `paid`. If invalid → reject.
-  - [ ] ⚠️ **NEVER trust mobile for payment confirmation.** Always verify signature on backend.
-- [ ] `finance.service.ts`:
-  - [ ] `getDues(studentId)` → List pending finance dues
-  - [ ] `initiatePay(studentId, dueId)` → Call `createOrder`, return orderId to mobile
-  - [ ] `confirmPay(paymentData)` → Call `verifyPayment`, update `finance_dues.status` to 'paid'
-- [ ] `finance.controller.ts` — HTTP handlers
-- [ ] `finance.routes.ts` — Replace stub:
+- [x] `payment.service.ts`:
+  - [x] `createOrder(dueId, amount)` → Call Razorpay API to create an order, return `orderId`
+  - [x] `verifyPayment(razorpayPaymentId, razorpayOrderId, razorpaySignature)` → Verify HMAC signature server-side. If valid → mark due as `paid`. If invalid → reject.
+  - [x] ⚠️ **NEVER trust mobile for payment confirmation.** Always verify signature on backend.
+- [x] `finance.service.ts`:
+  - [x] `getDues(studentId)` → List pending finance dues
+  - [x] `initiatePay(studentId, dueId)` → Call `createOrder`, return orderId to mobile
+  - [x] `confirmPay(paymentData)` → Call `verifyPayment`, update `finance_dues.status` to 'paid'
+- [x] `finance.controller.ts` — HTTP handlers
+- [x] `finance.routes.ts` — Replace stub:
   - GET `/dues` — list my dues
   - POST `/pay/:dueId` — initiate Razorpay order
   - POST `/verify` — verify payment signature
 
 ### PYQ Module
 
-- [ ] `pyq.service.ts`:
-  - [ ] `searchPapers(query, filters?)` → Query DSpace REST API (or mock data if DSpace unavailable)
-  - [ ] `getPaperById(paperId)` → Single paper with download URL
-  - [ ] `syncFromDSpace()` → Trigger scraper to refresh local cache (admin only)
-- [ ] `pyq.controller.ts` — HTTP handlers
-- [ ] `pyq.routes.ts` — Replace stub:
+- [x] `pyq.service.ts`:
+  - [x] `searchPapers(query, filters?)` → Query DSpace REST API (or mock data if DSpace unavailable)
+  - [x] `getPaperById(paperId)` → Single paper with download URL
+  - [x] `syncFromDSpace()` → Trigger scraper to refresh local cache (admin only)
+- [x] `pyq.controller.ts` — HTTP handlers
+- [x] `pyq.routes.ts` — Replace stub:
   - GET `/papers` — search/list PYQs
   - GET `/papers/:id` — paper detail
   - POST `/sync` — trigger refresh (admin)
@@ -181,25 +181,25 @@ git add -A && git commit -m "feat: finance + razorpay + pyq modules" && git push
 
 ### Plugins Backend Module
 
-- [ ] `grok-auditor.service.ts`:
-  - [ ] `generateSecurityAudit(pluginSubmission: { name, deploymentUrl, category, permissions[] })`:
+- [x] `grok-auditor.service.ts`:
+  - [x] `generateSecurityAudit(pluginSubmission: { name, deploymentUrl, category, permissions[] })`:
     1. Build Grok prompt: "You are a security auditor. Analyze this web app submission for risks..."
     2. Call Grok API (same `XAI_API_KEY` as copilot) with structured output format
     3. Parse response into `SecurityClearanceCertificate` type: `{ riskLevel, findings[], recommendation, compliance }`
     4. Return structured certificate
-- [ ] `plugins.service.ts`:
-  - [ ] `submitPlugin(submittedBy, data: {name, description, category, deploymentUrl, permissions[]})`:
+- [x] `plugins.service.ts`:
+  - [x] `submitPlugin(submittedBy, data: {name, description, category, deploymentUrl, permissions[]})`:
     1. INSERT into `plugins` table with status='pending'
     2. Call `grok-auditor.service.ts:generateSecurityAudit()`
     3. Store the certificate in `plugins.grok_audit_report` (JSONB)
     4. Return the plugin record + audit report
-  - [ ] `getPlugins()` → List all active/approved plugins
-  - [ ] `getPluginBySlug(slug)` → Single plugin with audit report
-  - [ ] `approvePlugin(pluginId)` → Set status='approved', is_active=true. Emit WebSocket `plugin:approved`
-  - [ ] `rejectPlugin(pluginId)` → Set status='rejected'
-  - [ ] `getPlugin(pluginId)` → Single plugin detail with audit report
-- [ ] `plugins.controller.ts` — HTTP handlers
-- [ ] `plugins.routes.ts` — Replace stub:
+  - [x] `getPlugins()` → List all active/approved plugins
+  - [x] `getPluginBySlug(slug)` → Single plugin with audit report
+  - [x] `approvePlugin(pluginId)` → Set status='approved', is_active=true. Emit WebSocket `plugin:approved`
+  - [x] `rejectPlugin(pluginId)` → Set status='rejected'
+  - [x] `getPlugin(pluginId)` → Single plugin detail with audit report
+- [x] `plugins.controller.ts` — HTTP handlers
+- [x] `plugins.routes.ts` — Replace stub:
   - GET `/` — list active plugins
   - GET `/:slug` — plugin detail
   - POST `/` — submit new plugin (triggers Grok audit)
@@ -208,22 +208,22 @@ git add -A && git commit -m "feat: finance + razorpay + pyq modules" && git push
 
 ### Super App Host Shell (NEW WEB APP)
 
-> ⚠️ **This is a web app, NOT part of the React Native mobile app.** Uses regular React (Vite or CRA) + standard HTML/CSS/JS.
+> ✅ **Built as a Vite + React web app.**
 
-- [ ] Create `apps/super-app/` directory
-- [ ] Initialize with Vite: `npx -y create-vite@latest ./ --template react` (from inside `apps/super-app/`)
+- [x] Create `apps/super-app/` directory
+- [x] Initialize with Vite: `npx -y create-vite@latest ./ --template react` (from inside `apps/super-app/`)
 - [ ] Update root `package.json` workspaces to include `apps/super-app`
   - ⚠️ **SYNC WITH SID:** Ask Sid to add `"apps/super-app"` to root workspaces OR add it yourself if Sid confirms
-- [ ] Build components:
-  - [ ] `MiniAppDashboard.jsx` — Fetches `GET /api/plugins` and renders plugin icons grid
-  - [ ] `IframeContainer.jsx` — Opens plugin URL in sandboxed iframe. After iframe loads, sends `postMessage({ type: 'AETHER_INIT', payload: { userName, role, department } })`
-  - [ ] `DeveloperPortal.jsx` — Form: Title, Description, Category, Deployment URL. On submit → POST `/api/plugins`. Show "Scanning..." animation while waiting for Grok audit. Show Security Clearance Certificate card when response arrives.
-  - [ ] `AdminAuditView.jsx` — List pending plugins with their Grok audit reports. Approve/Reject buttons.
-  - [ ] `HostShell.jsx` — Main shell component wrapping dashboard + portal + iframe views
+- [x] Build components:
+  - [x] `MiniAppDashboard.jsx` — Fetches `GET /api/plugins` and renders plugin icons grid
+  - [x] `IframeContainer.jsx` — Opens plugin URL in sandboxed iframe. After iframe loads, sends `postMessage({ type: 'AETHER_INIT', payload: { userName, role, department } })`
+  - [x] `DeveloperPortal.jsx` — Form: Title, Description, Category, Deployment URL. On submit → POST `/api/plugins`. Show "Scanning..." animation while waiting for Grok audit. Show Security Clearance Certificate card when response arrives.
+  - [x] `AdminAuditView.jsx` — List pending plugins with their Grok audit reports. Approve/Reject buttons.
+  - [x] `HostShell.jsx` — Main shell component wrapping dashboard + portal + iframe views
 
 ### aether-bridge.js SDK
 
-- [ ] Create `libs/aether-bridge/aether-bridge.js`:
+- [x] Create `libs/aether-bridge/aether-bridge.js`:
   ```javascript
   const AetherBridge = {
     user: null,
@@ -237,19 +237,19 @@ git add -A && git commit -m "feat: finance + razorpay + pyq modules" && git push
     }
   };
   ```
-- [ ] Create `libs/aether-bridge/README.md` — Quick-start guide for mini-app developers
+- [x] Create `libs/aether-bridge/README.md` — Quick-start guide for mini-app developers
 
 ### Canteen Tracker Demo Mini-App
 
-- [ ] Create `apps/canteen-tracker/` — Simple HTML+JS app
-- [ ] Include `aether-bridge.js` via script tag
-- [ ] On `AetherBridge.onReady()` → display "Welcome, {userName}!" + a mock canteen menu
+- [x] Create `apps/canteen-tracker/` — Simple HTML+JS app
+- [x] Include `aether-bridge.js` via script tag
+- [x] On `AetherBridge.onReady()` → display "Welcome, {userName}!" + a mock canteen menu
 - [ ] Deploy to Vercel (or serve locally for demo)
 - [ ] Ensure this URL is registered in the seed data (ask Sid to add it to `seed.ts`)
 
 ### Developer Portal Documentation
 
-- [ ] Write `docs/developer-portal.md`:
+- [x] Write `docs/developer-portal.md`:
   - How to build a mini-app
   - How to include `aether-bridge.js`
   - Available scoped data: `{ userName, role, department }`

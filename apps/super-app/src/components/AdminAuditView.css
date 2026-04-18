@@ -1,0 +1,126 @@
+/* AdminAuditView */
+
+.admin-audit-view {
+  animation: fadeIn 0.3s ease;
+}
+
+.audit-header {
+  margin-bottom: 32px;
+}
+
+.audit-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.audit-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.audit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.audit-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: border-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.audit-card:hover {
+  border-color: var(--color-surface-elevated);
+}
+
+.audit-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.audit-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.audit-slug {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-family: monospace;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.status-pending { background: rgba(255, 137, 6, 0.15); color: var(--color-warning); }
+.status-badge.status-approved { background: rgba(44, 182, 125, 0.15); color: var(--color-success); }
+.status-badge.status-rejected { background: rgba(229, 49, 112, 0.15); color: var(--color-error); }
+
+.audit-description {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.audit-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+}
+
+.audit-report {
+  background: var(--color-surface-elevated);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 12px;
+  border-left: 3px solid var(--color-text-secondary);
+}
+
+.audit-report.risk-low { border-left-color: var(--color-success); }
+.audit-report.risk-medium { border-left-color: var(--color-warning); }
+.audit-report.risk-high { border-left-color: var(--color-error); }
+
+.report-row {
+  display: flex;
+  gap: 24px;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.report-findings {
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.report-findings li {
+  padding: 2px 0 2px 12px;
+  position: relative;
+}
+
+.report-findings li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--color-warning);
+}
+
+.audit-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 4px;
+}

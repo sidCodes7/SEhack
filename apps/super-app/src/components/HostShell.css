@@ -1,0 +1,98 @@
+/* HostShell Layout */
+
+.host-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navigation */
+.shell-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-surface-elevated);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  font-size: 1.4rem;
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.nav-link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-elevated);
+}
+
+.nav-link.active {
+  color: var(--color-primary);
+  background: rgba(108, 99, 255, 0.1);
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.user-badge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: rgba(108, 99, 255, 0.15);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Content */
+.shell-content {
+  flex: 1;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
