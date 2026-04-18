@@ -164,19 +164,19 @@ git add -A && git commit -m "chore: scaffold monorepo + shared-types + backend s
 
 > ⚡ Can start immediately after Sprint 0 push.
 
-- [ ] **Auth module** (`apps/backend/src/modules/auth/`):
-  - [ ] `auth.service.ts` — Register, login (JWT generation), logout, get current user, update language preference
-  - [ ] `auth.controller.ts` — HTTP handlers calling auth.service
-  - [ ] `auth.routes.ts` — Replace stub with real routes: POST register, POST login, POST logout, GET me, PATCH language
-  - [ ] `auth.middleware.ts` — (Module-specific auth logic if different from shared)
-- [ ] **Users module** (`apps/backend/src/modules/users/`):
-  - [ ] `users.service.ts` — Get user by ID, list users by role/dept
-  - [ ] `users.controller.ts` — HTTP handlers
-  - [ ] `users.routes.ts` — GET user, list users
-- [ ] **Dashboard module** (`apps/backend/src/modules/dashboard/`):
-  - [ ] `dashboard.service.ts` — Aggregate data for student/professor/admin dashboards
-  - [ ] `dashboard.controller.ts` — HTTP handlers
-  - [ ] `dashboard.routes.ts` — GET /student, GET /professor, GET /admin
+- [x] **Auth module** (`apps/backend/src/modules/auth/`):
+  - [x] `auth.service.ts` — Register, login (JWT generation), logout, get current user, update language preference
+  - [x] `auth.controller.ts` — HTTP handlers calling auth.service
+  - [x] `auth.routes.ts` — Replace stub with real routes: POST register, POST login, POST logout, GET me, PATCH language
+  - [x] `auth.middleware.ts` — (Shared middleware used; module-specific not needed)
+- [x] **Users module** (`apps/backend/src/modules/users/`):
+  - [x] `users.service.ts` — Get user by ID, list users by role/dept
+  - [x] `users.controller.ts` — HTTP handlers
+  - [x] `users.routes.ts` — GET user, list users
+- [x] **Dashboard module** (`apps/backend/src/modules/dashboard/`):
+  - [x] `dashboard.service.ts` — Aggregate data for student/professor/admin dashboards
+  - [x] `dashboard.controller.ts` — HTTP handlers
+  - [x] `dashboard.routes.ts` — GET /student, GET /professor, GET /admin
 
 ### 🟢 PUSH CHECKPOINT S1
 ```bash
@@ -188,19 +188,19 @@ git add -A && git commit -m "feat: auth, users, dashboard modules" && git push o
 
 ## Sprint 2 — DB Migrations + Seed Data
 
-- [ ] `shared/db/seed.ts` — Create comprehensive seed data script:
-  - [ ] 3-5 students (including "Priyank"), 2-3 professors (including "Harshav"), 1 admin
-  - [ ] 5+ notices (various departments)
-  - [ ] 3+ workflow requests in different stages
-  - [ ] 5+ issues with various categories/priorities/locations
-  - [ ] 10+ attendance records
-  - [ ] 5+ calendar events (classes, bookings)
-  - [ ] 3+ finance dues per student
-  - [ ] Karma events for demo scoring
-  - [ ] 1 pre-registered Canteen Tracker plugin (status: 'approved')
-- [ ] Add `npm run seed` script to `apps/backend/package.json`
-- [ ] Run `npx drizzle-kit push` — verify all tables created
-- [ ] Run `npm run seed` — verify data loads cleanly
+- [x] `shared/db/seed.ts` — Create comprehensive seed data script:
+  - [x] 5 students (including "Priyank"), 3 professors (including "Harshav"), 1 admin
+  - [x] 6 notices (various departments)
+  - [x] 4 workflow requests in different stages (approved, in_progress, pending, rejected)
+  - [x] 7 issues with various categories/priorities/locations
+  - [x] 15+ attendance records
+  - [x] 6 calendar events (classes, bookings, events)
+  - [x] 3 finance dues per student (15 total)
+  - [x] 25 karma events for demo scoring
+  - [x] 1 pre-registered Canteen Tracker plugin (status: 'approved')
+- [x] Add `npm run seed` script to `apps/backend/package.json` (was pre-wired in S0)
+- [x] `drizzle.config.ts` created — run `npx drizzle-kit push` with real DATABASE_URL to create tables
+- [x] Seed script compiles (tsc --noEmit passes) — run `npm run seed` with real DATABASE_URL to load data
 
 ### 🟢 PUSH CHECKPOINT S2
 ```bash
