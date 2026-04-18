@@ -302,7 +302,7 @@ git add -A && git commit -m "feat: expo scaffold + design system + api layer + c
 
 ### WebSocket Integration on Dashboards
 
-- [ ] Both dashboards must listen for WebSocket events and update widgets in real-time:
+- [x] Both dashboards must listen for WebSocket events and update widgets in real-time:
   - `approval:updated` → refresh pending count
   - `notice:new` → show a notification banner
   - `attendance:updated` → refresh trends widget
@@ -321,35 +321,35 @@ git add -A && git commit -m "feat: auth screens + student/professor dashboards +
 
 ### Workflow / Approvals Screens
 
-- [ ] `services/approvals.service.ts` — `submitRequest()`, `getMyRequests()`, `getRequestById()`, `getPending()`, `approve()`, `reject()`
-- [ ] `app/(student)/bookings/request.tsx` — Room booking form: date picker, time picker, room selector. On submit → POST `/api/workflow/request`
+- [x] `services/approvals.service.ts` — `submitRequest()`, `getMyRequests()`, `getRequestById()`, `getPending()`, `approve()`, `reject()`
+- [x] `app/(student)/bookings/request.tsx` — Room booking form: date picker, time picker, room selector. On submit → POST `/api/workflow/request`
   - 📐 Wireframe: `docs/wireframes/submit_request/` — match form layout, field styling, submit button from `screen.png`; read `code.html` for form validation and submission behavior
-- [ ] `app/(student)/bookings/status.tsx` — List of my requests + Swiggy-style progress bar for each
+- [x] `app/(student)/bookings/status.tsx` — List of my requests + Swiggy-style progress bar for each
   - 📐 Wireframe: `docs/wireframes/track_request/` — match the progress tracker layout and status card design from `screen.png`
-- [ ] `components/approvals/ApprovalProgressBar.tsx` — The hero component:
+- [x] `components/approvals/ApprovalProgressBar.tsx` — The hero component:
   - 3 named stages with status icons: ✅ approved · 🕐 pending · ❌ rejected
   - Must update in real-time via `approval:updated` WebSocket event
   - Animated transitions between stages
   - 📐 Wireframe: Refer to `docs/wireframes/track_request/screen.png` for the Swiggy-style step tracker visual
-- [ ] `components/approvals/ApprovalCard.tsx` — Card showing request summary with progress bar embedded
-- [ ] `app/(professor)/leave-approvals/index.tsx` — List of pending approval requests for professor. Each item has one-tap Approve/Reject buttons with optional note input
+- [x] `components/approvals/ApprovalCard.tsx` — Card showing request summary with progress bar embedded
+- [x] `app/(professor)/leave-approvals/index.tsx` — List of pending approval requests for professor. Each item has one-tap Approve/Reject buttons with optional note input
   - 📐 Wireframe: `docs/wireframes/approvals_queue/` — match the approval list layout, button styles, and queue design from `screen.png`
 
 ### AI Copilot Screens
 
-- [ ] `hooks/useCopilot.ts` — Hook wrapping copilot API calls + session state
-- [ ] `store/copilot.store.ts` — Zustand store: messages[], isLoading, proactiveAlerts[]
-- [ ] `services/copilot.service.ts` — `sendMessage()`, `getSession()`, `getProactiveAlerts()`, `getLanguages()`
-- [ ] `components/copilot/CopilotFAB.tsx` — Floating action button visible on ALL screens. Tapping opens copilot chat overlay
-- [ ] `components/copilot/CopilotChat.tsx` — Chat interface:
+- [x] `hooks/useCopilot.ts` — Hook wrapping copilot API calls + session state
+- [x] `store/copilot.store.ts` — Zustand store: messages[], isLoading, proactiveAlerts[]
+- [x] `services/copilot.service.ts` — `sendMessage()`, `getSession()`, `getProactiveAlerts()`, `getLanguages()`
+- [x] `components/copilot/CopilotFAB.tsx` — Floating action button visible on ALL screens. Tapping opens copilot chat overlay
+- [x] `components/copilot/CopilotChat.tsx` — Chat interface:
   - 📐 Wireframe: `docs/wireframes/aether_copilot/` — match the chat bubble layout, input bar, FAB position, and overall chat UI from `screen.png`; read `code.html` for message animation and interaction behavior
   - Message bubbles (user + bot)
   - Text input at bottom
   - Loading animation while waiting for Grok response
   - Actionable step buttons in bot responses (tapping navigates to relevant screen)
   - Proactive alert cards at top of chat (fetched on mount via `getProactiveAlerts()`)
-- [ ] `components/copilot/LanguageToggle.tsx` — Dropdown to switch preferred language (en/hi/ta/mr/te). Calls `PATCH /api/auth/language`
-- [ ] `app/(student)/copilot/index.tsx` — Full-screen copilot chat (alternative to FAB overlay)
+- [x] `components/copilot/LanguageToggle.tsx` — Dropdown to switch preferred language (en/hi/ta/mr/te). Calls `PATCH /api/auth/language`
+- [x] `app/(student)/copilot/index.tsx` — Full-screen copilot chat (alternative to FAB overlay)
   - 📐 Wireframe: `docs/wireframes/aether_copilot/` — same wireframe as CopilotChat
 
 ### 🟢 PUSH CHECKPOINT A2
@@ -366,24 +366,24 @@ git add -A && git commit -m "feat: workflow screens + swiggy progress bar + AI c
 
 ### Issues + Heatmap
 
-- [ ] `services/issues.service.ts` — `reportIssue()` (multipart form), `getIssues()`, `getHeatmap()`
-- [ ] `app/(student)/issues/report.tsx` — Issue reporting form:
+- [x] `services/issues.service.ts` — `reportIssue()` (multipart form), `getIssues()`, `getHeatmap()`
+- [x] `app/(student)/issues/report.tsx` — Issue reporting form:
   - 📐 Wireframe: `docs/wireframes/report_an_issue/` — match form layout, camera button placement, category picker style from `screen.png`; read `code.html` for upload and submission behavior
   - Title, description, category picker
   - Building selector
   - Camera button → Expo Camera or Image Picker → attach photo
   - Submit → multipart POST to `/api/issues`
-- [ ] `app/(student)/issues/heatmap.tsx` — Campus heatmap screen:
+- [x] `app/(student)/issues/heatmap.tsx` — Campus heatmap screen:
   - 📐 Wireframe: `docs/wireframes/campus_issue_heatmap/` — match the map layout, dot colors, legend, and overlay style from `screen.png`
   - React Native Maps with overlay dots
   - Color-coded by issue category / density
   - Real-time updates via `heatmap:update` WebSocket event (new dot appears live)
-- [ ] `components/heatmap/CampusHeatmap.tsx` — Reusable map component with heatmap layer
+- [x] `components/heatmap/CampusHeatmap.tsx` — Reusable map component with heatmap layer
 
 ### Calendar + Clash Detection
 
-- [ ] `services/calendar.service.ts` — `getEvents()`, `getRooms()`, `bookRoom()`, `checkClash()`, `getSuggestions()`
-- [ ] `app/(student)/calendar/index.tsx` — Calendar view:
+- [x] `services/calendar.service.ts` — `getEvents()`, `getRooms()`, `bookRoom()`, `checkClash()`, `getSuggestions()`
+- [x] `app/(student)/calendar/index.tsx` — Calendar view:
   - 📐 Wireframe: `docs/wireframes/calendar_view/` — match the calendar grid layout, event pill colors, and day detail view from `screen.png`
   - Monthly/weekly calendar display
   - Events color-coded: class (blue), event (purple), room_booking (green)
@@ -391,24 +391,24 @@ git add -A && git commit -m "feat: workflow screens + swiggy progress bar + AI c
   - Room availability view
   - When booking triggers clash → show 3 suggestions from smart suggestions API
   - 📐 Wireframe: `docs/wireframes/clash_detection_warning/` — match the clash warning modal layout, suggestion cards, and button styles from `screen.png`
-- [ ] `utils/clash-detection.ts` — Client-side pre-check before submitting (optional, server is authoritative)
+- [x] `utils/clash-detection.ts` — Client-side pre-check before submitting (optional, server is authoritative)
 
 ### Finance + Payment
 
-- [ ] `services/finance.service.ts` — `getDues()`, `initiatePayment()`, `verifyPayment()`
-- [ ] `app/(student)/finance/index.tsx` — Dues list screen:
+- [x] `services/finance.service.ts` — `getDues()`, `initiatePayment()`, `verifyPayment()`
+- [x] `app/(student)/finance/index.tsx` — Dues list screen:
   - 📐 Wireframe: `docs/wireframes/finance_dues/` — match the dues list card layout, amount styling, and "Pay Now" button from `screen.png`; read `code.html` for payment interaction flow
   - Itemized dues by type (library, canteen, lab)
   - Total amount displayed
   - "Pay Now" button per item
-- [ ] `app/(student)/finance/payment.tsx` — Razorpay checkout flow:
+- [x] `app/(student)/finance/payment.tsx` — Razorpay checkout flow:
   - Initiate order → open Razorpay → on success → verify → show confirmation
   - On failure → show error + retry
 
 ### PYQ
 
-- [ ] `services/pyq.service.ts` — `searchPapers()`, `getPaperById()`
-- [ ] `app/(student)/pyq/index.tsx` — Paper search + results screen:
+- [x] `services/pyq.service.ts` — `searchPapers()`, `getPaperById()`
+- [x] `app/(student)/pyq/index.tsx` — Paper search + results screen:
   - 📐 Wireframe: `docs/wireframes/pyq_discovery/` — match the search bar, filter pills, results card layout, and download button from `screen.png`
   - Search bar with subject/year filters
   - Results list with paper metadata
@@ -427,17 +427,17 @@ git add -A && git commit -m "feat: issues + heatmap + calendar + finance + pyq s
 
 ### Faculty Workspace
 
-- [ ] `services/attendance.service.ts` — `markAttendance()`, `getClassAttendance()`, `getStudentSummary()`, `getTrends()`
-- [ ] `app/(professor)/attendance/index.tsx` — Attendance marking screen:
+- [x] `services/attendance.service.ts` — `markAttendance()`, `getClassAttendance()`, `getStudentSummary()`, `getTrends()`
+- [x] `app/(professor)/attendance/index.tsx` — Attendance marking screen:
   - 📐 Wireframe: `docs/wireframes/attendance_marking/` — match the class selector, student list toggle design, and submit button from `screen.png`; read `code.html` for toggle interaction and bulk submit behavior
   - Class selector dropdown
   - Student list with Present/Absent toggle per student
   - Bulk submit button
   - Must complete for 30 students in under 60 seconds (UX critical)
-- [ ] `app/(professor)/follow-ups/index.tsx` — Student follow-up screen:
+- [x] `app/(professor)/follow-ups/index.tsx` — Student follow-up screen:
   - List of flagged students with notes
   - Add new flag + note form
-- [ ] `app/(professor)/notices/index.tsx` — Notice publishing screen:
+- [x] `app/(professor)/notices/index.tsx` — Notice publishing screen:
   - 📐 Wireframe: `docs/wireframes/notice_publisher/` — match the form layout, text area styling, and role/department selectors from `screen.png`
   - Title + content text area
   - Target role selector (student/all)
@@ -446,9 +446,9 @@ git add -A && git commit -m "feat: issues + heatmap + calendar + finance + pyq s
 
 ### Admin Analytics
 
-- [ ] `services/analytics.service.ts` — `getAttendanceTrends()`, `getApprovalBottlenecks()`, `getIssueStats()`
-- [ ] `services/karma.service.ts` — `getScore()`, `getLeaderboard()`
-- [ ] `app/(admin)/analytics.tsx` — Admin dashboard:
+- [x] `services/analytics.service.ts` — `getAttendanceTrends()`, `getApprovalBottlenecks()`, `getIssueStats()`
+- [x] `services/karma.service.ts` — `getScore()`, `getLeaderboard()`
+- [x] `app/(admin)/analytics.tsx` — Admin dashboard:
   - 📐 Wireframe: `docs/wireframes/admin_dashboard_overview/` — match the overall admin layout from `screen.png`
   - Approval delay chart (bar chart showing avg time per stage)
     - 📐 Wireframe: `docs/wireframes/approval_analytics/` — match chart style, bottleneck highlight from `screen.png`
@@ -461,11 +461,11 @@ git add -A && git commit -m "feat: issues + heatmap + calendar + finance + pyq s
 
 ### Final Polish
 
-- [ ] Ensure CopilotFAB appears on EVERY screen (include in root layout)
-- [ ] Verify all WebSocket events are handled across all screens
-- [ ] Smooth screen transitions and loading states
-- [ ] Error states for all API failures (no white screens)
-- [ ] Pull-to-refresh on list screens
+- [x] Ensure CopilotFAB appears on EVERY screen (include in root layout)
+- [x] Verify all WebSocket events are handled across all screens
+- [x] Smooth screen transitions and loading states
+- [x] Error states for all API failures (no white screens)
+- [x] Pull-to-refresh on list screens
 
 ### 🟢 PUSH CHECKPOINT A4
 ```bash
