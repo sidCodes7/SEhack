@@ -1,38 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { Slot, useRouter, useSegments } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useAuthStore } from '../store/auth.store';
-import { authService } from '../services/auth.service';
-import { COLORS } from '../constants/colors';
-import { FONTS } from '../constants/typography';
-import { SPACING } from '../constants/spacing';
+import { colors } from '../constants/colors';
+import { spacing } from '../constants/spacing';
 
 export default function RootLayout() {
-  const { user, token, setAuth, clearAuth } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
   const fadeAnim = new Animated.Value(1);
 
   useEffect(() => {
     const bootstrapAuth = async () => {
       try {
         const storedToken = await SecureStore.getItemAsync('auth_token');
-        if (storedToken) {
-          // Attempt to validate the token by fetching user profile
-          const userData = await authService.getMe();
-          setAuth(userData, storedToken);
+        const storedUser = await SecureStore.getItemAsync('user');
+        if (storedToken && storedUser) {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        // Token invalid or expired — clear everything
         await SecureStore.deleteItemAsync('auth_token');
-        clearAuth();
+        await SecureStore.deleteItemAsync('user');
       } finally {
-        // Fade out splash screen
         Animated.timing(fadeAnim, {
           toValue: 0,
-          duration: 400,
+          duration: 600,
           useNativeDriver: true,
         }).start(() => setIsLoading(false));
       }
@@ -45,18 +41,25 @@ export default function RootLayout() {
 
     const inAuthGroup = segments[0] === '(auth)';
 
-    if (!token && !inAuthGroup) {
-      router.replace('/(auth)/login');
-    } else if (token && inAuthGroup) {
-      if (user?.role === 'professor') {
-        router.replace('/(professor)/dashboard');
-      } else if (user?.role === 'admin' || user?.role === 'dean' || user?.role === 'hod') {
-        router.replace('/(admin)/analytics');
-      } else {
-        router.replace('/(student)/dashboard');
+    const enforceAuth = async () => {
+      const liveToken = token || (await SecureStore.getItemAsync('auth_token'));
+      const liveUserStr = await SecureStore.getItemAsync('user');
+      const liveUser = user || (liveUserStr ? JSON.parse(liveUserStr) : null);
+
+      if (!liveToken && !inAuthGroup) {
+        router.replace('/(auth)/login');
+      } else if (liveToken && (inAuthGroup || segments.length === 0)) {
+        if (liveUser?.role === 'professor' || liveUser?.role === 'hod') {
+          router.replace('/(professor)/dashboard');
+        } else if (liveUser?.role === 'admin') {
+          router.replace('/(admin)/analytics');
+        } else {
+          router.replace('/(student)/dashboard');
+        }
       }
-    }
-  }, [token, segments, isLoading]);
+    };
+    enforceAuth();
+  }, [token, segments, isLoading, user]);
 
   if (isLoading) {
     return (
@@ -70,6 +73,9 @@ export default function RootLayout() {
             </View>
           </View>
         </View>
+        <View style={styles.splashIcon}>
+          <Text style={{ fontSize: 64, opacity: 0.3 }}>🚶</Text>
+        </View>
       </Animated.View>
     );
   }
@@ -80,43 +86,47 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   splash: {
     flex: 1,
-    backgroundColor: '#D5E7DE', // sage green from wireframe
+    backgroundColor: '#D5E7DE',
     justifyContent: 'space-between',
     paddingTop: 80,
     paddingBottom: 60,
-    paddingHorizontal: SPACING.xl,
+    paddingHorizontal: spacing.xl,
   },
   splashContent: {
     flex: 1,
     justifyContent: 'flex-start',
   },
   splashHeadline: {
-    fontFamily: FONTS.bold,
     fontSize: 52,
+    fontWeight: '900',
     lineHeight: 56,
     color: '#1A1A1A',
     letterSpacing: -1,
   },
   splashBrand: {
-    marginTop: SPACING.lg,
+    marginTop: spacing.lg,
   },
   splashName: {
-    fontFamily: FONTS.semiBold,
     fontSize: 20,
+    fontWeight: '600',
     color: '#1A1A1A',
-    marginBottom: SPACING.sm,
+    marginBottom: spacing.sm,
   },
   splashBadge: {
     backgroundColor: '#1A1A1A',
     alignSelf: 'flex-start',
-    paddingHorizontal: SPACING.md,
+    paddingHorizontal: spacing.md,
     paddingVertical: 6,
     borderRadius: 20,
   },
   splashBadgeText: {
-    fontFamily: FONTS.medium,
     fontSize: 11,
+    fontWeight: '500',
     color: '#FFFFFF',
     letterSpacing: 2,
+  },
+  splashIcon: {
+    alignItems: 'center',
+    opacity: 0.5,
   },
 });

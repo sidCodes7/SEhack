@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,9 @@ import {
   Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuthStore } from '../../store/auth.store';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
+
+
+
 
 type Role = 'student' | 'professor' | 'admin';
 
@@ -22,9 +22,9 @@ interface RoleOption {
 }
 
 const ROLES: RoleOption[] = [
-  { role: 'student', title: 'Student', subtitle: 'Priyank', icon: '🎓', bgColor: '#E9E6F7' },
-  { role: 'professor', title: 'Professor', subtitle: 'Harshav', icon: '📖', bgColor: '#F5F0D0' },
-  { role: 'admin', title: 'Admin / Dean', subtitle: 'Staff Portal', icon: '🏛️', bgColor: '#D5E7DE' },
+  { role: 'student', title: 'Student', subtitle: 'Priyank', icon: 'ðŸŽ“', bgColor: '#E9E6F7' },
+  { role: 'professor', title: 'Professor', subtitle: 'Harshav', icon: 'ðŸ“–', bgColor: '#F5F0D0' },
+  { role: 'admin', title: 'Admin / Dean', subtitle: 'Staff Portal', icon: 'ðŸ›ï¸', bgColor: '#D5E7DE' },
 ];
 
 export default function RoleSelectScreen() {
@@ -109,7 +109,7 @@ export default function RoleSelectScreen() {
             disabled={!selectedRole}
             activeOpacity={1}
           >
-            <Text style={styles.nextArrow}>→</Text>
+            <Text style={styles.nextArrow}>â†’</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FAF9F5',
-    paddingHorizontal: SPACING.lg,
+    paddingHorizontal: 24,
     paddingTop: 60,
     paddingBottom: 40,
   },
@@ -129,22 +129,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headline: {
-    fontFamily: FONTS.bold,
+    fontWeight: '700',
     fontSize: 52,
     lineHeight: 56,
     color: '#1A1A1A',
-    marginBottom: SPACING.xl,
+    marginBottom: 32,
     letterSpacing: -1,
   },
   cardsContainer: {
-    gap: SPACING.md,
+    gap: 16,
   },
   card: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     borderRadius: 16,
-    padding: SPACING.lg,
+    padding: 24,
   },
   cardSelected: {
     borderWidth: 2,
@@ -156,13 +156,13 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   cardTitle: {
-    fontFamily: FONTS.bold,
+    fontWeight: '700',
     fontSize: 22,
     color: '#1A1A1A',
     marginBottom: 4,
   },
   cardSubtitle: {
-    fontFamily: FONTS.medium,
+    fontWeight: '500',
     fontSize: 14,
     color: '#5D605B',
   },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   bottomAction: {
     alignItems: 'flex-end',
-    marginTop: SPACING.xl,
+    marginTop: 32,
   },
   nextButton: {
     width: 64,
@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
   nextArrow: {
     color: '#FFFFFF',
     fontSize: 28,
-    fontFamily: FONTS.medium,
+    fontWeight: '500',
   },
 });
+

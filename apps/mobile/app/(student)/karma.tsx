@@ -1,263 +1,281 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useAuthStore } from '../../store/auth.store';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { COLORS } from '../../constants/colors';
-import { Avatar } from '../../components/common/Avatar';
-import { Card } from '../../components/common/Card';
+﻿import { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { colors } from '../../constants/colors';
+import { typography } from '../../constants/typography';
+import { spacing } from '../../constants/spacing';
+import api from '../../services/api';
 
 export default function KarmaScreen() {
-  const { user } = useAuthStore();
+  const router = useRouter();
+  const [karmaData, setKarmaData] = useState(null);
 
-  const history = [
-    { id: '1', label: 'Issue Reported', points: '+10 pts', color: '#D8EAE1' },
-    { id: '2', label: 'Class Attended', points: '+5 pts', color: '#D8EAE1' },
-    { id: '3', label: 'Class Attended', points: '+5 pts', color: '#D8EAE1' },
-    { id: '4', label: 'Room Returned Early', points: '+15 pts', color: '#D4A843' },
-  ];
+  useEffect(() => {
+    loadKarma();
+  }, []);
 
-  const leaderboard = [
-    { id: '1', name: 'Ananya Shah', score: 312, rank: 1, medal: '🥇' },
-    { id: '2', name: 'Rohan Verma', score: 287, rank: 2, medal: '🥈' },
-    { id: '3', name: 'Priyank Mehta', score: 240, rank: 3, medal: '🥉', isMe: true },
+  const loadKarma = async () => {
+    try {
+      const res = await api.get('/karma/score');
+      setKarmaData(res.data.data);
+    } catch (e) {
+      console.warn('Karma load error:', e);
+    }
+  };
+
+  const score = karmaData?.score ?? 240;
+  const events = karmaData?.recentEvents ?? [
+    { eventType: 'issue_reported', points: 10 },
+    { eventType: 'class_attended', points: 5 },
+    { eventType: 'class_attended', points: 5 },
+    { eventType: 'room_returned_early', points: 15 },
   ];
+  const leaderboard = karmaData?.leaderboard ?? [];
+  const percentile = karmaData?.percentile ?? 72;
+
+  const formatEvent = (type) => {
+    const map = {
+      issue_reported: 'Issue Reported',
+      class_attended: 'Class Attended',
+      room_returned_early: 'Room Returned Early',
+      due_paid_on_time: 'Due Paid On Time',
+      peer_endorsed: 'Peer Endorsed',
+    };
+    return map[type] || type;
+  };
+
+  // SVG-like ring using View borders
+  const ringProgress = Math.min(score / 400, 1);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Text style={styles.headerIcon}>🔍</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerLogo}>AETHER</Text>
-        <Avatar name={user?.name || 'P'} size={40} />
+        <Text style={{ fontSize: 20 }}>ðŸ”</Text>
+        <Text style={styles.headerTitle}>AETHER</Text>
+        <View style={styles.headerAvatar}>
+          <Text style={{ fontSize: 16 }}>ðŸ‘¤</Text>
+        </View>
       </View>
 
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.screenTitle}>Your Karma</Text>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.pageTitle}>Your Karma</Text>
 
-        {/* Hero Score Card */}
-        <Card style={styles.heroCard}>
-          <View style={styles.circleContainer}>
-            <View style={styles.circle}>
-              <Text style={styles.bigScore}>240</Text>
-              <Text style={styles.ptsLabel}>points</Text>
+        {/* Score Card */}
+        <View style={[styles.card, styles.cardYellow]}>
+          <View style={styles.scoreContainer}>
+            <View style={styles.scoreRing}>
+              <View style={styles.scoreRingInner}>
+                <Text style={styles.scoreNumber}>{score}</Text>
+                <Text style={styles.scoreLabel}>points</Text>
+              </View>
             </View>
           </View>
-          <Text style={styles.heroSubtext}>
-            You're more civic than 72% of{'\n'}students
+          <Text style={styles.percentileText}>
+            You're more civic than {percentile}% of students
           </Text>
-        </Card>
+        </View>
 
         {/* How you earned it */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>How you earned it</Text>
-          <Card style={styles.whiteCard}>
-            {history.map((item, idx) => (
-              <View key={item.id} style={[styles.historyItem, idx === history.length - 1 && styles.noBorder]}>
-                <View style={styles.historyLabelRow}>
-                  <View style={[styles.dot, { backgroundColor: item.color }]} />
-                  <Text style={styles.historyLabel}>{item.label}</Text>
-                </View>
-                <Text style={[styles.historyPoints, { color: item.color === '#D4A843' ? '#D4A843' : '#1A1A1A' }]}>
-                  {item.points}
-                </Text>
-              </View>
-            ))}
-          </Card>
+        <View style={[styles.card, styles.cardWhite]}>
+          <Text style={styles.cardTitleMed}>How you earned it</Text>
+          {events.map((event, i) => (
+            <View key={i} style={styles.eventRow}>
+              <View style={[styles.eventDot, { backgroundColor: event.points >= 15 ? colors.accentGold : colors.cardGreen }]} />
+              <Text style={styles.eventName}>{formatEvent(event.eventType)}</Text>
+              <Text style={[styles.eventPoints, event.points >= 15 && { color: colors.accentGold }]}>
+                +{event.points} pts
+              </Text>
+            </View>
+          ))}
         </View>
 
-        {/* Leaderboard */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Top Students</Text>
-          <Card style={styles.leaderboardCard}>
-            {leaderboard.map((student) => (
-              <View key={student.id} style={[styles.rankItem, student.isMe && styles.meItem]}>
-                <Text style={styles.rank}>{student.rank}</Text>
-                <Avatar name={student.name} size={36} />
-                <View style={styles.rankInfo}>
-                  <Text style={styles.rankName}>{student.name}</Text>
+        {/* Top Students */}
+        <View style={[styles.card, styles.cardLavender]}>
+          <Text style={styles.cardTitleMed}>Top Students</Text>
+          {leaderboard.length > 0 ? (
+            leaderboard.slice(0, 5).map((student, i) => (
+              <View key={i} style={[styles.leaderRow, i === 2 && styles.leaderRowHighlight]}>
+                <Text style={styles.leaderRank}>{i + 1}</Text>
+                <View style={styles.leaderAvatar}>
+                  <Text style={{ fontSize: 14 }}>ðŸ‘¤</Text>
                 </View>
-                <View style={styles.rankScoreBox}>
-                  <Text style={[styles.rankScore, student.isMe && styles.meScore]}>{student.score}</Text>
-                  <Text style={[styles.rankPts, student.isMe && styles.meScore]}>pts</Text>
-                </View>
-                <Text style={styles.medal}>{student.medal}</Text>
+                <Text style={styles.leaderName}>{student.name}</Text>
+                <Text style={styles.leaderScore}>{student.karmaScore} pts</Text>
+                <Text style={{ fontSize: 14 }}>ðŸ…</Text>
               </View>
-            ))}
-          </Card>
+            ))
+          ) : (
+            [
+              { name: 'Sneha Patel', score: 312 },
+              { name: 'Priyank Sharma', score: 287 },
+              { name: 'Vikram Singh', score: 240 },
+            ].map((s, i) => (
+              <View key={i} style={[styles.leaderRow, i === 2 && styles.leaderRowHighlight]}>
+                <Text style={styles.leaderRank}>{i + 1}</Text>
+                <View style={styles.leaderAvatar}>
+                  <Text style={{ fontSize: 14 }}>ðŸ‘¤</Text>
+                </View>
+                <Text style={styles.leaderName}>{s.name}</Text>
+                <Text style={styles.leaderScore}>{s.score} pts</Text>
+                <Text style={{ fontSize: 14 }}>ðŸ…</Text>
+              </View>
+            ))
+          )}
         </View>
+
+        <View style={{ height: spacing.tabBarHeight + spacing.lg }} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#F7F6F2',
-  },
+  container: { flex: 1, backgroundColor: colors.background },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.lg,
+    paddingHorizontal: spacing.screenPadding,
+    paddingTop: 60,
+    paddingBottom: spacing.md,
   },
-  headerIcon: {
-    fontSize: 20,
-  },
-  headerLogo: {
-    fontFamily: FONTS.bold,
-    fontSize: 20,
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: colors.textPrimary,
     letterSpacing: 2,
-    color: '#1A1A1A',
   },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: SPACING.lg,
-    gap: 32,
-    paddingBottom: 40,
-  },
-  screenTitle: {
-    fontFamily: FONTS.extraBold,
-    fontSize: 32,
-    color: '#1A1A1A',
-  },
-  heroCard: {
-    backgroundColor: '#F5F0D0',
-    alignItems: 'center',
-    paddingVertical: 40,
-    gap: 24,
-  },
-  circleContainer: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 12,
-    borderColor: 'rgba(0,0,0,0.05)',
+  headerAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.cardGreen,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  circle: {
+  scrollContent: {
+    paddingHorizontal: spacing.screenPadding,
+  },
+  pageTitle: {
+    ...typography.title,
+    marginBottom: spacing.lg,
+  },
+
+  // Cards
+  card: {
+    borderRadius: spacing.cardRadius,
+    padding: spacing.cardPadding,
+    marginBottom: spacing.cardGap,
+  },
+  cardYellow: { backgroundColor: colors.cardYellow },
+  cardWhite: { backgroundColor: colors.surface },
+  cardLavender: { backgroundColor: colors.cardLavender },
+
+  // Score
+  scoreContainer: {
+    alignItems: 'center',
+    marginVertical: spacing.lg,
+  },
+  scoreRing: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    borderWidth: 8,
+    borderColor: colors.accentGold,
+    borderTopColor: '#E8E5DF',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  bigScore: {
-    fontFamily: FONTS.bold,
-    fontSize: 64,
-    color: '#D4A843',
-    lineHeight: 64,
+  scoreRingInner: {
+    alignItems: 'center',
   },
-  ptsLabel: {
-    fontFamily: FONTS.medium,
-    fontSize: 16,
-    color: '#D4A843',
+  scoreNumber: {
+    fontSize: 48,
+    fontWeight: '800',
+    color: colors.textPrimary,
   },
-  heroSubtext: {
-    fontFamily: FONTS.medium,
-    fontSize: 18,
-    color: '#5D605B',
+  scoreLabel: {
+    ...typography.caption,
+  },
+  percentileText: {
+    ...typography.caption,
     textAlign: 'center',
-    lineHeight: 24,
+    fontStyle: 'italic',
   },
-  section: {
-    gap: 16,
+
+  // Events
+  cardTitleMed: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.textPrimary,
+    marginBottom: spacing.md,
   },
-  sectionTitle: {
-    fontFamily: FONTS.bold,
-    fontSize: 18,
-    color: '#1A1A1A',
-  },
-  whiteCard: {
-    backgroundColor: '#FFFFFF',
-    padding: SPACING.lg,
-    gap: 16,
-  },
-  historyItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#F4F4EF',
-    paddingBottom: 16,
-  },
-  noBorder: {
-    borderBottomWidth: 0,
-    paddingBottom: 0,
-  },
-  historyLabelRow: {
+  eventRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    paddingVertical: 10,
   },
-  dot: {
+  eventDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
+    marginRight: 12,
   },
-  historyLabel: {
-    fontFamily: FONTS.regular,
+  eventName: {
+    flex: 1,
+    ...typography.body,
+  },
+  eventPoints: {
     fontSize: 16,
-    color: '#1A1A1A',
+    fontWeight: '700',
+    color: colors.textPrimary,
   },
-  historyPoints: {
-    fontFamily: FONTS.bold,
-    fontSize: 16,
-  },
-  leaderboardCard: {
-    backgroundColor: '#EAE7F8',
-    padding: 12,
-    gap: 8,
-  },
-  rankItem: {
+
+  // Leaderboard
+  leaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
     borderRadius: 16,
-    padding: 12,
+    marginBottom: 4,
     gap: 12,
   },
-  meItem: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#D4A843',
+  leaderRowHighlight: {
+    backgroundColor: 'rgba(26,26,26,0.08)',
+    borderRadius: 16,
   },
-  rank: {
-    fontFamily: FONTS.bold,
-    fontSize: 14,
-    color: '#6B6B6B',
-    width: 20,
-    textAlign: 'center',
-  },
-  rankInfo: {
-    flex: 1,
-  },
-  rankName: {
-    fontFamily: FONTS.bold,
-    fontSize: 14,
-    color: '#1A1A1A',
-  },
-  rankScoreBox: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: 2,
-  },
-  rankScore: {
-    fontFamily: FONTS.bold,
+  leaderRank: {
     fontSize: 16,
-    color: '#1A1A1A',
+    fontWeight: '600',
+    color: colors.textSecondary,
+    width: 20,
   },
-  rankPts: {
-    fontFamily: FONTS.medium,
-    fontSize: 12,
-    color: '#6B6B6B',
+  leaderAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.cardGreen,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  meScore: {
-    color: '#D4A843',
+  leaderName: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.textPrimary,
   },
-  medal: {
-    fontSize: 20,
+  leaderScore: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.textPrimary,
   },
 });
+

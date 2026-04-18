@@ -1,33 +1,33 @@
-import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { Tabs } from 'expo-router';
-import { Text } from 'react-native';
-import { FONTS } from '../../constants/typography';
+import { colors } from '../../constants/colors';
 
 export default function ProfessorLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#FFFFFF',
-        tabBarInactiveTintColor: '#6B6B6B',
+        tabBarActiveTintColor: colors.textWhite,
+        tabBarInactiveTintColor: colors.tabInactive,
         tabBarStyle: {
-          backgroundColor: '#F7F6F2',
+          backgroundColor: colors.tabBar,
           borderTopWidth: 0,
-          height: 100,
-          paddingBottom: 40,
-          paddingTop: 10,
+          height: 80,
+          paddingBottom: 24,
+          paddingTop: 8,
           elevation: 0,
           shadowOpacity: 0,
         },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: '600' },
       }}
     >
       <Tabs.Screen
         name="dashboard"
         options={{
           title: '',
-          tabBarIcon: ({ color, focused }) => (
-            <View style={focused ? styles.activeContainer : null}>
-              <Text style={{ fontSize: 24, color: focused ? '#FFFFFF' : '#6B6B6B' }}>⊞</Text>
+          tabBarIcon: ({ focused }) => (
+            <View style={focused ? styles.activeIcon : null}>
+              <Text style={{ fontSize: 22, color: focused ? '#FFF' : '#6B6B6B' }}>⊞</Text>
             </View>
           ),
         }}
@@ -35,35 +35,35 @@ export default function ProfessorLayout() {
       <Tabs.Screen
         name="attendance/index"
         options={{
-          title: '',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 24, color }}>📝</Text>,
+          title: 'Attendance',
+          tabBarIcon: () => <Text style={{ fontSize: 22 }}>📝</Text>,
         }}
       />
       <Tabs.Screen
         name="leave-approvals/index"
         options={{
-          title: '',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 24, color }}>✅</Text>,
+          title: 'Approvals',
+          tabBarIcon: () => <Text style={{ fontSize: 22 }}>✅</Text>,
         }}
       />
       <Tabs.Screen
         name="notices/index"
         options={{
-          title: '',
-          tabBarIcon: ({ color }) => <Text style={{ fontSize: 24, color }}>📢</Text>,
+          title: 'Notices',
+          tabBarIcon: () => <Text style={{ fontSize: 22 }}>📢</Text>,
         }}
       />
+      <Tabs.Screen name="follow-ups/index" options={{ tabBarButton: () => null }} />
     </Tabs>
   );
 }
 
-import { View, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
-  activeContainer: {
+  activeIcon: {
     backgroundColor: '#1A1A1A',
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },

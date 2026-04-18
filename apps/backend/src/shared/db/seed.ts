@@ -668,8 +668,8 @@ async function seed() {
     slug: 'canteen-tracker',
     description:
       'Track daily canteen menu, pre-order meals, and view nutritional information. Built with aether-bridge.js for seamless integration.',
-    deploymentUrl: 'https://canteen-tracker.vercel.app',
-    apiEndpoint: 'https://canteen-tracker.vercel.app/api',
+    deploymentUrl: 'http://localhost:3001', // Local: npx serve apps/canteen-tracker — Production: https://canteen-tracker.vercel.app
+    apiEndpoint: null,
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/3075/3075977.png',
     category: 'lifestyle',
     status: 'approved',

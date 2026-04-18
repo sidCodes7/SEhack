@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { analyticsService } from '../../services/analytics.service';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { COLORS } from '../../constants/colors';
-import { Card } from '../../components/common/Card';
+
+
+
+
+
 
 export default function AdminAnalyticsScreen() {
   const [data, setData] = useState<any>(null);
@@ -13,9 +13,9 @@ export default function AdminAnalyticsScreen() {
     const fetch = async () => {
       try {
         const [attendance, approvals, issues] = await Promise.all([
-          analyticsService.getAttendanceTrends(),
-          analyticsService.getApprovalBottlenecks(),
-          analyticsService.getIssueStats(),
+          api.get("/analytics/attendance").then(r => r.data.data),
+          api.get("/analytics/approvals").then(r => r.data.data),
+          api.get("/analytics/issues").then(r => r.data.data),
         ]);
         setData({ attendance, approvals, issues });
       } catch {
@@ -42,7 +42,7 @@ export default function AdminAnalyticsScreen() {
         <Text style={styles.subtitle}>Institution Overview</Text>
 
         {/* Attendance section */}
-        <Card style={styles.sectionCard}>
+        <View style={styles.sectionCard}>
           <Text style={styles.sectionLabel}>ATTENDANCE TRENDS</Text>
           <Text style={styles.bigStat}>{data.attendance.overallRate}%</Text>
           <Text style={styles.bigStatLabel}>Overall Attendance</Text>
@@ -57,10 +57,10 @@ export default function AdminAnalyticsScreen() {
               </View>
             ))}
           </View>
-        </Card>
+        </View>
 
         {/* Approval bottlenecks */}
-        <Card style={styles.sectionCard}>
+        <View style={styles.sectionCard}>
           <Text style={styles.sectionLabel}>APPROVAL BOTTLENECKS</Text>
           <Text style={styles.bigStat}>{data.approvals.avgDays}</Text>
           <Text style={styles.bigStatLabel}>Avg. days to approve</Text>
@@ -78,16 +78,16 @@ export default function AdminAnalyticsScreen() {
           </View>
 
           {data.approvals.bottleneck && (
-            <Card style={styles.bottleneckAlert}>
+            <View style={styles.bottleneckAlert}>
               <Text style={styles.bottleneckText}>
-                ⚠️ {data.approvals.bottleneck} is averaging {data.approvals.bottleneckAvg} day delays
+                âš ï¸ {data.approvals.bottleneck} is averaging {data.approvals.bottleneckAvg} day delays
               </Text>
-            </Card>
+            </View>
           )}
-        </Card>
+        </View>
 
         {/* Issue resolution */}
-        <Card style={styles.sectionCard}>
+        <View style={styles.sectionCard}>
           <Text style={styles.sectionLabel}>ISSUE RESOLUTION</Text>
           <View style={styles.issueGrid}>
             <View style={[styles.issueBox, { backgroundColor: '#F8E4E4' }]}>
@@ -103,7 +103,7 @@ export default function AdminAnalyticsScreen() {
               <Text style={styles.issueLabel}>Resolved</Text>
             </View>
           </View>
-        </Card>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -111,26 +111,28 @@ export default function AdminAnalyticsScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  content: { padding: SPACING.lg, gap: 24, paddingTop: 60, paddingBottom: 40 },
-  title: { fontFamily: FONTS.extraBold, fontSize: 36, color: '#1A1A1A' },
-  subtitle: { fontFamily: FONTS.medium, fontSize: 16, color: '#6B6B6B', marginTop: -16 },
-  sectionCard: { backgroundColor: '#FFFFFF', padding: SPACING.xl, gap: 16 },
-  sectionLabel: { fontFamily: FONTS.bold, fontSize: 11, color: '#5D605B', letterSpacing: 1 },
-  bigStat: { fontFamily: FONTS.extraBold, fontSize: 48, color: '#1A1A1A' },
-  bigStatLabel: { fontFamily: FONTS.medium, fontSize: 14, color: '#6B6B6B', marginTop: -8 },
+  content: { padding: 24, gap: 24, paddingTop: 60, paddingBottom: 40 },
+  title: { fontWeight: '800', fontSize: 36, color: '#1A1A1A' },
+  subtitle: { fontWeight: '500', fontSize: 16, color: '#6B6B6B', marginTop: -16 },
+  sectionCard: { backgroundColor: '#FFFFFF', padding: 32, gap: 16 },
+  sectionLabel: { fontWeight: '700', fontSize: 11, color: '#5D605B', letterSpacing: 1 },
+  bigStat: { fontWeight: '800', fontSize: 48, color: '#1A1A1A' },
+  bigStatLabel: { fontWeight: '500', fontSize: 14, color: '#6B6B6B', marginTop: -8 },
   deptList: { gap: 12, marginTop: 8 },
   deptRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  deptName: { fontFamily: FONTS.bold, fontSize: 13, color: '#1A1A1A', width: 40 },
+  deptName: { fontWeight: '700', fontSize: 13, color: '#1A1A1A', width: 40 },
   barBg: { flex: 1, height: 8, backgroundColor: '#F4F4EF', borderRadius: 4, overflow: 'hidden' },
   barFill: { height: '100%', backgroundColor: '#45554F', borderRadius: 4 },
-  deptRate: { fontFamily: FONTS.bold, fontSize: 13, color: '#1A1A1A', width: 40, textAlign: 'right' },
+  deptRate: { fontWeight: '700', fontSize: 13, color: '#1A1A1A', width: 40, textAlign: 'right' },
   stagesList: { gap: 12 },
   stageRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  stageName: { fontFamily: FONTS.bold, fontSize: 13, color: '#1A1A1A', width: 60 },
-  bottleneckAlert: { backgroundColor: '#F5F0D0', padding: SPACING.md },
-  bottleneckText: { fontFamily: FONTS.medium, fontSize: 14, color: '#8B7D3A' },
+  stageName: { fontWeight: '700', fontSize: 13, color: '#1A1A1A', width: 60 },
+  bottleneckAlert: { backgroundColor: '#F5F0D0', padding: 16 },
+  bottleneckText: { fontWeight: '500', fontSize: 14, color: '#8B7D3A' },
   issueGrid: { flexDirection: 'row', gap: 12 },
-  issueBox: { flex: 1, borderRadius: 16, padding: SPACING.md, alignItems: 'center', gap: 4 },
-  issueValue: { fontFamily: FONTS.extraBold, fontSize: 28, color: '#1A1A1A' },
-  issueLabel: { fontFamily: FONTS.medium, fontSize: 11, color: '#5D605B' },
+  issueBox: { flex: 1, borderRadius: 16, padding: 16, alignItems: 'center', gap: 4 },
+  issueValue: { fontWeight: '800', fontSize: 28, color: '#1A1A1A' },
+  issueLabel: { fontWeight: '500', fontSize: 11, color: '#5D605B' },
 });
+
+

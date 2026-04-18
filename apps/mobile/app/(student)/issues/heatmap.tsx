@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { issuesService } from '../../services/issues.service';
-import { useWebSocket } from '../../hooks/useWebSocket';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
+import api from '../../../services/api';
+import { useWebSocket } from '../../../hooks/useWebSocket';
+
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -24,7 +24,7 @@ export default function HeatmapScreen() {
 
   const fetchHeatmap = async () => {
     try {
-      const data = await issuesService.getHeatmap();
+      const data = (await api.get("/issues?view=heatmap")).data.data;
       setDots(data);
     } catch {
       // Mock heatmap data
@@ -54,7 +54,7 @@ export default function HeatmapScreen() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Text style={styles.back}>←</Text>
+          <Text style={styles.back}>â†</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Campus Heatmap</Text>
       </View>
@@ -117,20 +117,24 @@ export default function HeatmapScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 16, paddingHorizontal: SPACING.lg, paddingTop: 60, paddingBottom: 16 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 16, paddingHorizontal: 24, paddingTop: 60, paddingBottom: 16 },
   backBtn: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
   back: { fontSize: 24, color: '#1A1A1A' },
-  title: { fontFamily: FONTS.bold, fontSize: 28, color: '#1A1A1A' },
-  mapContainer: { flex: 1, margin: SPACING.lg, borderRadius: 20, backgroundColor: '#EEEEE9', overflow: 'hidden' },
+  title: { fontWeight: '700', fontSize: 28, color: '#1A1A1A' },
+  mapContainer: { flex: 1, margin: 24, borderRadius: 20, backgroundColor: '#EEEEE9', overflow: 'hidden' },
   mapGrid: { flex: 1, position: 'relative' },
   gridLineH: { position: 'absolute', left: 0, right: 0, height: 1, backgroundColor: 'rgba(26,26,26,0.06)' },
   gridLineV: { position: 'absolute', top: 0, bottom: 0, width: 1, backgroundColor: 'rgba(26,26,26,0.06)' },
-  buildingLabel: { position: 'absolute', fontFamily: FONTS.medium, fontSize: 11, color: '#6B6B6B', letterSpacing: 0.5 },
+  buildingLabel: { position: 'absolute', fontWeight: '500', fontSize: 11, color: '#6B6B6B', letterSpacing: 0.5 },
   dot: { position: 'absolute' },
-  legend: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: SPACING.lg, gap: 12, paddingBottom: 100 },
+  legend: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 24, gap: 12, paddingBottom: 100 },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   legendDot: { width: 10, height: 10, borderRadius: 5 },
-  legendText: { fontFamily: FONTS.medium, fontSize: 11, color: '#6B6B6B' },
-  reportFab: { position: 'absolute', bottom: 40, right: SPACING.lg, width: 56, height: 56, borderRadius: 28, backgroundColor: '#1A1A1A', justifyContent: 'center', alignItems: 'center', elevation: 8 },
+  legendText: { fontWeight: '500', fontSize: 11, color: '#6B6B6B' },
+  reportFab: { position: 'absolute', bottom: 40, right: 24, width: 56, height: 56, borderRadius: 28, backgroundColor: '#1A1A1A', justifyContent: 'center', alignItems: 'center', elevation: 8 },
   reportIcon: { color: '#FFFFFF', fontSize: 28 },
 });
+
+
+
+

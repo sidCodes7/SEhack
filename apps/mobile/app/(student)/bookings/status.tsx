@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { approvalsService } from '../../services/approvals.service';
-import { useWebSocket } from '../../hooks/useWebSocket';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { Card } from '../../components/common/Card';
-import { Badge } from '../../components/common/Badge';
-import { ApprovalProgressBar } from '../../components/approvals/ApprovalProgressBar';
+import api from '../../../services/api';
+import { useWebSocket } from '../../../hooks/useWebSocket';
+
+
+
+
 
 export default function BookingStatusScreen() {
   const router = useRouter();
@@ -18,7 +17,7 @@ export default function BookingStatusScreen() {
 
   const fetchRequests = async () => {
     try {
-      const data = await approvalsService.getMyRequests();
+      const data = (await api.get("/workflow/requests")).data.data;
       setRequests(data);
     } catch {
       // Fallback mock
@@ -28,7 +27,7 @@ export default function BookingStatusScreen() {
         status: 'in_progress',
         room: '302',
         department: 'CSE Dept',
-        date: 'Apr 19, 10:00 AM – 12:00 PM',
+        date: 'Apr 19, 10:00 AM â€“ 12:00 PM',
         purpose: 'Weekly AI Research Group Meeting & Presentation Rehearsal.',
         submittedDate: 'Apr 18',
         stages: [
@@ -60,39 +59,39 @@ export default function BookingStatusScreen() {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-            <Text style={styles.backArrow}>←</Text>
+            <Text style={styles.backArrow}>â†</Text>
           </TouchableOpacity>
           <View>
             <Text style={styles.title}>Room Booking</Text>
-            <Text style={styles.subtitle}>Submitted {req.submittedDate} · Room {req.room}</Text>
+            <Text style={styles.subtitle}>Submitted {req.submittedDate} Â· Room {req.room}</Text>
           </View>
         </View>
 
         {/* Progress Card */}
-        <Card style={styles.statusCard}>
+        <View style={styles.statusCard}>
           <View style={styles.statusHeader}>
             <Text style={styles.statusTitle}>Request Status</Text>
             <Badge label="In Progress" variant="pending" />
           </View>
-          <ApprovalProgressBar stages={req.stages} />
-        </Card>
+          <View />
+        </View>
 
         {/* Details Card */}
-        <Card style={styles.detailsCard}>
+        <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
-            <Text style={styles.detailsTitle}>Room {req.room} · {req.department}</Text>
-            <Text style={styles.detailsIcon}>📋</Text>
+            <Text style={styles.detailsTitle}>Room {req.room} Â· {req.department}</Text>
+            <Text style={styles.detailsIcon}>ðŸ“‹</Text>
           </View>
           <Text style={styles.detailsTime}>{req.date}</Text>
           <Text style={styles.purposeLabel}>PURPOSE</Text>
           <Text style={styles.purposeText}>{req.purpose}</Text>
-        </Card>
+        </View>
 
         {/* Notes */}
         {req.notes?.map((note: any, i: number) => (
-          <Card key={i} style={styles.noteCard}>
+          <View key={i} style={styles.noteCard}>
             <View style={styles.noteHeader}>
-              <Text style={styles.noteIcon}>📝</Text>
+              <Text style={styles.noteIcon}>ðŸ“</Text>
               <Text style={styles.noteLabel}>HOD NOTE</Text>
             </View>
             <Text style={styles.noteText}>{note.text}</Text>
@@ -100,9 +99,9 @@ export default function BookingStatusScreen() {
               <View style={styles.noteInitials}>
                 <Text style={styles.noteInitialsText}>{note.initials}</Text>
               </View>
-              <Text style={styles.noteAuthorText}>{note.author} · {note.time}</Text>
+              <Text style={styles.noteAuthorText}>{note.author} Â· {note.time}</Text>
             </View>
-          </Card>
+          </View>
         ))}
 
         {/* Cancel */}
@@ -117,36 +116,36 @@ export default function BookingStatusScreen() {
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
   scroll: { flex: 1 },
-  content: { padding: SPACING.lg, gap: 24, paddingBottom: 40 },
+  content: { padding: 24, gap: 24, paddingBottom: 40 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 16, paddingTop: 40 },
   backBtn: {
     width: 44, height: 44, borderRadius: 22, backgroundColor: '#F4F4EF',
     justifyContent: 'center', alignItems: 'center',
   },
   backArrow: { fontSize: 20, color: '#1A1A1A' },
-  title: { fontFamily: FONTS.bold, fontSize: 28, color: '#1A1A1A' },
-  subtitle: { fontFamily: FONTS.medium, fontSize: 14, color: '#6B6B6B', marginTop: 2 },
-  statusCard: { backgroundColor: '#FFFFFF', padding: SPACING.xl },
+  title: { fontWeight: '700', fontSize: 28, color: '#1A1A1A' },
+  subtitle: { fontWeight: '500', fontSize: 14, color: '#6B6B6B', marginTop: 2 },
+  statusCard: { backgroundColor: '#FFFFFF', padding: 32 },
   statusHeader: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
   },
-  statusTitle: { fontFamily: FONTS.bold, fontSize: 20, color: '#1A1A1A' },
-  detailsCard: { backgroundColor: '#EAE7F8', padding: SPACING.xl, gap: 12 },
+  statusTitle: { fontWeight: '700', fontSize: 20, color: '#1A1A1A' },
+  detailsCard: { backgroundColor: '#EAE7F8', padding: 32, gap: 12 },
   detailsHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  detailsTitle: { fontFamily: FONTS.bold, fontSize: 20, color: '#1A1A1A', flex: 1 },
+  detailsTitle: { fontWeight: '700', fontSize: 20, color: '#1A1A1A', flex: 1 },
   detailsIcon: { fontSize: 20 },
-  detailsTime: { fontFamily: FONTS.medium, fontSize: 14, color: '#555461' },
+  detailsTime: { fontWeight: '500', fontSize: 14, color: '#555461' },
   purposeLabel: {
-    fontFamily: FONTS.bold, fontSize: 10, color: '#555461',
+    fontWeight: '700', fontSize: 10, color: '#555461',
     letterSpacing: 1, marginTop: 8,
   },
-  purposeText: { fontFamily: FONTS.regular, fontSize: 16, color: '#1A1A1A', lineHeight: 22 },
-  noteCard: { backgroundColor: '#F5F0D0', padding: SPACING.xl, gap: 12 },
+  purposeText: { fontWeight: '400', fontSize: 16, color: '#1A1A1A', lineHeight: 22 },
+  noteCard: { backgroundColor: '#F5F0D0', padding: 32, gap: 12 },
   noteHeader: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   noteIcon: { fontSize: 16 },
-  noteLabel: { fontFamily: FONTS.bold, fontSize: 12, color: '#1A1A1A', letterSpacing: 1 },
+  noteLabel: { fontWeight: '700', fontSize: 12, color: '#1A1A1A', letterSpacing: 1 },
   noteText: {
-    fontFamily: FONTS.regular, fontSize: 16, color: '#1A1A1A',
+    fontWeight: '400', fontSize: 16, color: '#1A1A1A',
     fontStyle: 'italic', lineHeight: 22,
   },
   noteAuthor: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
@@ -154,8 +153,13 @@ const styles = StyleSheet.create({
     width: 28, height: 28, borderRadius: 14, backgroundColor: '#1A1A1A',
     justifyContent: 'center', alignItems: 'center',
   },
-  noteInitialsText: { fontFamily: FONTS.bold, fontSize: 10, color: '#FFFFFF' },
-  noteAuthorText: { fontFamily: FONTS.medium, fontSize: 12, color: '#5D605B' },
+  noteInitialsText: { fontWeight: '700', fontSize: 10, color: '#FFFFFF' },
+  noteAuthorText: { fontWeight: '500', fontSize: 12, color: '#5D605B' },
   cancelBtn: { alignSelf: 'center', paddingVertical: 12 },
-  cancelText: { fontFamily: FONTS.medium, fontSize: 14, color: '#6B6B6B' },
+  cancelText: { fontWeight: '500', fontSize: 14, color: '#6B6B6B' },
 });
+
+
+
+
+

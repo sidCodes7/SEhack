@@ -1,19 +1,18 @@
 // ──────────────────────────────────────────────
 // Auth Service — Business Logic
 // ──────────────────────────────────────────────
-// Handles registration, login, JWT token generation,
-// current user retrieval, and language preference updates.
+// Uses Neon DB as the auth store.
+// Token signing uses the local key (derived from DATABASE_URL).
+// In production, Neon Auth issues tokens via JWKS.
 
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { db } from '../../shared/db/neon.client.js';
 import { users } from '../../shared/db/schema.js';
 import { eq } from 'drizzle-orm';
 import { createError } from '../../shared/middleware/error.middleware.js';
+import { signToken } from '../../shared/middleware/auth.middleware.js';
 import type { AuthUser } from '../../shared/middleware/auth.middleware.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'aether-dev-secret';
-const JWT_EXPIRES_IN = '7d';
 const SALT_ROUNDS = 10;
 
 interface RegisterInput {
@@ -31,7 +30,7 @@ interface LoginInput {
 
 /**
  * Register a new user.
- * Returns the created user (without password_hash) and a JWT token.
+ * Returns the created user (without password_hash) and a signed token.
  */
 export async function register(input: RegisterInput) {
   const { name, email, password, role, department } = input;
@@ -57,7 +56,7 @@ export async function register(input: RegisterInput) {
     })
     .returning();
 
-  // Generate JWT
+  // Sign token
   const tokenPayload: AuthUser = {
     id: newUser.id,
     email: newUser.email,
@@ -65,7 +64,7 @@ export async function register(input: RegisterInput) {
     department: newUser.department || undefined,
   };
 
-  const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  const token = await signToken(tokenPayload);
 
   return {
     user: sanitizeUser(newUser),
@@ -75,7 +74,7 @@ export async function register(input: RegisterInput) {
 
 /**
  * Login with email and password.
- * Returns user (without password_hash) and a JWT token.
+ * Returns user (without password_hash) and a signed token.
  */
 export async function login(input: LoginInput) {
   const { email, password } = input;
@@ -92,7 +91,7 @@ export async function login(input: LoginInput) {
     throw createError('Invalid email or password', 401);
   }
 
-  // Generate JWT
+  // Sign token
   const tokenPayload: AuthUser = {
     id: user.id,
     email: user.email,
@@ -100,7 +99,7 @@ export async function login(input: LoginInput) {
     department: user.department || undefined,
   };
 
-  const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  const token = await signToken(tokenPayload);
 
   return {
     user: sanitizeUser(user),

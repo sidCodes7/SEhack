@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity,
 } from 'react-native';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { Card } from '../../components/common/Card';
-import { Avatar } from '../../components/common/Avatar';
+
+
+
+
 
 export default function FollowUpsScreen() {
   const [note, setNote] = useState('');
@@ -43,10 +43,10 @@ export default function FollowUpsScreen() {
         <Text style={styles.subtitle}>{flaggedStudents.length} students flagged</Text>
 
         {/* Add new flag */}
-        <Card style={styles.addCard}>
+        <View style={styles.addCard}>
           <TextInput
             style={styles.input}
-            placeholder="Add a follow-up note…"
+            placeholder="Add a follow-up noteâ€¦"
             placeholderTextColor="#A7A9BE"
             value={note}
             onChangeText={setNote}
@@ -54,13 +54,13 @@ export default function FollowUpsScreen() {
           <TouchableOpacity style={styles.addBtn} onPress={handleAddFlag}>
             <Text style={styles.addBtnText}>+ Flag Student</Text>
           </TouchableOpacity>
-        </Card>
+        </View>
 
         {/* Flagged students list */}
         {flaggedStudents.map((student) => (
-          <Card key={student.id} style={styles.studentCard}>
+          <View key={student.id} style={styles.studentCard}>
             <View style={styles.studentTop}>
-              <Avatar name={student.name} size={44} />
+              <View />
               <View style={styles.studentInfo}>
                 <Text style={styles.studentName}>{student.name}</Text>
                 <Text style={styles.studentRoll}>{student.rollNo}</Text>
@@ -73,7 +73,7 @@ export default function FollowUpsScreen() {
               <Text style={styles.reasonText}>{student.reason}</Text>
               <Text style={styles.dateText}>Flagged {student.date}</Text>
             </View>
-          </Card>
+          </View>
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -82,26 +82,27 @@ export default function FollowUpsScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  content: { padding: SPACING.lg, gap: 20, paddingTop: 60, paddingBottom: 100 },
-  title: { fontFamily: FONTS.extraBold, fontSize: 32, color: '#1A1A1A' },
-  subtitle: { fontFamily: FONTS.medium, fontSize: 14, color: '#6B6B6B', marginTop: -12 },
-  addCard: { backgroundColor: '#FFFFFF', padding: SPACING.lg, gap: 12 },
+  content: { padding: 24, gap: 20, paddingTop: 60, paddingBottom: 100 },
+  title: { fontWeight: '800', fontSize: 32, color: '#1A1A1A' },
+  subtitle: { fontWeight: '500', fontSize: 14, color: '#6B6B6B', marginTop: -12 },
+  addCard: { backgroundColor: '#FFFFFF', padding: 24, gap: 12 },
   input: {
     backgroundColor: '#F4F4EF', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14,
-    fontFamily: FONTS.regular, fontSize: 15, color: '#1A1A1A',
+    fontWeight: '400', fontSize: 15, color: '#1A1A1A',
   },
   addBtn: {
     backgroundColor: '#1A1A1A', borderRadius: 24, paddingVertical: 14, alignItems: 'center',
   },
-  addBtnText: { fontFamily: FONTS.bold, fontSize: 14, color: '#FFFFFF' },
-  studentCard: { backgroundColor: '#FFFFFF', padding: SPACING.lg, gap: 14 },
+  addBtnText: { fontWeight: '700', fontSize: 14, color: '#FFFFFF' },
+  studentCard: { backgroundColor: '#FFFFFF', padding: 24, gap: 14 },
   studentTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   studentInfo: { flex: 1 },
-  studentName: { fontFamily: FONTS.bold, fontSize: 16, color: '#1A1A1A' },
-  studentRoll: { fontFamily: FONTS.medium, fontSize: 12, color: '#6B6B6B', marginTop: 2 },
+  studentName: { fontWeight: '700', fontSize: 16, color: '#1A1A1A' },
+  studentRoll: { fontWeight: '500', fontSize: 12, color: '#6B6B6B', marginTop: 2 },
   severityBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
-  severityText: { fontFamily: FONTS.bold, fontSize: 10, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: 0.5 },
+  severityText: { fontWeight: '700', fontSize: 10, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: 0.5 },
   reasonContainer: { backgroundColor: '#F4F4EF', borderRadius: 12, padding: 14 },
-  reasonText: { fontFamily: FONTS.medium, fontSize: 14, color: '#1A1A1A' },
-  dateText: { fontFamily: FONTS.regular, fontSize: 11, color: '#6B6B6B', marginTop: 6 },
+  reasonText: { fontWeight: '500', fontSize: 14, color: '#1A1A1A' },
+  dateText: { fontWeight: '400', fontSize: 11, color: '#6B6B6B', marginTop: 6 },
 });
+

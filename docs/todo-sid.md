@@ -214,12 +214,16 @@ git add -A && git commit -m "feat: DB migrations, seed data" && git push origin 
 
 > You are the "glue" person. As Dev, Het, and Avani finish modules and screens, you handle:
 
-- [ ] If anyone needs a new shared-type interface → you add it to `packages/shared-types/` and push
-- [ ] If anyone discovers a missing Drizzle schema field → you add it to `schema.ts` and push
-- [ ] If WebSocket event helpers need updating → you modify `ws.server.ts`
-- [ ] Final pass: verify `apps/backend/src/app.ts` compiles with all real route files (after Dev+Het replace all stubs)
-- [ ] Write `.env` files with real API keys (Neon, Cloudinary, Firebase, Grok, Razorpay, Resend, LibreTranslate)
-- [ ] End-to-end smoke test: start backend → hit all endpoints → verify responses
+- [x] Het request: Added `apps/super-app` + `apps/canteen-tracker` + `libs/*` to root workspaces
+- [x] Het request: Updated canteen tracker URL in seed data to `http://localhost:3001`
+- [x] Refactored auth from JWT_SECRET to Neon Auth (JWKS + DATABASE_URL-derived key)
+- [x] Added Sarvam AI as primary translation provider (LibreTranslate fallback)
+- [x] Final pass: `apps/backend/src/app.ts` compiles with all real route files — `tsc --noEmit` 0 errors
+- [x] Write `.env` files with real API keys (Neon, Cloudinary, Grok, Razorpay, Sarvam, etc.)
+- [x] `drizzle-kit push` — all 11 tables created in Neon
+- [x] `npm run seed` — 9 users, 6 notices, 4 workflows, 7 issues, 15 attendance, 6 events, 15 dues, 25 karma, 1 plugin
+- [x] End-to-end smoke test: 17/17 endpoints return `success: true`
+- [x] `start.bat` launches all 3 services (backend:3000, super-app:5173, canteen-tracker:3001)
 
 ---
 

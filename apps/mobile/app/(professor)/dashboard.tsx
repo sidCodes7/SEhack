@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,44 +9,37 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuthStore } from '../../store/auth.store';
-import { dashboardService } from '../../services/dashboard.service';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { COLORS } from '../../constants/colors';
-import { Avatar } from '../../components/common/Avatar';
-import { AttendanceTrendWidget } from '../../components/dashboard/AttendanceTrendWidget';
-import { ProfessorNoticesWidget } from '../../components/dashboard/ProfessorNoticesWidget';
-import { Card } from '../../components/common/Card';
+import * as SecureStore from 'expo-secure-store';
+import { colors } from '../../constants/colors';
+import { spacing } from '../../constants/spacing';
+import api from '../../services/api';
 
 export default function ProfessorDashboard() {
   const router = useRouter();
-  const { user } = useAuthStore();
-  const [data, setData] = useState<any>(null);
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = async () => {
     try {
-      const dashboardData = await dashboardService.getProfessorDashboard();
-      setData(dashboardData);
-    } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
-      // Fallback
+      const stored = await SecureStore.getItemAsync('user');
+      if (stored) setUser(JSON.parse(stored));
+      const res = await api.get('/dashboard/professor');
+      setData(res.data.data);
+    } catch {
       setData({
-        attendance: { percentage: 78, details: 'CSE Sem 5 · Section A', points: [40, 55, 80, 95, 60] },
+        attendance: { percentage: 78 },
         approvals: 4,
         followups: 2,
         notices: [
-          { id: '1', title: 'Mid-term syllabus updated for CSE-5', time: '2 hrs ago', icon: '📝' },
-          { id: '2', title: 'Reminder: Project submissions due Friday', time: '5 hrs ago', icon: '⚠️' },
+          { title: 'Mid-term syllabus updated', time: '2 hrs ago' },
+          { title: 'Project submissions due Friday', time: '5 hrs ago' },
         ],
       });
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -54,193 +47,124 @@ export default function ProfessorDashboard() {
     setRefreshing(false);
   };
 
-  if (!data) return null;
+  const greeting = () => {
+    const h = new Date().getHours();
+    return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      {/* Header */}
-      <View style={styles.topHeader}>
+    <SafeAreaView style={styles.safe}>
+      <View style={styles.header}>
         <View style={styles.titleRow}>
-          <TouchableOpacity style={styles.menuBtn}>
-            <Text style={styles.menuIcon}>≡</Text>
-          </TouchableOpacity>
-          <Text style={styles.workspaceTitle}>Workspace</Text>
+          <TouchableOpacity><Text style={{ fontSize: 28 }}>â‰¡</Text></TouchableOpacity>
+          <Text style={styles.title}>Workspace</Text>
         </View>
-        <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.notifBtn}>
-            <Text style={styles.bell}>🔔</Text>
-            <View style={styles.notifDot} />
-          </TouchableOpacity>
-          <Avatar name={user?.name || 'Prof'} size={44} />
+        <View style={styles.headerRight}>
+          <TouchableOpacity><Text style={{ fontSize: 22 }}>ðŸ””</Text></TouchableOpacity>
+          <View style={styles.avatar}>
+            <Text style={{ fontSize: 16 }}>{user?.name?.charAt(0) ?? 'P'}</Text>
+          </View>
         </View>
       </View>
 
       <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
+        contentContainerStyle={styles.content}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeLabel}>Good morning,</Text>
-          <Text style={styles.profName}>Prof. {user?.name?.split(' ')[user.name.split(' ').length - 1] || 'Harshav'}</Text>
-        </View>
+        <Text style={styles.greeting}>{greeting()},</Text>
+        <Text style={styles.profName}>Prof. {user?.name?.split(' ').pop() ?? 'Harshav'}</Text>
 
-        <AttendanceTrendWidget
-          percentage={data.attendance.percentage}
-          courseDetails={data.attendance.details}
-          dataPoints={data.attendance.points}
+        {/* Attendance Card */}
+        <TouchableOpacity
+          style={[styles.card, { backgroundColor: colors.cardGreen }]}
           onPress={() => router.push('/(professor)/attendance')}
-        />
+        >
+          <Text style={styles.sectionLabel}>ATTENDANCE TREND</Text>
+          <View style={styles.attendanceRow}>
+            <Text style={styles.bigNum}>{data?.attendance?.percentage ?? 78}%</Text>
+            <View style={styles.trendBars}>
+              {[40, 55, 80, 95, 60].map((h, i) => (
+                <View key={i} style={[styles.bar, { height: h * 0.6 }]} />
+              ))}
+            </View>
+          </View>
+          <Text style={styles.cardSub}>CSE Sem 5 Â· Section A</Text>
+        </TouchableOpacity>
 
-        <View style={styles.gridRow}>
-          <Card style={[styles.statCard, { backgroundColor: '#F5F0D0' }]}>
-            <View style={styles.statHeader}>
-              <Text style={[styles.statLabel, { color: '#8B7D3A' }]}>PENDING APPROVALS</Text>
-              <Text style={styles.statIconSmall}>↗</Text>
-            </View>
-            <Text style={styles.statValue}>{data.approvals}</Text>
-          </Card>
-
-          <Card style={[styles.statCard, { backgroundColor: '#F8E4E4' }]}>
-            <View style={styles.statHeader}>
-              <Text style={[styles.statLabel, { color: '#A36666' }]}>FOLLOW-UPS</Text>
-              <Text style={[styles.statIconSmall, { color: '#A36666' }]}>!</Text>
-            </View>
-            <View>
-              <Text style={styles.statValue}>{data.followups}</Text>
-              <Text style={[styles.statSubText, { color: '#A36666' }]}>Students at risk</Text>
-            </View>
-          </Card>
+        {/* Stats Row */}
+        <View style={styles.row}>
+          <TouchableOpacity
+            style={[styles.halfCard, { backgroundColor: colors.cardYellow }]}
+            onPress={() => router.push('/(professor)/leave-approvals')}
+          >
+            <Text style={styles.sectionLabel}>PENDING APPROVALS</Text>
+            <Text style={styles.statNum}>{data?.approvals ?? 4}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.halfCard, { backgroundColor: colors.cardPink }]}
+            onPress={() => router.push('/(professor)/follow-ups')}
+          >
+            <Text style={styles.sectionLabel}>FOLLOW-UPS</Text>
+            <Text style={styles.statNum}>{data?.followups ?? 2}</Text>
+            <Text style={[styles.cardSub, { color: colors.accentRed }]}>Students at risk</Text>
+          </TouchableOpacity>
         </View>
 
-        <ProfessorNoticesWidget
-          notices={data.notices}
-          onPublish={() => router.push('/(professor)/notices/new')}
-        />
-      </ScrollView>
+        {/* Notices */}
+        <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <View style={styles.noticeHeader}>
+            <Text style={styles.sectionLabel}>RECENT NOTICES</Text>
+            <TouchableOpacity onPress={() => router.push('/(professor)/notices')}>
+              <Text style={styles.publishBtn}>+ Publish</Text>
+            </TouchableOpacity>
+          </View>
+          {(data?.notices ?? []).map((n, i) => (
+            <View key={i} style={styles.noticeItem}>
+              <Text style={{ fontSize: 16 }}>ðŸ“</Text>
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <Text style={styles.noticeTitle}>{n.title}</Text>
+                <Text style={styles.noticeSub}>{n.time}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
 
-      {/* FAB Bottom Placeholder for Professors */}
+        <View style={{ height: 100 }} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#F7F6F2',
+  safe: { flex: 1, backgroundColor: colors.background },
+  header: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    paddingHorizontal: spacing.screenPadding, paddingTop: 60, paddingBottom: spacing.md,
   },
-  topHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.xl,
-    paddingTop: 60,
-    paddingBottom: 24,
-    backgroundColor: 'rgba(247, 246, 242, 0.8)',
-    zIndex: 10,
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  title: { fontSize: 32, fontWeight: '800', color: colors.textPrimary, letterSpacing: -1 },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  avatar: {
+    width: 40, height: 40, borderRadius: 20, backgroundColor: colors.cardGreen,
+    justifyContent: 'center', alignItems: 'center',
   },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  menuBtn: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 32,
-    color: '#1A1A1A',
-  },
-  workspaceTitle: {
-    fontFamily: FONTS.extraBold,
-    fontSize: 36,
-    color: '#1A1A1A',
-    letterSpacing: -1,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  notifBtn: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bell: {
-    fontSize: 24,
-  },
-  notifDot: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: COLORS.error,
-    borderWidth: 2,
-    borderColor: '#F7F6F2',
-  },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: SPACING.lg,
-    gap: 32,
-    paddingBottom: 100,
-  },
-  welcomeSection: {
-    marginBottom: 8,
-  },
-  welcomeLabel: {
-    fontFamily: FONTS.medium,
-    fontSize: 18,
-    color: '#6B6B6B',
-  },
-  profName: {
-    fontFamily: FONTS.extraBold,
-    fontSize: 32,
-    color: '#1A1A1A',
-    marginTop: 4,
-  },
-  gridRow: {
-    flexDirection: 'row',
-    gap: SPACING.md,
-  },
-  statCard: {
-    flex: 1,
-    minHeight: 180,
-    justifyContent: 'space-between',
-    padding: 24,
-  },
-  statHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  statLabel: {
-    fontFamily: FONTS.bold,
-    fontSize: 11,
-    letterSpacing: 1,
-    width: '80%',
-  },
-  statIconSmall: {
-    fontSize: 18,
-    fontFamily: FONTS.bold,
-    color: '#1A1A1A',
-  },
-  statValue: {
-    fontFamily: FONTS.extraBold,
-    fontSize: 56,
-    color: '#1A1A1A',
-  },
-  statSubText: {
-    fontFamily: FONTS.medium,
-    fontSize: 14,
-    marginTop: 2,
-  },
+  content: { paddingHorizontal: spacing.screenPadding, paddingTop: spacing.md },
+  greeting: { fontSize: 18, fontWeight: '500', color: colors.textSecondary },
+  profName: { fontSize: 32, fontWeight: '800', color: colors.textPrimary, marginBottom: spacing.lg },
+  card: { borderRadius: 20, padding: 20, marginBottom: 12 },
+  sectionLabel: { fontSize: 11, fontWeight: '700', color: colors.textSecondary, letterSpacing: 1.5, textTransform: 'uppercase' },
+  attendanceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 16 },
+  bigNum: { fontSize: 48, fontWeight: '800', color: colors.textPrimary },
+  trendBars: { flexDirection: 'row', alignItems: 'flex-end', gap: 6 },
+  bar: { width: 12, backgroundColor: colors.accent, borderRadius: 4, opacity: 0.7 },
+  cardSub: { fontSize: 14, color: colors.textSecondary, marginTop: 6 },
+  row: { flexDirection: 'row', gap: 12, marginBottom: 12 },
+  halfCard: { flex: 1, borderRadius: 20, padding: 20, minHeight: 140, justifyContent: 'space-between' },
+  statNum: { fontSize: 48, fontWeight: '800', color: colors.textPrimary },
+  noticeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  publishBtn: { fontSize: 14, fontWeight: '700', color: colors.accent },
+  noticeItem: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 10, borderTopWidth: 1, borderTopColor: colors.borderLight },
+  noticeTitle: { fontSize: 15, fontWeight: '600', color: colors.textPrimary },
+  noticeSub: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
 });
+

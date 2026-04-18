@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { calendarService } from '../../services/calendar.service';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { Card } from '../../components/common/Card';
+import api from '../../../services/api';
+
+
+
 
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const EVENT_COLORS: Record<string, string> = {
@@ -20,22 +20,25 @@ export default function CalendarScreen() {
   const today = new Date();
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchEvents = async () => {
       try {
-        const data = await calendarService.getEvents({
-          month: today.getMonth() + 1,
-          year: today.getFullYear(),
-        });
-        setEvents(data);
+        const res = await api.get('/calendar/events');
+        const data = res.data.data ?? [];
+        setEvents(data.map((e: any) => ({
+          ...e,
+          day: new Date(e.startDate || e.date).getDate(),
+          time: new Date(e.startDate || e.date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+          room: e.location || 'TBA',
+        })));
       } catch {
         setEvents([
-          { id: '1', title: 'Data Structures', type: 'class', time: '10:30 AM', room: '302', day: today.getDate() },
-          { id: '2', title: 'Hackathon Meeting', type: 'event', time: '4:00 PM', room: '101', day: today.getDate() },
+          { id: '1', title: 'Data Structures', type: 'class', time: '10:30 AM', room: 'Room 302', day: today.getDate() },
+          { id: '2', title: 'Hackathon Meeting', type: 'event', time: '4:00 PM', room: 'Room 101', day: today.getDate() },
           { id: '3', title: 'AI Lab', type: 'class', time: '2:00 PM', room: 'Lab 201', day: today.getDate() + 1 },
         ]);
       }
     };
-    fetch();
+    fetchEvents();
   }, []);
 
   const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
@@ -50,7 +53,7 @@ export default function CalendarScreen() {
         </Text>
 
         {/* Calendar grid */}
-        <Card style={styles.calendarCard}>
+        <View style={styles.calendarCard}>
           <View style={styles.daysHeader}>
             {DAYS.map((d, i) => (
               <Text key={i} style={styles.dayHeader}>{d}</Text>
@@ -79,7 +82,7 @@ export default function CalendarScreen() {
               );
             })}
           </View>
-        </Card>
+        </View>
 
         {/* Events for selected day */}
         <Text style={styles.sectionTitle}>
@@ -89,10 +92,10 @@ export default function CalendarScreen() {
           <Text style={styles.emptyText}>No events on this day</Text>
         ) : (
           dayEvents.map((event) => (
-            <Card key={event.id} style={[styles.eventCard, { backgroundColor: EVENT_COLORS[event.type] || '#F4F4EF' }]}>
+            <View key={event.id} style={[styles.eventCard, { backgroundColor: EVENT_COLORS[event.type] || '#F4F4EF' }]}>
               <Text style={styles.eventTitle}>{event.title}</Text>
-              <Text style={styles.eventDetails}>{event.time} · {event.room}</Text>
-            </Card>
+              <Text style={styles.eventDetails}>{event.time} Ã‚Â· {event.room}</Text>
+            </View>
           ))
         )}
       </ScrollView>
@@ -102,22 +105,24 @@ export default function CalendarScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  content: { padding: SPACING.lg, gap: 24, paddingTop: 60, paddingBottom: 100 },
-  monthTitle: { fontFamily: FONTS.bold, fontSize: 28, color: '#1A1A1A' },
-  calendarCard: { backgroundColor: '#FFFFFF', padding: SPACING.md },
+  content: { padding: 24, gap: 24, paddingTop: 60, paddingBottom: 100 },
+  monthTitle: { fontWeight: '700', fontSize: 28, color: '#1A1A1A' },
+  calendarCard: { backgroundColor: '#FFFFFF', padding: 16 },
   daysHeader: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 8 },
-  dayHeader: { fontFamily: FONTS.bold, fontSize: 12, color: '#6B6B6B', width: 40, textAlign: 'center' },
+  dayHeader: { fontWeight: '700', fontSize: 12, color: '#6B6B6B', width: 40, textAlign: 'center' },
   daysGrid: { flexDirection: 'row', flexWrap: 'wrap' },
   dayCell: { width: `${100 / 7}%`, alignItems: 'center', paddingVertical: 10 },
   dayCellSelected: { backgroundColor: '#1A1A1A', borderRadius: 20 },
-  dayText: { fontFamily: FONTS.medium, fontSize: 14, color: '#1A1A1A' },
-  dayTextToday: { color: '#D4A843', fontFamily: FONTS.bold },
+  dayText: { fontWeight: '500', fontSize: 14, color: '#1A1A1A' },
+  dayTextToday: { color: '#D4A843', fontWeight: '700' },
   dayTextSelected: { color: '#FFFFFF' },
   eventDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: '#6C63FF', marginTop: 2 },
   eventDotSelected: { backgroundColor: '#FFFFFF' },
-  sectionTitle: { fontFamily: FONTS.bold, fontSize: 18, color: '#1A1A1A' },
-  emptyText: { fontFamily: FONTS.regular, fontSize: 14, color: '#6B6B6B' },
-  eventCard: { padding: SPACING.lg, gap: 6 },
-  eventTitle: { fontFamily: FONTS.bold, fontSize: 16, color: '#1A1A1A' },
-  eventDetails: { fontFamily: FONTS.medium, fontSize: 13, color: '#5D605B' },
+  sectionTitle: { fontWeight: '700', fontSize: 18, color: '#1A1A1A' },
+  emptyText: { fontWeight: '400', fontSize: 14, color: '#6B6B6B' },
+  eventCard: { padding: 24, gap: 6 },
+  eventTitle: { fontWeight: '700', fontSize: 16, color: '#1A1A1A' },
+  eventDetails: { fontWeight: '500', fontSize: 13, color: '#5D605B' },
 });
+
+

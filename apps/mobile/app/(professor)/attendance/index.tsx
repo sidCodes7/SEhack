@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Alert,
 } from 'react-native';
-import { attendanceService } from '../../services/attendance.service';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { Card } from '../../components/common/Card';
+import api from '../../../services/api';
+
+
+
 
 export default function AttendanceScreen() {
   const [students, setStudents] = useState<any[]>([]);
@@ -15,7 +15,8 @@ export default function AttendanceScreen() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const data = await attendanceService.getClassAttendance(classId);
+        const res = await api.get(`/attendance/classes`);
+        const data = res.data.data;
         setStudents(data.students || []);
       } catch {
         setStudents(
@@ -42,7 +43,7 @@ export default function AttendanceScreen() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await attendanceService.markAttendance({
+      await api.post("/attendance/mark", {
         classId,
         date: new Date().toISOString().split('T')[0],
         records: students.map((s) => ({ studentId: s.id, status: s.status })),
@@ -61,17 +62,17 @@ export default function AttendanceScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Mark Attendance</Text>
-        <Text style={styles.subtitle}>CSE Sem 5 · Section A</Text>
+        <Text style={styles.subtitle}>CSE Sem 5 Â· Section A</Text>
 
         <View style={styles.statsRow}>
-          <Card style={[styles.statCard, { backgroundColor: '#D5E7DE' }]}>
+          <View style={[styles.statCard, { backgroundColor: '#D5E7DE' }]}>
             <Text style={styles.statValue}>{presentCount}</Text>
             <Text style={styles.statLabel}>Present</Text>
-          </Card>
-          <Card style={[styles.statCard, { backgroundColor: '#F8E4E4' }]}>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: '#F8E4E4' }]}>
             <Text style={styles.statValue}>{students.length - presentCount}</Text>
             <Text style={styles.statLabel}>Absent</Text>
-          </Card>
+          </View>
         </View>
 
         {students.map((student) => (
@@ -112,28 +113,31 @@ export default function AttendanceScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  content: { padding: SPACING.lg, gap: 16, paddingTop: 60, paddingBottom: 120 },
-  title: { fontFamily: FONTS.extraBold, fontSize: 32, color: '#1A1A1A' },
-  subtitle: { fontFamily: FONTS.medium, fontSize: 14, color: '#6B6B6B' },
+  content: { padding: 24, gap: 16, paddingTop: 60, paddingBottom: 120 },
+  title: { fontWeight: '800', fontSize: 32, color: '#1A1A1A' },
+  subtitle: { fontWeight: '500', fontSize: 14, color: '#6B6B6B' },
   statsRow: { flexDirection: 'row', gap: 12 },
-  statCard: { flex: 1, padding: SPACING.lg, alignItems: 'center', gap: 4 },
-  statValue: { fontFamily: FONTS.extraBold, fontSize: 32, color: '#1A1A1A' },
-  statLabel: { fontFamily: FONTS.medium, fontSize: 12, color: '#5D605B' },
+  statCard: { flex: 1, padding: 24, alignItems: 'center', gap: 4 },
+  statValue: { fontWeight: '800', fontSize: 32, color: '#1A1A1A' },
+  statLabel: { fontWeight: '500', fontSize: 12, color: '#5D605B' },
   studentRow: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
     backgroundColor: '#FFFFFF', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14,
   },
   studentInfo: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  rollNo: { fontFamily: FONTS.bold, fontSize: 12, color: '#6B6B6B', width: 60 },
-  studentName: { fontFamily: FONTS.medium, fontSize: 15, color: '#1A1A1A' },
+  rollNo: { fontWeight: '700', fontSize: 12, color: '#6B6B6B', width: 60 },
+  studentName: { fontWeight: '500', fontSize: 15, color: '#1A1A1A' },
   toggle: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center' },
   togglePresent: { backgroundColor: '#D5E7DE' },
   toggleAbsent: { backgroundColor: '#F8E4E4' },
-  toggleText: { fontFamily: FONTS.bold, fontSize: 16, color: '#1A1A1A' },
+  toggleText: { fontWeight: '700', fontSize: 16, color: '#1A1A1A' },
   submitBtn: {
-    position: 'absolute', bottom: 30, left: SPACING.lg, right: SPACING.lg,
+    position: 'absolute', bottom: 30, left: 24, right: 24,
     backgroundColor: '#1A1A1A', borderRadius: 28, paddingVertical: 18, alignItems: 'center',
     shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.2, shadowRadius: 20, elevation: 8,
   },
-  submitText: { fontFamily: FONTS.bold, fontSize: 16, color: '#FFFFFF' },
+  submitText: { fontWeight: '700', fontSize: 16, color: '#FFFFFF' },
 });
+
+
+

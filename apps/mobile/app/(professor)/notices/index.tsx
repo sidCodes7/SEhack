@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity, Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import api from '../../services/api';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { Card } from '../../components/common/Card';
+import api from '../../../services/api';
+
+
+
 
 export default function NoticesScreen() {
   const router = useRouter();
@@ -39,16 +39,16 @@ export default function NoticesScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Publish Notice</Text>
 
-        <Card style={styles.formCard}>
+        <View style={styles.formCard}>
           <View style={styles.field}>
             <Text style={styles.label}>Title</Text>
-            <TextInput style={styles.input} placeholder="Notice title…" placeholderTextColor="#A7A9BE" value={title} onChangeText={setTitle} />
+            <TextInput style={styles.input} placeholder="Notice titleâ€¦" placeholderTextColor="#A7A9BE" value={title} onChangeText={setTitle} />
           </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Content</Text>
             <TextInput
-              style={styles.textArea} placeholder="Write your notice…"
+              style={styles.textArea} placeholder="Write your noticeâ€¦"
               placeholderTextColor="#A7A9BE" multiline numberOfLines={6}
               value={content} onChangeText={setContent} textAlignVertical="top"
             />
@@ -77,7 +77,7 @@ export default function NoticesScreen() {
               ))}
             </View>
           </View>
-        </Card>
+        </View>
       </ScrollView>
 
       <TouchableOpacity
@@ -92,22 +92,24 @@ export default function NoticesScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  content: { padding: SPACING.lg, gap: 24, paddingTop: 60, paddingBottom: 120 },
-  title: { fontFamily: FONTS.extraBold, fontSize: 32, color: '#1A1A1A' },
-  formCard: { backgroundColor: '#FFFFFF', padding: SPACING.xl, gap: 24 },
+  content: { padding: 24, gap: 24, paddingTop: 60, paddingBottom: 120 },
+  title: { fontWeight: '800', fontSize: 32, color: '#1A1A1A' },
+  formCard: { backgroundColor: '#FFFFFF', padding: 32, gap: 24 },
   field: { gap: 8 },
-  label: { fontFamily: FONTS.medium, fontSize: 12, color: '#5D605B' },
-  input: { backgroundColor: '#F4F4EF', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontFamily: FONTS.regular, fontSize: 16, color: '#1A1A1A' },
-  textArea: { backgroundColor: '#F4F4EF', borderRadius: 12, padding: 16, fontFamily: FONTS.regular, fontSize: 14, color: '#1A1A1A', minHeight: 140 },
+  label: { fontWeight: '500', fontSize: 12, color: '#5D605B' },
+  input: { backgroundColor: '#F4F4EF', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontWeight: '400', fontSize: 16, color: '#1A1A1A' },
+  textArea: { backgroundColor: '#F4F4EF', borderRadius: 12, padding: 16, fontWeight: '400', fontSize: 14, color: '#1A1A1A', minHeight: 140 },
   pills: { flexDirection: 'row', gap: 8 },
   pill: { paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20, backgroundColor: '#F4F4EF' },
   pillActive: { backgroundColor: '#1A1A1A' },
-  pillText: { fontFamily: FONTS.bold, fontSize: 13, color: '#6B6B6B' },
+  pillText: { fontWeight: '700', fontSize: 13, color: '#6B6B6B' },
   pillTextActive: { color: '#FFFFFF' },
   publishBtn: {
-    position: 'absolute', bottom: 30, left: SPACING.lg, right: SPACING.lg,
+    position: 'absolute', bottom: 30, left: 24, right: 24,
     backgroundColor: '#1A1A1A', borderRadius: 28, paddingVertical: 18, alignItems: 'center',
     shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.2, shadowRadius: 20, elevation: 8,
   },
-  publishText: { fontFamily: FONTS.bold, fontSize: 16, color: '#FFFFFF' },
+  publishText: { fontWeight: '700', fontSize: 16, color: '#FFFFFF' },
 });
+
+

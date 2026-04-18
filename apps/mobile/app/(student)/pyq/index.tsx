@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
-import { pyqService } from '../../services/pyq.service';
-import { FONTS } from '../../constants/typography';
-import { SPACING } from '../../constants/spacing';
-import { Card } from '../../components/common/Card';
+import api from '../../../services/api';
+
+
+
 
 export default function PYQScreen() {
   const [papers, setPapers] = useState<any[]>([]);
@@ -14,10 +14,7 @@ export default function PYQScreen() {
 
   const fetchPapers = async () => {
     try {
-      const data = await pyqService.searchPapers({
-        query: query || undefined,
-        year: selectedYear || undefined,
-      });
+      const data = (await api.get(`/pyq/papers?q=${q}`)).data;
       setPapers(data);
     } catch {
       setPapers([
@@ -38,10 +35,10 @@ export default function PYQScreen() {
 
         {/* Search bar */}
         <View style={styles.searchBar}>
-          <Text style={styles.searchIcon}>🔍</Text>
+          <Text style={styles.searchIcon}>ðŸ”</Text>
           <TextInput
             style={styles.searchInput}
-            placeholder="Search by subject…"
+            placeholder="Search by subjectâ€¦"
             placeholderTextColor="#A7A9BE"
             value={query}
             onChangeText={setQuery}
@@ -70,11 +67,11 @@ export default function PYQScreen() {
 
         {/* Results */}
         {papers.map((paper) => (
-          <Card key={paper.id} style={styles.paperCard}>
+          <View key={paper.id} style={styles.paperCard}>
             <View style={styles.paperTop}>
               <View>
                 <Text style={styles.paperSubject}>{paper.subject}</Text>
-                <Text style={styles.paperMeta}>{paper.code} · Sem {paper.semester}</Text>
+                <Text style={styles.paperMeta}>{paper.code} Â· Sem {paper.semester}</Text>
               </View>
               <View style={styles.yearBadge}>
                 <Text style={styles.yearText}>{paper.year}</Text>
@@ -85,11 +82,11 @@ export default function PYQScreen() {
                 <Text style={styles.typeText}>{paper.type}</Text>
               </View>
               <TouchableOpacity style={styles.downloadBtn}>
-                <Text style={styles.downloadIcon}>⬇</Text>
+                <Text style={styles.downloadIcon}>â¬‡</Text>
                 <Text style={styles.downloadText}>Download</Text>
               </TouchableOpacity>
             </View>
-          </Card>
+          </View>
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -98,26 +95,29 @@ export default function PYQScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#FAF9F5' },
-  content: { padding: SPACING.lg, gap: 20, paddingTop: 60, paddingBottom: 100 },
-  title: { fontFamily: FONTS.extraBold, fontSize: 36, color: '#1A1A1A' },
+  content: { padding: 24, gap: 20, paddingTop: 60, paddingBottom: 100 },
+  title: { fontWeight: '800', fontSize: 36, color: '#1A1A1A' },
   searchBar: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#FFFFFF', borderRadius: 16, paddingHorizontal: 16, paddingVertical: 4 },
   searchIcon: { fontSize: 18 },
-  searchInput: { flex: 1, fontFamily: FONTS.regular, fontSize: 15, color: '#1A1A1A', paddingVertical: 12 },
+  searchInput: { flex: 1, fontWeight: '400', fontSize: 15, color: '#1A1A1A', paddingVertical: 12 },
   filters: { flexDirection: 'row' },
   filterPill: { paddingHorizontal: 18, paddingVertical: 10, borderRadius: 20, backgroundColor: '#F4F4EF', marginRight: 8 },
   filterPillActive: { backgroundColor: '#1A1A1A' },
-  filterText: { fontFamily: FONTS.bold, fontSize: 13, color: '#6B6B6B' },
+  filterText: { fontWeight: '700', fontSize: 13, color: '#6B6B6B' },
   filterTextActive: { color: '#FFFFFF' },
-  paperCard: { backgroundColor: '#FFFFFF', padding: SPACING.lg, gap: 16 },
+  paperCard: { backgroundColor: '#FFFFFF', padding: 24, gap: 16 },
   paperTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  paperSubject: { fontFamily: FONTS.bold, fontSize: 16, color: '#1A1A1A' },
-  paperMeta: { fontFamily: FONTS.medium, fontSize: 12, color: '#6B6B6B', marginTop: 4 },
+  paperSubject: { fontWeight: '700', fontSize: 16, color: '#1A1A1A' },
+  paperMeta: { fontWeight: '500', fontSize: 12, color: '#6B6B6B', marginTop: 4 },
   yearBadge: { backgroundColor: '#EAE7F8', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
-  yearText: { fontFamily: FONTS.bold, fontSize: 12, color: '#555461' },
+  yearText: { fontWeight: '700', fontSize: 12, color: '#555461' },
   paperBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   typeBadge: { backgroundColor: '#F5F0D0', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
-  typeText: { fontFamily: FONTS.bold, fontSize: 11, color: '#8B7D3A' },
+  typeText: { fontWeight: '700', fontSize: 11, color: '#8B7D3A' },
   downloadBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#1A1A1A', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20 },
   downloadIcon: { fontSize: 14, color: '#FFFFFF' },
-  downloadText: { fontFamily: FONTS.bold, fontSize: 12, color: '#FFFFFF' },
+  downloadText: { fontWeight: '700', fontSize: 12, color: '#FFFFFF' },
 });
+
+
+
