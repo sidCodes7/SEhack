@@ -271,34 +271,34 @@ git add -A && git commit -m "feat: expo scaffold + design system + api layer + c
 
 ### Auth Screens
 
-- [ ] `app/_layout.tsx` — Root layout: check auth state, redirect to login or appropriate dashboard
+- [x] `app/_layout.tsx` — Root layout: check auth state, redirect to login or appropriate dashboard
   - 📐 Wireframe: `docs/wireframes/splash_screen/` — match the splash/loading state
-- [ ] `app/(auth)/login.tsx` — Login form (email + password). On success → store token in `expo-secure-store` → navigate to role-based dashboard
+- [x] `app/(auth)/login.tsx` — Login form (email + password). On success → store token in `expo-secure-store` → navigate to role-based dashboard
   - 📐 Wireframe: `docs/wireframes/login_screen/` — match layout, input styling, button colors from `screen.png`; read `code.html` for form validation behavior
-- [ ] `app/(auth)/role-select.tsx` — Role selection screen (if needed for demo: student/professor toggle)
+- [x] `app/(auth)/role-select.tsx` — Role selection screen (if needed for demo: student/professor toggle)
   - 📐 Wireframe: `docs/wireframes/role_selector/` — match card layout and selection interaction from `screen.png`
-- [ ] `services/auth.service.ts` — `login()`, `register()`, `logout()`, `getMe()`, `updateLanguage()`
+- [x] `services/auth.service.ts` — `login()`, `register()`, `logout()`, `getMe()`, `updateLanguage()`
 
 ### Student Dashboard
 
-- [ ] `app/(student)/dashboard.tsx` — Student main screen with widget grid
+- [x] `app/(student)/dashboard.tsx` — Student main screen with widget grid
   - 📐 Wireframe: `docs/wireframes/student_dashboard/` — match the full widget grid layout, card sizes, spacing, and color scheme from `screen.png`
-- [ ] `components/dashboard/NextClassWidget.tsx` — Shows next class location + time
-- [ ] `components/dashboard/KarmaScoreWidget.tsx` — Gold chip displaying karma score
+- [x] `components/dashboard/NextClassWidget.tsx` — Shows next class location + time
+- [x] `components/dashboard/KarmaScoreWidget.tsx` — Gold chip displaying karma score
   - 📐 Wireframe: `docs/wireframes/karma_score_leaderboard/` — match the karma chip style from `screen.png`
-- [ ] `components/dashboard/FinanceDueWidget.tsx` — Badge showing total pending dues amount
-- [ ] `components/dashboard/QuickActionsWidget.tsx` — Quick action buttons (Book Room, Report Issue, PYQ, Pay Dues)
-- [ ] `services/dashboard.service.ts` — `getStudentDashboard()`, `getProfessorDashboard()`, `getAdminDashboard()`
+- [x] `components/dashboard/FinanceDueWidget.tsx` — Badge showing total pending dues amount
+- [x] `components/dashboard/QuickActionsWidget.tsx` — Quick action buttons (Book Room, Report Issue, PYQ, Pay Dues)
+- [x] `services/dashboard.service.ts` — `getStudentDashboard()`, `getProfessorDashboard()`, `getAdminDashboard()`
 
 ### Professor Dashboard
 
-- [ ] `app/(professor)/dashboard.tsx` — Professor main screen with:
+- [x] `app/(professor)/dashboard.tsx` — Professor main screen with:
   - 📐 Wireframe: `docs/wireframes/professor_dashboard/` — match the full layout from `screen.png`
-  - Attendance trends widget
-  - Pending leave approvals count
-  - Pending student follow-ups
-  - Recent notices published
-  - Quick action buttons (Mark Attendance, Publish Notice)
+  - [x] Attendance trends widget
+  - [x] Pending leave approvals count
+  - [x] Pending student follow-ups
+  - [x] Recent notices published
+  - [x] Quick action buttons (Mark Attendance, Publish Notice)
 
 ### WebSocket Integration on Dashboards
 
