@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusReport - Report an Issue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#45554f",
+                        "on-secondary": "#ebfdf4",
+                        "outline": "#797b76",
+                        "on-primary-container": "#525151",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "tertiary-container": "#e9e6f7",
+                        "surface-bright": "#faf9f5",
+                        "on-tertiary": "#fbf7ff",
+                        "secondary": "#52635c",
+                        "tertiary": "#5f5e6c",
+                        "inverse-primary": "#ffffff",
+                        "on-primary": "#fbf8f8",
+                        "surface": "#faf9f5",
+                        "secondary-fixed": "#d5e7de",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "on-surface-variant": "#5d605b",
+                        "error-container": "#fa746f",
+                        "tertiary-fixed": "#e9e6f7",
+                        "on-primary-fixed": "#403f3f",
+                        "secondary-dim": "#465750",
+                        "on-surface": "#30332f",
+                        "background": "#faf9f5",
+                        "inverse-surface": "#0d0f0d",
+                        "secondary-container": "#d5e7de",
+                        "on-background": "#30332f",
+                        "on-tertiary-fixed": "#42424f",
+                        "on-tertiary-container": "#555461",
+                        "outline-variant": "#b0b3ad",
+                        "inverse-on-surface": "#9d9d9a",
+                        "error": "#a83836",
+                        "on-error-container": "#6e0a12",
+                        "on-error": "#fff7f6",
+                        "surface-tint": "#605f5f",
+                        "surface-container-low": "#f4f4ef",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "surface-container": "#eeeee9",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "primary-container": "#e5e2e1",
+                        "surface-variant": "#e1e3dd",
+                        "error-dim": "#67040d",
+                        "surface-container-high": "#e8e9e3",
+                        "primary": "#605f5f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#33433c",
+                        "primary-fixed": "#e5e2e1",
+                        "surface-dim": "#d9dbd4",
+                        "primary-dim": "#545353",
+                        "surface-container-highest": "#e1e3dd",
+                        "tertiary-dim": "#53525f",
+                        "gold": "#D4A843"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex justify-center selection:bg-primary-container">
+<div class="w-full max-w-md bg-surface min-h-screen flex flex-col relative pb-32">
+<!-- Header: Back Arrow & Large Text -->
+<header class="w-full flex items-center px-8 py-6 sticky top-0 z-40 bg-surface/90 backdrop-blur-xl">
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface -ml-4">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-[2rem] font-bold leading-[1.2] ml-4 text-on-surface tracking-tight">Report Issue</h1>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-8 flex flex-col gap-8 mt-4">
+<!-- Photo Upload Area -->
+<section class="w-full">
+<div class="w-full bg-surface-container-lowest rounded-xl p-6 flex flex-col items-center justify-center min-h-[160px] relative border-2 border-dashed border-outline-variant/30 hover:border-outline-variant/60 transition-colors cursor-pointer group">
+<div class="absolute top-4 right-4 bg-surface-container text-on-surface-variant text-[10px] font-medium px-3 py-1 rounded-full uppercase tracking-wider">
+                        Optional
+                    </div>
+<div class="w-16 h-16 rounded-full bg-surface flex items-center justify-center mb-4 text-on-surface-variant group-hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(0,0,0,0.03)]">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+</div>
+<p class="font-semibold text-on-surface">Tap to add photo</p>
+<p class="text-sm text-on-surface-variant mt-1">Show us what's wrong</p>
+</div>
+</section>
+<!-- Category Chips -->
+<section class="w-full">
+<h2 class="text-sm font-bold text-on-surface-variant mb-4 tracking-wider uppercase">Category</h2>
+<div class="flex flex-wrap gap-3">
+<button class="px-5 py-3 rounded-full bg-surface-container-high text-on-surface font-medium text-sm hover:bg-surface-variant transition-colors">IT</button>
+<button class="px-5 py-3 rounded-full bg-[#1A1A1A] text-white font-medium text-sm shadow-[0_8px_20px_rgba(26,26,26,0.2)]">Facility</button>
+<button class="px-5 py-3 rounded-full bg-surface-container-high text-on-surface font-medium text-sm hover:bg-surface-variant transition-colors">Academic</button>
+<button class="px-5 py-3 rounded-full bg-surface-container-high text-on-surface font-medium text-sm hover:bg-surface-variant transition-colors">Other</button>
+</div>
+</section>
+<!-- Form Card (Lavender) -->
+<section class="w-full">
+<div class="bg-tertiary-container rounded-xl p-6 flex flex-col gap-6">
+<!-- Title Input -->
+<div class="relative">
+<label class="block text-xs font-semibold text-on-tertiary-container mb-2 ml-1">Title</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-4 text-on-surface font-medium focus:ring-0 shadow-sm placeholder:text-on-surface-variant/50" placeholder="e.g., Broken AC in Room 302" type="text"/>
+</div>
+<!-- Building Dropdown -->
+<div class="relative">
+<label class="block text-xs font-semibold text-on-tertiary-container mb-2 ml-1">Building</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-4 text-on-surface font-medium appearance-none focus:ring-0 shadow-sm">
+<option>Select a building</option>
+<option>Science Wing</option>
+<option>Library</option>
+<option>Main Hall</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Description Textarea -->
+<div class="relative">
+<label class="block text-xs font-semibold text-on-tertiary-container mb-2 ml-1">Description</label>
+<textarea class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-4 text-on-surface font-medium focus:ring-0 shadow-sm placeholder:text-on-surface-variant/50 resize-none" placeholder="Provide more details..." rows="4"></textarea>
+</div>
+</div>
+</section>
+<!-- Priority Indicator -->
+<section class="w-full flex items-center mt-2">
+<div class="bg-[#F5F0D0] text-[#8C6D1F] px-4 py-2 rounded-full flex items-center gap-2 text-sm font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">error</span>
+                    Auto-priority: Medium
+                </div>
+</section>
+</main>
+<!-- Fixed Bottom Action -->
+<div class="fixed bottom-0 w-full max-w-md p-8 bg-gradient-to-t from-surface via-surface to-transparent z-50 flex justify-end pb-10">
+<button class="w-16 h-16 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:scale-105 transition-transform shadow-[0_15px_40px_rgba(26,26,26,0.3)]">
+<span class="material-symbols-outlined text-white text-3xl">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

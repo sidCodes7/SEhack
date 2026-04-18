@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether - Approvals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "on-tertiary-container": "#555461",
+                        "error-dim": "#67040d",
+                        "background": "#faf9f5",
+                        "outline-variant": "#b0b3ad",
+                        "on-error": "#fff7f6",
+                        "primary": "#605f5f",
+                        "surface-container-high": "#e8e9e3",
+                        "tertiary-dim": "#53525f",
+                        "surface-tint": "#605f5f",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "outline": "#797b76",
+                        "tertiary-container": "#e9e6f7",
+                        "on-error-container": "#6e0a12",
+                        "primary-container": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "surface-variant": "#e1e3dd",
+                        "surface-bright": "#faf9f5",
+                        "on-secondary-container": "#45554f",
+                        "on-primary-fixed": "#403f3f",
+                        "surface-container-highest": "#e1e3dd",
+                        "on-surface-variant": "#5d605b",
+                        "error": "#a83836",
+                        "secondary-dim": "#465750",
+                        "primary-dim": "#545353",
+                        "inverse-primary": "#ffffff",
+                        "on-tertiary-fixed": "#42424f",
+                        "surface-dim": "#d9dbd4",
+                        "error-container": "#fa746f",
+                        "on-primary": "#fbf8f8",
+                        "tertiary": "#5f5e6c",
+                        "tertiary-fixed": "#e9e6f7",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#d5e7de",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "on-primary-container": "#525151",
+                        "surface-container": "#eeeee9",
+                        "inverse-on-surface": "#9d9d9a",
+                        "on-surface": "#30332f",
+                        "on-secondary": "#ebfdf4",
+                        "inverse-surface": "#0d0f0d",
+                        "surface-container-low": "#f4f4ef",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-secondary-fixed": "#33433c",
+                        "primary-fixed": "#e5e2e1",
+                        "secondary": "#52635c",
+                        "on-background": "#30332f",
+                        "on-tertiary": "#fbf7ff",
+                        "secondary-fixed": "#d5e7de",
+                        "surface": "#faf9f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex justify-between items-end w-full px-8 pt-12 pb-6 max-w-7xl mx-auto bg-[#F7F6F2]/80 dark:bg-zinc-950/80 backdrop-blur-2xl text-[#1A1A1A] dark:text-zinc-100 font-['Plus_Jakarta_Sans'] text-4xl font-extrabold tracking-tight leading-[1.1] fixed top-0 z-40 transition-opacity hover:opacity-70 active:scale-98">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-4xl" data-icon="menu">menu</span>
+<span class="text-[#1A1A1A] dark:text-zinc-50 font-extrabold text-2xl tracking-tight">Workspace</span>
+</div>
+<nav class="flex items-center gap-8">
+<a class="text-[#6B6B6B] dark:text-zinc-400 font-medium text-lg" href="#">Dashboard</a>
+<a class="text-[#6B6B6B] dark:text-zinc-400 font-medium text-lg" href="#">Attendance</a>
+<a class="text-[#1A1A1A] dark:text-zinc-50 font-bold text-lg" href="#">Approvals</a>
+<a class="text-[#6B6B6B] dark:text-zinc-400 font-medium text-lg" href="#">Notices</a>
+<div class="w-12 h-12 rounded-full overflow-hidden ml-4">
+<img alt="Faculty profile photo" class="w-full h-full object-cover" data-alt="professional headshot of a smiling young woman with dark hair against a soft grey background, bright natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-EZAb45OfZwPTfWPDUXjnZoza0MIE5YTQZSX6cHnyRbejCz-4IsDMx9C2JHaL1IQAPxhRlP9O84wlYni-60V93xRjOJz1sTOdhb5kdtWubyKfM5tdP2yytVu01F7FpGulldxQ4WoP5Ry1DL4Pz24G5emwh6OgcWK3i64oUN_DFwB7W-chjsTPL_QXjKhNB8X3EtV9KS1lBMJobL20YFFwq3j8mKLI6_agssAUNbzfQAW6NGL19kk0QJdvYPC4NSQ5qovUc2ausW7m"/>
+</div>
+</nav>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-6 pt-16 md:pt-48 pb-32">
+<!-- Header Section -->
+<div class="flex items-center justify-between mb-16 md:mb-24">
+<h1 class="text-5xl md:text-6xl font-extrabold text-on-surface leading-[1.1] tracking-tight">Approvals</h1>
+<div class="bg-surface-container-high px-4 py-2 rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-sm font-semibold text-on-surface-variant">4 pending</span>
+</div>
+</div>
+<!-- Bento Grid / Asymmetric Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+<!-- Request Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl p-8 flex flex-col gap-8 relative overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<!-- Top Section: Avatar & Info -->
+<div class="flex items-start gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden shrink-0">
+<img alt="Priyank Mehta" class="w-full h-full object-cover" data-alt="portrait of a young indian man with short hair wearing a simple t-shirt, warm natural outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa0yhoEn0beS1wngCjgkXLnRUCZ569cWPZR_p-Nwa_-kZ4EvQnujkTUDX35mRHgbNfvMTpVj1afsh7u9Axxo541XGDxaEvPciKB9_MhYikFntqZoR13KMd0_Y-Krlf9re-9YVtQuYt86pFZxXMOT7b-g7XcUmKSyukoaAjII10-Nzfy0lWLbQRoSZGeJwDwMERq-y_rt9VPL5jq-7kX041R5-tLrzd2B1q_rMzcE_aJAmoweD_yQZvIymyJ9_2NfEFgXd3qmGERbnC"/>
+</div>
+<div class="flex-1 pt-1">
+<h2 class="text-xl font-bold text-on-surface mb-1">Priyank Mehta</h2>
+<p class="text-on-surface-variant text-sm font-medium">B.Tech CSE · Sem 5</p>
+</div>
+<!-- Chip -->
+<div class="bg-tertiary-container px-4 py-1.5 rounded-full shrink-0">
+<span class="text-xs font-semibold text-on-tertiary-container">Room Booking</span>
+</div>
+</div>
+<!-- Detail Section -->
+<div class="bg-surface rounded-lg p-6 flex flex-col gap-2">
+<p class="text-on-surface-variant text-base font-medium">Room 302 · Apr 19, 10 AM</p>
+</div>
+<!-- Actions -->
+<div class="flex gap-4 mt-auto pt-4">
+<button class="flex-1 py-4 px-6 rounded-full border border-outline-variant/20 text-on-surface font-semibold text-base hover:bg-surface-container transition-colors">
+                        Reject
+                    </button>
+<button class="flex-1 py-4 px-6 rounded-full bg-[#1A1A1A] text-white font-semibold text-base hover:scale-[1.02] transition-transform">
+                        Approve
+                    </button>
+</div>
+</article>
+<!-- Request Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl p-8 flex flex-col gap-8 relative overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<!-- Top Section: Avatar & Info -->
+<div class="flex items-start gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden shrink-0">
+<img alt="Ananya Shah" class="w-full h-full object-cover" data-alt="portrait of a young woman looking directly at the camera, soft studio lighting, muted background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMJd-KK2sR2KyQK-1odunTCu4OlySjuBP8NiumpZIjikkouYvqu7zltFSyAEq8H8XyHryNkW_x5hBoZmzwnC_j4zaCCmTCxBSvzJIaskzpvISiNy-58EwyQontMUambaaVK3I2sKhT_agVRA33SvUtldyClbrfjAv9gBFgI_fd4yHq3LmK3-SgJ6qTr73XdNFi873A3xE-AQZFS2gKZ-y6jSjPc_6LomOIg7QIdhd6ZCfSI5Vn0v5dxRLI0VFIFACLulHoLZJR7tKU"/>
+</div>
+<div class="flex-1 pt-1">
+<h2 class="text-xl font-bold text-on-surface mb-1">Ananya Shah</h2>
+<p class="text-on-surface-variant text-sm font-medium">B.Tech CSE · Sem 3</p>
+</div>
+<!-- Chip (Yellow/Gold) -->
+<div class="bg-[#F5F0D0] px-4 py-1.5 rounded-full shrink-0">
+<span class="text-xs font-semibold text-[#D4A843]">Leave Request</span>
+</div>
+</div>
+<!-- Detail Section -->
+<div class="bg-surface rounded-lg p-6 flex flex-col gap-2">
+<p class="text-on-surface-variant text-base font-medium">Apr 20–21 · Medical</p>
+</div>
+<!-- Expanded Note Field (Simulating UI state for aesthetic layout) -->
+<div class="w-full relative">
+<label class="absolute text-xs font-medium text-on-surface-variant -top-2 left-0 pointer-events-none">Add a note (optional)</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/20 focus:ring-0 focus:border-[#1A1A1A] px-0 py-2 text-on-surface placeholder-on-surface-variant/50 transition-colors" placeholder="Type reason for rejection..." type="text"/>
+</div>
+<!-- Actions -->
+<div class="flex gap-4 mt-auto pt-4">
+<button class="flex-1 py-4 px-6 rounded-full border border-outline-variant/20 text-on-surface font-semibold text-base hover:bg-surface-container transition-colors">
+                        Reject
+                    </button>
+<button class="flex-1 py-4 px-6 rounded-full bg-[#1A1A1A] text-white font-semibold text-base hover:scale-[1.02] transition-transform">
+                        Approve
+                    </button>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pt-4 pb-10 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-2xl rounded-t-[32px] shadow-[0_-10px_40px_rgba(26,26,26,0.05)] font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wide uppercase transition-transform">
+<a class="flex flex-col items-center justify-center text-[#6B6B6B] dark:text-zinc-500 w-14 h-14 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="grid_view">grid_view</span>
+            Dashboard
+        </a>
+<a class="flex flex-col items-center justify-center text-[#6B6B6B] dark:text-zinc-500 w-14 h-14 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="how_to_reg">how_to_reg</span>
+            Attendance
+        </a>
+<a class="flex flex-col items-center justify-center bg-[#1A1A1A] dark:bg-zinc-100 text-white dark:text-zinc-950 rounded-full w-14 h-14 transition-all duration-300 hover:scale-110" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="verified">verified</span>
+            Approvals
+        </a>
+<a class="flex flex-col items-center justify-center text-[#6B6B6B] dark:text-zinc-500 w-14 h-14 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="campaign">campaign</span>
+            Notices
+        </a>
+</nav>
+</body></html>

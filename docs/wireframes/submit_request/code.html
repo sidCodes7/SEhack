@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submit Request</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#555461",
+                        "secondary": "#52635c",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-tertiary": "#fbf7ff",
+                        "tertiary": "#5f5e6c",
+                        "on-primary": "#fbf8f8",
+                        "error": "#a83836",
+                        "inverse-primary": "#ffffff",
+                        "surface-container-high": "#e8e9e3",
+                        "error-dim": "#67040d",
+                        "surface-container": "#eeeee9",
+                        "surface-variant": "#e1e3dd",
+                        "surface": "#faf9f5",
+                        "tertiary-container": "#e9e6f7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#30332f",
+                        "surface-dim": "#d9dbd4",
+                        "surface-bright": "#faf9f5",
+                        "on-error": "#fff7f6",
+                        "inverse-on-surface": "#9d9d9a",
+                        "surface-container-low": "#f4f4ef",
+                        "on-primary-container": "#525151",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "primary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "secondary-container": "#d5e7de",
+                        "surface-tint": "#605f5f",
+                        "outline-variant": "#b0b3ad",
+                        "on-secondary-container": "#45554f",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "on-secondary": "#ebfdf4",
+                        "outline": "#797b76",
+                        "tertiary-dim": "#53525f",
+                        "background": "#faf9f5",
+                        "on-secondary-fixed": "#33433c",
+                        "on-surface": "#30332f",
+                        "secondary-dim": "#465750",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "inverse-surface": "#0d0f0d",
+                        "surface-container-highest": "#e1e3dd",
+                        "error-container": "#fa746f",
+                        "on-surface-variant": "#5d605b",
+                        "on-error-container": "#6e0a12",
+                        "primary": "#605f5f",
+                        "on-tertiary-fixed": "#42424f",
+                        "tertiary-fixed": "#e9e6f7",
+                        "secondary-fixed": "#d5e7de",
+                        "primary-dim": "#545353",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "on-primary-fixed": "#403f3f",
+                        "primary-container": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F7F6F2; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased min-h-screen pb-24 md:pb-0">
+<!-- Top Navigation (Mobile/Web) -->
+<header class="w-full pt-8 pb-4 flex items-center justify-between px-6 max-w-xl mx-auto bg-[#F7F6F2] text-[#1A1A1A]">
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="font-headline font-extrabold text-[2.0rem] tracking-tight leading-[1.1] text-center flex-1">New Request</h1>
+<div class="w-12 h-12"></div> <!-- Spacer for centering -->
+</header>
+<main class="max-w-xl mx-auto px-6 space-y-8">
+<!-- Request Type Selector -->
+<section class="space-y-4">
+<h2 class="text-sm font-semibold tracking-wide text-on-surface-variant uppercase">Request Type</h2>
+<div class="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-6 py-3 rounded-full text-sm font-medium whitespace-nowrap bg-[#1A1A1A] text-white transition-all">Room Booking</button>
+<button class="px-6 py-3 rounded-full text-sm font-medium whitespace-nowrap bg-[#F5F0D0] text-[#1A1A1A] hover:bg-opacity-80 transition-all">Leave</button>
+<button class="px-6 py-3 rounded-full text-sm font-medium whitespace-nowrap bg-[#F8E4E4] text-[#1A1A1A] hover:bg-opacity-80 transition-all">Certificate</button>
+</div>
+</section>
+<!-- Form Section -->
+<section class="bg-surface-container-lowest rounded-[32px] p-6 space-y-6">
+<!-- Room Dropdown -->
+<div class="space-y-2 relative">
+<label class="text-xs font-medium text-on-surface-variant px-1 block">Room</label>
+<div class="relative">
+<select class="w-full bg-surface-container border-none rounded-xl py-4 px-4 text-on-surface text-base font-medium appearance-none focus:ring-0">
+<option>Conference Room A</option>
+<option>Meeting Room B</option>
+<option>Auditorium</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Date Picker -->
+<div class="space-y-2 relative">
+<label class="text-xs font-medium text-on-surface-variant px-1 block">Date</label>
+<div class="relative flex items-center bg-surface-container rounded-xl px-4 py-4">
+<span class="material-symbols-outlined text-on-surface-variant mr-3">calendar_today</span>
+<input class="bg-transparent border-none p-0 text-on-surface text-base font-medium w-full focus:ring-0 outline-none" readonly="" type="text" value="Oct 24, 2023"/>
+</div>
+</div>
+<!-- Time Inputs -->
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-xs font-medium text-on-surface-variant px-1 block">From</label>
+<input class="w-full bg-surface-container border-none rounded-xl py-4 px-4 text-on-surface text-base font-medium focus:ring-0" type="time" value="09:00"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-medium text-on-surface-variant px-1 block">To</label>
+<input class="w-full bg-surface-container border-none rounded-xl py-4 px-4 text-on-surface text-base font-medium focus:ring-0" type="time" value="11:00"/>
+</div>
+</div>
+<!-- Purpose Textarea -->
+<div class="space-y-2 relative pt-2">
+<label class="text-xs font-medium text-on-surface-variant px-1 block">Purpose</label>
+<textarea class="w-full bg-transparent border-b border-outline-variant/20 focus:border-on-surface rounded-none px-1 py-2 text-on-surface text-base font-medium focus:ring-0 resize-none placeholder-on-surface-variant/50" placeholder="Briefly describe the reason for booking..." rows="3"></textarea>
+</div>
+</section>
+<!-- Approval Chain Preview -->
+<section class="space-y-4 pt-4">
+<h2 class="text-sm font-semibold tracking-wide text-on-surface-variant uppercase">Approval Chain</h2>
+<div class="flex items-center space-x-3 text-on-surface-variant/60">
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="text-[0.65rem] font-medium uppercase tracking-wider">HoD</span>
+</div>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="text-[0.65rem] font-medium uppercase tracking-wider">Stucco</span>
+</div>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="text-[0.65rem] font-medium uppercase tracking-wider">Dean</span>
+</div>
+</div>
+</section>
+<!-- Submit Action -->
+<div class="flex justify-end pt-8 pb-12">
+<button class="w-16 h-16 bg-[#1A1A1A] rounded-full flex items-center justify-center hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-white text-3xl">arrow_forward</span>
+</button>
+</div>
+</main>
+</body></html>

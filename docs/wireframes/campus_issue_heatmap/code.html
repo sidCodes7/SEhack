@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campus Issue Heatmap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#45554f",
+                        "on-secondary": "#ebfdf4",
+                        "outline": "#797b76",
+                        "on-primary-container": "#525151",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "tertiary-container": "#e9e6f7",
+                        "surface-bright": "#faf9f5",
+                        "on-tertiary": "#fbf7ff",
+                        "secondary": "#52635c",
+                        "tertiary": "#5f5e6c",
+                        "inverse-primary": "#ffffff",
+                        "on-primary": "#fbf8f8",
+                        "surface": "#faf9f5",
+                        "secondary-fixed": "#d5e7de",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "on-surface-variant": "#5d605b",
+                        "error-container": "#fa746f",
+                        "tertiary-fixed": "#e9e6f7",
+                        "on-primary-fixed": "#403f3f",
+                        "secondary-dim": "#465750",
+                        "on-surface": "#30332f",
+                        "background": "#faf9f5",
+                        "inverse-surface": "#0d0f0d",
+                        "secondary-container": "#d5e7de",
+                        "on-background": "#30332f",
+                        "on-tertiary-fixed": "#42424f",
+                        "on-tertiary-container": "#555461",
+                        "outline-variant": "#b0b3ad",
+                        "inverse-on-surface": "#9d9d9a",
+                        "error": "#a83836",
+                        "on-error-container": "#6e0a12",
+                        "on-error": "#fff7f6",
+                        "surface-tint": "#605f5f",
+                        "surface-container-low": "#f4f4ef",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "surface-container": "#eeeee9",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "primary-container": "#e5e2e1",
+                        "surface-variant": "#e1e3dd",
+                        "error-dim": "#67040d",
+                        "surface-container-high": "#e8e9e3",
+                        "primary": "#605f5f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#33433c",
+                        "primary-fixed": "#e5e2e1",
+                        "surface-dim": "#d9dbd4",
+                        "primary-dim": "#545353",
+                        "surface-container-highest": "#e1e3dd",
+                        "tertiary-dim": "#53525f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .text-display-lg { font-size: 3.5rem; font-weight: 800; line-height: 1.1; }
+        .text-headline-lg { font-size: 2.0rem; font-weight: 700; line-height: 1.2; }
+        .text-title-md { font-size: 1.125rem; font-weight: 600; line-height: 1.4; }
+        .text-body-lg { font-size: 1.0rem; font-weight: 400; line-height: 1.6; }
+        .text-label-md { font-size: 0.75rem; font-weight: 500; line-height: 1.2; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-40 bg-surface-container-low/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 bg-stone-100/80 dark:bg-neutral-900/80">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-2xl" data-icon="school">school</span>
+<span class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-2xl font-extrabold text-neutral-900 dark:text-neutral-50">CampusReport</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="Close-up portrait of a young professional in a softly lit, neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARcrtfajZ3_JM_Oy9d6_J3MWuf_cnDuuGjTO8MGACzHHJ0SOfHAPnXw-SVsuWoSHPHGSx-CmsEqEHQtC1aEl1Bxl5PXcQC8ZIxtB8eA0HdnEgMz_6v4N80HBpNvYn7MOIjJJ1p1vH-8qyUN2Mu9ip-8_efV0Y8YssHqMJuikvm818BIQYeJ3cwzAm6QTgYbf5QE7AG5rNFd_XtUSrNAqk3meL_NkWtxGk-ktgZxFaUX40S-Bl26d3bAZZJAn4OGVUwRHYLWnbsmWI2"/>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-8 pt-12 space-y-12">
+<!-- Header Section -->
+<section class="flex justify-between items-end">
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-label-md text-on-surface-variant uppercase tracking-widest">Live</span>
+</div>
+<h1 class="text-display-lg text-on-surface">Issues</h1>
+</div>
+<button class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-on-surface" data-icon="tune">tune</span>
+</button>
+</section>
+<!-- Map Card -->
+<section class="bg-surface-container-lowest rounded-xl p-6 relative overflow-hidden">
+<div class="w-full h-[400px] rounded-lg bg-surface-container overflow-hidden relative">
+<img alt="Campus Map" class="w-full h-full object-cover opacity-80 mix-blend-luminosity" data-alt="Top-down abstract architectural illustration of a modern university campus with minimal gray buildings and pathways" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMGoJEOTjxVp5ipOYOqkEY6CdXvUuomAPdhHvwB2aNS4dFMABfqE0QPIkwxmdZsn_5U0HbHKvnI7Q5NpwTbeEIjJAHVRd4upmYsAlhqT95NBB5DuirdaRNCB4aeYfswybG38AdJXPr-uu3RpxITer-SdqHfkP-WawmOyZE2-p2oP-78kmDgOKKyqYr2wZSoaN7-JMeLTzThowPHznw5-nDwjT4zm6XPQcTAVQ3TP1bMLdU_sXt8riuproICwP2p1QWPiwXooFQcvrB"/>
+<!-- Map Overlays -->
+<div class="absolute top-[30%] left-[20%] bg-surface/90 px-3 py-1 rounded-full text-label-md shadow-sm border border-outline-variant/10">Building A</div>
+<div class="absolute top-[50%] left-[60%] bg-surface/90 px-3 py-1 rounded-full text-label-md shadow-sm border border-outline-variant/10">Building B</div>
+<div class="absolute top-[70%] left-[30%] bg-surface/90 px-3 py-1 rounded-full text-label-md shadow-sm border border-outline-variant/10 flex items-center gap-2">
+                    Building C
+                    <div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<div class="w-2 h-2 rounded-full bg-error-container"></div>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="mt-6 flex gap-6 text-label-md text-on-surface-variant">
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-error"></div>Critical</div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-error-container"></div>High</div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-secondary"></div>Normal</div>
+</div>
+</section>
+<!-- Stats Cards -->
+<section class="grid grid-cols-2 gap-6">
+<div class="bg-[#F8E4E4] rounded-lg p-6 space-y-2">
+<span class="text-display-lg text-on-surface block">12</span>
+<span class="text-title-md text-on-surface-variant block">Open Issues</span>
+</div>
+<div class="bg-[#F5F0D0] rounded-lg p-6 space-y-2">
+<span class="text-display-lg text-on-surface block">3</span>
+<span class="text-title-md text-on-surface-variant block">Critical</span>
+</div>
+</section>
+<!-- Issue List -->
+<section class="space-y-6">
+<h2 class="text-headline-lg text-on-surface">Recent Issues</h2>
+<div class="space-y-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg p-6 flex items-start gap-4 border-l-4 border-error relative overflow-hidden">
+<div class="flex-1 space-y-1">
+<div class="flex justify-between items-start">
+<h3 class="text-title-md text-on-surface">Projector broken</h3>
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-label-md text-error font-bold flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-error"></div> Open
+                            </span>
+</div>
+<p class="text-body-lg text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span> Lab 302 Building C
+                        </p>
+<p class="text-label-md text-on-surface-variant pt-2">2 hrs ago</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg p-6 flex items-start gap-4 border-l-4 border-error-container relative overflow-hidden">
+<div class="flex-1 space-y-1">
+<div class="flex justify-between items-start">
+<h3 class="text-title-md text-on-surface">AC not working</h3>
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-label-md text-on-surface font-bold flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-[#D4A843]"></div> In Progress
+                            </span>
+</div>
+<p class="text-body-lg text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span> Seminar Hall Building B
+                        </p>
+<p class="text-label-md text-on-surface-variant pt-2">5 hrs ago</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-[32px] bg-white/90 dark:bg-neutral-800/90 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.05)] fixed bottom-0 left-0 w-full flex justify-around items-center px-10 pb-8 pt-4 md:hidden">
+<a class="text-neutral-400 dark:text-neutral-500 p-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors flex flex-col items-center" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="add_circle">add_circle</span>
+</a>
+<a class="bg-neutral-900 dark:bg-neutral-50 text-white dark:text-neutral-900 rounded-full p-4 scale-110 flex flex-col items-center" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="map">map</span>
+</a>
+<a class="text-neutral-400 dark:text-neutral-500 p-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors flex flex-col items-center" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="account_circle">account_circle</span>
+</a>
+</nav>
+</body></html>
