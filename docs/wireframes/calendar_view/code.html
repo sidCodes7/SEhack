@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether Calendar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#605f5f",
+                        "error": "#a83836",
+                        "surface-container-low": "#f4f4ef",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "on-background": "#30332f",
+                        "on-primary-container": "#525151",
+                        "error-dim": "#67040d",
+                        "on-surface-variant": "#5d605b",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "secondary-container": "#d5e7de",
+                        "secondary-dim": "#465750",
+                        "tertiary-fixed": "#e9e6f7",
+                        "tertiary-dim": "#53525f",
+                        "on-primary": "#fbf8f8",
+                        "inverse-surface": "#0d0f0d",
+                        "on-surface": "#30332f",
+                        "on-error-container": "#6e0a12",
+                        "primary": "#605f5f",
+                        "surface-bright": "#faf9f5",
+                        "on-primary-fixed": "#403f3f",
+                        "inverse-primary": "#ffffff",
+                        "surface-container-high": "#e8e9e3",
+                        "on-error": "#fff7f6",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "surface": "#faf9f5",
+                        "surface-container-highest": "#e1e3dd",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "secondary-fixed": "#d5e7de",
+                        "tertiary-container": "#e9e6f7",
+                        "error-container": "#fa746f",
+                        "on-secondary": "#ebfdf4",
+                        "on-secondary-fixed": "#33433c",
+                        "surface-container": "#eeeee9",
+                        "on-secondary-container": "#45554f",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "surface-variant": "#e1e3dd",
+                        "primary-container": "#e5e2e1",
+                        "background": "#faf9f5",
+                        "on-tertiary-fixed": "#42424f",
+                        "tertiary": "#5f5e6c",
+                        "primary-dim": "#545353",
+                        "outline": "#797b76",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "surface-dim": "#d9dbd4",
+                        "on-tertiary-container": "#555461",
+                        "outline-variant": "#b0b3ad",
+                        "on-tertiary": "#fbf7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#9d9d9a",
+                        "secondary": "#52635c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen font-body pb-32 md:pb-0">
+<!-- TopAppBar from JSON -->
+<header class="docked full-width top-0 flex justify-between items-end w-full px-8 pt-12 pb-6 max-w-screen-2xl mx-auto bg-[#F7F6F2] dark:bg-[#1A1A1A]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-4xl text-[#1A1A1A] dark:text-[#F7F6F2]" data-icon="calendar_month">calendar_month</span>
+<h1 class="font-headline text-4xl font-extrabold tracking-tight leading-[1.1] text-[#1A1A1A] dark:text-[#F7F6F2]">Schedule</h1>
+</div>
+<span class="material-symbols-outlined text-3xl text-[#1A1A1A] dark:text-[#F7F6F2] hover:opacity-80 transition-opacity scale-105 duration-300 ease-out cursor-pointer" data-icon="search">search</span>
+</header>
+<main class="max-w-screen-2xl mx-auto px-6 lg:px-12 pb-24 md:flex md:gap-12 lg:gap-24">
+<!-- Left Column: Calendar -->
+<section class="md:w-1/2 lg:w-3/5 md:pt-12">
+<div class="flex justify-between items-center mb-8 px-2">
+<span class="material-symbols-outlined text-3xl cursor-pointer text-on-surface-variant hover:text-on-surface transition-colors" data-icon="chevron_left">chevron_left</span>
+<h2 class="font-headline text-[2.5rem] font-bold tracking-tight text-on-surface">April 2026</h2>
+<span class="material-symbols-outlined text-3xl cursor-pointer text-on-surface-variant hover:text-on-surface transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 lg:p-10 shadow-[0_20px_40px_rgba(26,26,26,0.05)]">
+<!-- Days of week -->
+<div class="grid grid-cols-7 gap-2 mb-6 text-center">
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Mon</span>
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Tue</span>
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Wed</span>
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Thu</span>
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Fri</span>
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Sat</span>
+<span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">Sun</span>
+</div>
+<!-- Calendar Grid -->
+<div class="grid grid-cols-7 gap-y-6 gap-x-2 text-center items-center justify-items-center">
+<!-- Blank days for start of month -->
+<div></div><div></div>
+<!-- Week 1 -->
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">1</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">2</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">3</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">4</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors">5</div>
+<!-- Week 2 -->
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors relative">
+                        6
+                        <div class="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">7</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">8</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors relative">
+                        9
+                        <div class="absolute -bottom-2 flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-container"></div>
+</div>
+</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">10</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">11</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">12</div>
+<!-- Week 3 -->
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">13</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors relative">
+                        14
+                        <div class="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">15</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">16</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">17</div>
+<!-- Today / Selected -->
+<div class="w-14 h-14 flex flex-col items-center justify-center rounded-full bg-primary text-on-primary text-xl font-bold cursor-pointer relative shadow-lg shadow-primary/20">
+                        18
+                        <div class="absolute -bottom-3 flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-container"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
+</div>
+</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">19</div>
+<!-- Week 4 -->
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">20</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors relative">
+                        21
+                        <div class="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">22</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">23</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors relative">
+                        24
+                        <div class="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-secondary-container"></div>
+</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">25</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">26</div>
+<!-- Week 5 -->
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">27</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">28</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">29</div>
+<div class="w-12 h-12 flex flex-col items-center justify-center rounded-full text-lg font-medium text-on-surface cursor-pointer hover:bg-surface-container transition-colors">30</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Daily Schedule -->
+<section class="md:w-1/2 lg:w-2/5 mt-12 md:mt-0 pt-12">
+<div class="bg-tertiary-container rounded-xl p-8 lg:p-10 h-full flex flex-col">
+<h3 class="font-headline text-[2rem] font-bold tracking-tight text-on-surface mb-10">Thursday, Apr 18</h3>
+<div class="flex-grow space-y-6">
+<!-- Event 1 -->
+<div class="flex gap-4 items-stretch group cursor-pointer">
+<div class="w-2 rounded-full bg-blue-400 group-hover:scale-y-110 transition-transform"></div>
+<div class="bg-surface-container-lowest flex-grow rounded-2xl p-5 shadow-sm">
+<div class="text-sm font-semibold text-on-surface-variant mb-1">10:30 AM</div>
+<div class="text-lg font-bold text-on-surface mb-2">Data Structures</div>
+<div class="text-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+                                Room 302
+                            </div>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="flex gap-4 items-stretch group cursor-pointer">
+<div class="w-2 rounded-full bg-secondary-container group-hover:scale-y-110 transition-transform"></div>
+<div class="bg-surface-container-lowest flex-grow rounded-2xl p-5 shadow-sm">
+<div class="text-sm font-semibold text-on-surface-variant mb-1">2:00 PM</div>
+<div class="text-lg font-bold text-on-surface mb-2">Room Booking: Lab 201</div>
+<div class="text-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="timer">timer</span>
+                                2 hrs
+                            </div>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="flex gap-4 items-stretch group cursor-pointer">
+<div class="w-2 rounded-full bg-purple-400 group-hover:scale-y-110 transition-transform"></div>
+<div class="bg-surface-container-lowest flex-grow rounded-2xl p-5 shadow-sm">
+<div class="text-sm font-semibold text-on-surface-variant mb-1">4:00 PM</div>
+<div class="text-lg font-bold text-on-surface mb-2">Hackathon Meetup</div>
+<div class="text-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+                                Room 101
+                            </div>
+</div>
+</div>
+</div>
+<button class="mt-12 w-full bg-secondary-container text-on-surface font-bold py-5 rounded-full text-lg hover:bg-secondary-fixed transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Book a Room
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar from JSON -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-[#F7F6F2]/80 dark:bg-[#1A1A1A]/80 backdrop-blur-xl shadow-[0_-10px_40px_rgba(26,26,26,0.05)] rounded-t-[32px]">
+<div class="flex items-center justify-center text-[#6B6B6B] dark:text-[#F7F6F2]/50 w-14 h-14 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-2xl" data-icon="grid_view">grid_view</span>
+</div>
+<div class="flex items-center justify-center bg-[#1A1A1A] dark:bg-[#F7F6F2] text-white dark:text-[#1A1A1A] rounded-full w-14 h-14 hover:scale-110 transition-transform cursor-pointer scale-95 duration-200">
+<span class="material-symbols-outlined text-2xl" data-icon="calendar_today">calendar_today</span>
+</div>
+<div class="flex items-center justify-center text-[#6B6B6B] dark:text-[#F7F6F2]/50 w-14 h-14 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-2xl" data-icon="notifications">notifications</span>
+</div>
+<div class="flex items-center justify-center text-[#6B6B6B] dark:text-[#F7F6F2]/50 w-14 h-14 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-2xl" data-icon="person">person</span>
+</div>
+</nav>
+</body></html>

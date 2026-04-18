@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Professor Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#dbd8e9",
+                    "on-tertiary-container": "#555461",
+                    "error-dim": "#67040d",
+                    "background": "#faf9f5",
+                    "outline-variant": "#b0b3ad",
+                    "on-error": "#fff7f6",
+                    "primary": "#605f5f",
+                    "surface-container-high": "#e8e9e3",
+                    "tertiary-dim": "#53525f",
+                    "surface-tint": "#605f5f",
+                    "secondary-fixed-dim": "#c7d9d0",
+                    "on-tertiary-fixed-variant": "#5f5e6c",
+                    "outline": "#797b76",
+                    "tertiary-container": "#e9e6f7",
+                    "on-error-container": "#6e0a12",
+                    "primary-container": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#4f5f58",
+                    "surface-variant": "#e1e3dd",
+                    "surface-bright": "#faf9f5",
+                    "on-secondary-container": "#45554f",
+                    "on-primary-fixed": "#403f3f",
+                    "surface-container-highest": "#e1e3dd",
+                    "on-surface-variant": "#5d605b",
+                    "error": "#a83836",
+                    "secondary-dim": "#465750",
+                    "primary-dim": "#545353",
+                    "inverse-primary": "#ffffff",
+                    "on-tertiary-fixed": "#42424f",
+                    "surface-dim": "#d9dbd4",
+                    "error-container": "#fa746f",
+                    "on-primary": "#fbf8f8",
+                    "tertiary": "#5f5e6c",
+                    "tertiary-fixed": "#e9e6f7",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#d5e7de",
+                    "primary-fixed-dim": "#d6d4d3",
+                    "on-primary-container": "#525151",
+                    "surface-container": "#eeeee9",
+                    "inverse-on-surface": "#9d9d9a",
+                    "on-surface": "#30332f",
+                    "on-secondary": "#ebfdf4",
+                    "inverse-surface": "#0d0f0d",
+                    "surface-container-low": "#f4f4ef",
+                    "on-primary-fixed-variant": "#5c5b5b",
+                    "on-secondary-fixed": "#33433c",
+                    "primary-fixed": "#e5e2e1",
+                    "secondary": "#52635c",
+                    "on-background": "#30332f",
+                    "on-tertiary": "#fbf7ff",
+                    "secondary-fixed": "#d5e7de",
+                    "surface": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Plus Jakarta Sans"],
+                    "label": ["Plus Jakarta Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F7F6F2;
+            color: #1A1A1A;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen relative pb-32 pt-32 md:pt-40">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#F7F6F2]/80 backdrop-blur-2xl transition-all duration-300">
+<div class="flex justify-between items-end w-full px-8 pt-12 pb-6 max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-2xl text-[#1A1A1A]" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Plus_Jakarta_Sans'] text-4xl font-extrabold tracking-tight leading-[1.1] text-[#1A1A1A]">Workspace</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors relative">
+<span class="material-symbols-outlined text-2xl text-[#1A1A1A]" data-icon="notifications">notifications</span>
+<span class="absolute top-3 right-3 w-2.5 h-2.5 bg-error rounded-full"></span>
+</button>
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container border-2 border-white shadow-sm">
+<img alt="Faculty profile photo" class="w-full h-full object-cover" data-alt="professional headshot of a smiling man in his 40s wearing a smart casual blazer against a neutral grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJKi5w6CwPZy8RxhHxu9b8unBJS8lfKBHMaTBKOwLa1e07JsoPKbH12_m6b7k8Dw1YepJtg76uZSRnIWSX1E_IQ2or0kzfhjuS5T15TH6440qzcQVJEUGJ2tUhP1FmnszddFIXVxrm7g_ur2yxvqGG9NFwBA2VqvTJ28VveFDrcr51azs258v2lcp6Wrjo0TSghNE5VFqZxtIP0K36Mqf0HHL372YzGXQdOP_4gYIxVlOj64YB1Dz6uX2dqQTzdJZpMI5-NcAm4E6c"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 md:px-8 flex flex-col gap-8">
+<!-- Welcome Note -->
+<div class="py-4">
+<p class="text-on-surface-variant text-lg font-medium">Good morning,</p>
+<h2 class="text-3xl font-extrabold tracking-tight">Prof. Harshav</h2>
+</div>
+<!-- HERO CARD: Attendance Trend -->
+<section class="bg-tertiary-container rounded-xl p-8 flex flex-col gap-6 relative overflow-hidden">
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<span class="text-on-tertiary-container text-sm font-semibold tracking-wide uppercase mb-2">Attendance Trend</span>
+<span class="text-6xl font-extrabold text-[#1A1A1A] leading-tight">78%</span>
+<span class="text-on-tertiary-container font-medium mt-1">CSE Sem 5 · Section A</span>
+</div>
+<button class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[#1A1A1A]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Simplified Bar Chart Representation -->
+<div class="mt-8 flex items-end gap-3 h-24 z-10 w-full max-w-sm">
+<div class="w-full bg-white/40 rounded-t-lg h-[40%] flex flex-col justify-end group hover:bg-white/60 transition-colors cursor-pointer relative"><span class="absolute -bottom-6 text-xs font-bold text-on-tertiary-container w-full text-center">M</span></div>
+<div class="w-full bg-white/40 rounded-t-lg h-[55%] flex flex-col justify-end group hover:bg-white/60 transition-colors cursor-pointer relative"><span class="absolute -bottom-6 text-xs font-bold text-on-tertiary-container w-full text-center">T</span></div>
+<div class="w-full bg-white/40 rounded-t-lg h-[80%] flex flex-col justify-end group hover:bg-white/60 transition-colors cursor-pointer relative"><span class="absolute -bottom-6 text-xs font-bold text-on-tertiary-container w-full text-center">W</span></div>
+<div class="w-full bg-white/70 rounded-t-lg h-[95%] flex flex-col justify-end group hover:bg-white/90 transition-colors cursor-pointer relative"><span class="absolute -bottom-6 text-xs font-bold text-[#1A1A1A] w-full text-center">T</span></div>
+<div class="w-full bg-white/40 rounded-t-lg h-[60%] flex flex-col justify-end group hover:bg-white/60 transition-colors cursor-pointer relative"><span class="absolute -bottom-6 text-xs font-bold text-on-tertiary-container w-full text-center">F</span></div>
+</div>
+<!-- Decorative circle -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-2xl"></div>
+</section>
+<!-- TWO-COLUMN ROW -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Left Card: Pending Approvals -->
+<div class="bg-[#F5F0D0] rounded-xl p-8 flex flex-col justify-between min-h-[200px] relative">
+<div class="flex justify-between items-start">
+<span class="text-[#8B7D3A] text-sm font-semibold tracking-wide uppercase">Pending Approvals</span>
+<button class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[#1A1A1A]" data-icon="north_east">north_east</span>
+</button>
+</div>
+<div class="mt-4">
+<span class="text-6xl font-extrabold text-[#1A1A1A]">4</span>
+</div>
+</div>
+<!-- Right Card: Follow-ups -->
+<div class="bg-[#F8E4E4] rounded-xl p-8 flex flex-col justify-between min-h-[200px]">
+<div class="flex justify-between items-start">
+<span class="text-[#A36666] text-sm font-semibold tracking-wide uppercase">Follow-ups</span>
+<span class="material-symbols-outlined text-[#A36666]" data-icon="priority_high">priority_high</span>
+</div>
+<div class="mt-4 flex flex-col">
+<span class="text-6xl font-extrabold text-[#1A1A1A]">2</span>
+<span class="text-[#A36666] font-medium mt-1">Students at risk</span>
+</div>
+</div>
+</div>
+<!-- FULL WIDTH CARD: Notices -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_4px_40px_rgba(26,26,26,0.02)] flex flex-col gap-6">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-xl font-bold text-[#1A1A1A]">Notices</h3>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-3 rounded-full text-sm font-bold tracking-wide hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    Publish New
+                </button>
+</div>
+<div class="flex flex-col gap-6">
+<!-- Notice Item 1 -->
+<div class="flex gap-4 group cursor-pointer">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center shrink-0 group-hover:bg-tertiary-container transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="event_note">event_note</span>
+</div>
+<div class="flex flex-col justify-center border-b border-surface-container w-full pb-6">
+<h4 class="text-lg font-bold text-[#1A1A1A] group-hover:text-tertiary transition-colors">Mid-term syllabus updated for CSE-5</h4>
+<span class="text-sm text-on-surface-variant font-medium mt-1">2 hrs ago</span>
+</div>
+</div>
+<!-- Notice Item 2 -->
+<div class="flex gap-4 group cursor-pointer">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center shrink-0 group-hover:bg-tertiary-container transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="assignment_late">assignment_late</span>
+</div>
+<div class="flex flex-col justify-center w-full">
+<h4 class="text-lg font-bold text-[#1A1A1A] group-hover:text-tertiary transition-colors">Reminder: Project submissions due Friday</h4>
+<span class="text-sm text-on-surface-variant font-medium mt-1">5 hrs ago</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pt-4 pb-10 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-2xl rounded-t-[32px] shadow-[0_-10px_40px_rgba(26,26,26,0.05)]">
+<!-- Active Tab: Dashboard -->
+<a class="flex flex-col items-center justify-center bg-[#1A1A1A] text-white rounded-full w-14 h-14 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="grid_view" data-weight="fill">grid_view</span>
+</a>
+<!-- Inactive Tab: Attendance -->
+<a class="flex flex-col items-center justify-center text-[#6B6B6B] w-14 h-14 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="how_to_reg">how_to_reg</span>
+</a>
+<!-- Inactive Tab: Approvals -->
+<a class="flex flex-col items-center justify-center text-[#6B6B6B] w-14 h-14 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="verified">verified</span>
+</a>
+<!-- Inactive Tab: Notices -->
+<a class="flex flex-col items-center justify-center text-[#6B6B6B] w-14 h-14 group" href="#">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="campaign">campaign</span>
+</a>
+</nav>
+</body></html>

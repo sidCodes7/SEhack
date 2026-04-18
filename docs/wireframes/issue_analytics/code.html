@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Issue Analytics - Aether</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f4f4ef",
+                        "on-tertiary-fixed": "#42424f",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "secondary-fixed": "#d5e7de",
+                        "on-secondary-container": "#45554f",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "secondary-dim": "#465750",
+                        "surface-bright": "#faf9f5",
+                        "on-secondary": "#ebfdf4",
+                        "on-error-container": "#6e0a12",
+                        "on-tertiary": "#fbf7ff",
+                        "surface": "#faf9f5",
+                        "tertiary-container": "#e9e6f7",
+                        "on-primary-container": "#525151",
+                        "outline-variant": "#b0b3ad",
+                        "background": "#faf9f5",
+                        "error-dim": "#67040d",
+                        "on-surface-variant": "#5d605b",
+                        "inverse-on-surface": "#9d9d9a",
+                        "primary": "#605f5f",
+                        "surface-dim": "#d9dbd4",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "secondary-container": "#d5e7de",
+                        "surface-container-highest": "#e1e3dd",
+                        "on-background": "#30332f",
+                        "on-surface": "#30332f",
+                        "inverse-primary": "#ffffff",
+                        "on-primary-fixed": "#403f3f",
+                        "tertiary-fixed": "#e9e6f7",
+                        "surface-variant": "#e1e3dd",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "surface-container-high": "#e8e9e3",
+                        "primary-container": "#e5e2e1",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "outline": "#797b76",
+                        "tertiary": "#5f5e6c",
+                        "surface-tint": "#605f5f",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "tertiary-dim": "#53525f",
+                        "primary-fixed": "#e5e2e1",
+                        "error-container": "#fa746f",
+                        "secondary": "#52635c",
+                        "on-error": "#fff7f6",
+                        "on-primary": "#fbf8f8",
+                        "on-secondary-fixed": "#33433c",
+                        "error": "#a83836",
+                        "primary-dim": "#545353",
+                        "surface-container": "#eeeee9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#555461",
+                        "inverse-surface": "#0d0f0d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-32">
+<!-- Top Navigation (Hidden on Mobile) -->
+<header class="hidden md:flex justify-between items-center w-full px-8 py-10 max-w-screen-2xl mx-auto rounded-none mb-8 shadow-none bg-[#F7F6F2] dark:bg-zinc-900">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-3xl">grid_view</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold tracking-tighter text-5xl text-[#1A1A1A] dark:text-zinc-100 font-extrabold text-[#1A1A1A] dark:text-white tracking-tighter">Aether</h1>
+</div>
+<div class="flex gap-8">
+<a class="text-[#6B6B6B] dark:text-zinc-400 font-bold text-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors scale-100 active:scale-95 duration-200 p-2 rounded-lg" href="#">Overview</a>
+<a class="text-[#6B6B6B] dark:text-zinc-400 font-bold text-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors scale-100 active:scale-95 duration-200 p-2 rounded-lg" href="#">Approvals</a>
+<a class="text-[#1A1A1A] dark:text-white font-bold font-bold text-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors scale-100 active:scale-95 duration-200 p-2 rounded-lg" href="#">Issues</a>
+<a class="text-[#6B6B6B] dark:text-zinc-400 font-bold text-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors scale-100 active:scale-95 duration-200 p-2 rounded-lg" href="#">Attendance</a>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary-container">
+<img alt="Admin Avatar" class="w-full h-full object-cover" data-alt="close up professional portrait of a man with short hair wearing a dark shirt against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpZ6Dj15-uH7p3KkwVKpFJYM_46cL6usqfe-ij6WcG5FGHmhlMaxz7z3drhR2xsoiLItZlupb5xOEQaxZPeaVWZBKQP6gyQ0zWCQb4_xpjbXR64w-HTPB2CHkYKd4vFpACs440jsAYmGyjSx-4bGACIzziLYWHoYC8_pe0hpQt-ElDl9rJNrBkMKyT54KQn8cEHhGoo9xIhvM199bFG7FTkPNJ3w57Z4SL2-mcWmp7xMgIYGASIxY_5T62jLKS0rDck7DkAK_0yVwv"/>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-8">
+<!-- Header -->
+<div class="flex items-center gap-6 mb-16">
+<button class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h2 class="text-[3.5rem] font-[800] leading-[1.1] tracking-tight">Issue Analytics</h2>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Resolution Rate Donut (Full Width on Mobile, Spans 2 on Web) -->
+<div class="col-span-1 md:col-span-2 bg-tertiary-container rounded-xl p-8 flex flex-col items-center justify-center py-16">
+<div class="text-center mb-8 w-full max-w-sm">
+<h3 class="text-[1.125rem] font-[600] mb-2 text-on-surface">Resolution Rate</h3>
+<p class="text-on-surface-variant text-[1rem]">Trailing 30 days</p>
+</div>
+<div class="relative w-64 h-64 mb-12">
+<!-- SVG Donut Chart Placeholder -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#E1E3DD" stroke-width="12"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="40" stroke="#1A1A1A" stroke-dasharray="251.2" stroke-dashoffset="67.8" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col">
+<span class="text-[3.5rem] font-[800] leading-[1.1] text-on-surface tracking-tighter">73%</span>
+</div>
+</div>
+<div class="flex gap-8 justify-center w-full">
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 rounded-full bg-[#1A1A1A]"></div>
+<span class="font-[500] text-[1rem]">Resolved</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 rounded-full bg-surface-container-highest"></div>
+<span class="font-[500] text-[1rem]">Pending</span>
+</div>
+</div>
+</div>
+<!-- Category Chips Section -->
+<div class="col-span-1 md:col-span-2">
+<h3 class="text-[1.125rem] font-[600] mb-6 text-on-surface px-2">Active by Category</h3>
+<div class="flex overflow-x-auto pb-4 gap-4 hide-scrollbar">
+<div class="flex-shrink-0 bg-surface-container-highest px-6 py-4 rounded-full flex items-center gap-3 hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="font-[600] text-[1rem]">IT</span>
+<span class="bg-surface-container-lowest text-on-surface px-3 py-1 rounded-full text-[0.75rem] font-[700]">5</span>
+</div>
+<div class="flex-shrink-0 bg-secondary-container px-6 py-4 rounded-full flex items-center gap-3 hover:bg-secondary-fixed-dim transition-colors cursor-pointer">
+<span class="font-[600] text-[1rem]">Facility</span>
+<span class="bg-surface-container-lowest text-on-surface px-3 py-1 rounded-full text-[0.75rem] font-[700]">8</span>
+</div>
+<div class="flex-shrink-0 bg-surface-container-highest px-6 py-4 rounded-full flex items-center gap-3 hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="font-[600] text-[1rem]">Academic</span>
+<span class="bg-surface-container-lowest text-on-surface px-3 py-1 rounded-full text-[0.75rem] font-[700]">2</span>
+</div>
+<div class="flex-shrink-0 bg-surface-container-highest px-6 py-4 rounded-full flex items-center gap-3 hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="font-[600] text-[1rem]">Other</span>
+<span class="bg-surface-container-lowest text-on-surface px-3 py-1 rounded-full text-[0.75rem] font-[700]">2</span>
+</div>
+</div>
+</div>
+<!-- Aging Issues Card -->
+<div class="col-span-1 bg-[#F5F0D0] rounded-xl p-8 flex flex-col justify-between min-h-[300px]">
+<div>
+<h3 class="text-[1.125rem] font-[600] mb-2 text-on-surface">Aging (48hrs+)</h3>
+<p class="text-[1rem] text-on-surface-variant">Need immediate attention</p>
+</div>
+<div class="flex items-end justify-between mt-auto">
+<span class="text-[4rem] font-[800] leading-none text-[#D4A843] tracking-tighter">4</span>
+<button class="w-16 h-16 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[#FFFFFF] text-3xl">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Heatmap Summary -->
+<div class="col-span-1 bg-surface-container-lowest rounded-xl p-8 flex flex-col h-full min-h-[300px]">
+<h3 class="text-[1.125rem] font-[600] mb-2 text-on-surface">Issue Heatmap</h3>
+<p class="text-[1rem] text-on-surface-variant mb-6">Building C has highest density</p>
+<div class="flex-grow rounded-2xl bg-surface-container-high overflow-hidden relative">
+<img alt="Campus Map Outline" class="w-full h-full object-cover opacity-50 mix-blend-multiply" data-alt="minimalist architectural map overhead view with subtle pastel heatmap overlays indicating active zones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAQOYat39GCqebzokZsQdfLp8Kxqta2UJ9jklpmu8sgc1_NIUH980aPdYQm66qGlGABgc4u7c0MJ8HK4-GUn98y24cZL7K3Okau0AFowTaV0seQXv4LWr_uEj28qAwIpFBXlC6rwRdwbNmWFgcs7n_qM5I39lKnEmBPr4dLi3tx-cv6_Q7UnNWhFUFKJq3RpSG7n_RIh5_3hfc0g2MAfnPmzk_FlImiIN8wZZUpazA48-mW9jfozFN0lClrznm2NTKcDDfHt7gXFNa"/>
+<!-- Heatmap Dots Placeholder -->
+<div class="absolute top-1/4 left-1/3 w-8 h-8 rounded-full bg-[#fa746f] blur-md opacity-80"></div>
+<div class="absolute top-1/2 left-1/2 w-16 h-16 rounded-full bg-[#fa746f] blur-xl opacity-90"></div>
+<div class="absolute bottom-1/3 right-1/4 w-6 h-6 rounded-full bg-[#fa746f] blur-sm opacity-60"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden bg-[#F7F6F2]/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-t-[32px] fixed bottom-0 w-full z-50 border-none shadow-[0_-10px_40px_rgba(26,26,26,0.05)] fixed bottom-0 left-0 right-0 flex justify-around items-center px-6 pb-8 pt-4">
+<div class="text-[#6B6B6B] flex flex-col items-center justify-center hover:text-[#1A1A1A] transition-all active:scale-90 duration-300 ease-out cursor-pointer group">
+<span class="material-symbols-outlined mb-1">dashboard</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest">Overview</span>
+</div>
+<div class="text-[#6B6B6B] flex flex-col items-center justify-center hover:text-[#1A1A1A] transition-all active:scale-90 duration-300 ease-out cursor-pointer group">
+<span class="material-symbols-outlined mb-1">verified</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest">Approvals</span>
+</div>
+<div class="bg-[#1A1A1A] text-white rounded-full px-6 py-2 flex flex-col items-center justify-center active:scale-90 duration-300 ease-out cursor-pointer">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest">Issues</span>
+</div>
+<div class="text-[#6B6B6B] flex flex-col items-center justify-center hover:text-[#1A1A1A] transition-all active:scale-90 duration-300 ease-out cursor-pointer group">
+<span class="material-symbols-outlined mb-1">person_search</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest">Attendance</span>
+</div>
+</nav>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

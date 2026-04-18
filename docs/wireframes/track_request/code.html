@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Room Booking - Status</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#555461",
+                        "secondary": "#52635c",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-tertiary": "#fbf7ff",
+                        "tertiary": "#5f5e6c",
+                        "on-primary": "#fbf8f8",
+                        "error": "#a83836",
+                        "inverse-primary": "#ffffff",
+                        "surface-container-high": "#e8e9e3",
+                        "error-dim": "#67040d",
+                        "surface-container": "#eeeee9",
+                        "surface-variant": "#e1e3dd",
+                        "surface": "#faf9f5",
+                        "tertiary-container": "#e9e6f7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#30332f",
+                        "surface-dim": "#d9dbd4",
+                        "surface-bright": "#faf9f5",
+                        "on-error": "#fff7f6",
+                        "inverse-on-surface": "#9d9d9a",
+                        "surface-container-low": "#f4f4ef",
+                        "on-primary-container": "#525151",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "primary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "secondary-container": "#d5e7de",
+                        "surface-tint": "#605f5f",
+                        "outline-variant": "#b0b3ad",
+                        "on-secondary-container": "#45554f",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "on-secondary": "#ebfdf4",
+                        "outline": "#797b76",
+                        "tertiary-dim": "#53525f",
+                        "background": "#faf9f5",
+                        "on-secondary-fixed": "#33433c",
+                        "on-surface": "#30332f",
+                        "secondary-dim": "#465750",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "inverse-surface": "#0d0f0d",
+                        "surface-container-highest": "#e1e3dd",
+                        "error-container": "#fa746f",
+                        "on-surface-variant": "#5d605b",
+                        "on-error-container": "#6e0a12",
+                        "primary": "#605f5f",
+                        "on-tertiary-fixed": "#42424f",
+                        "tertiary-fixed": "#e9e6f7",
+                        "secondary-fixed": "#d5e7de",
+                        "primary-dim": "#545353",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "on-primary-fixed": "#403f3f",
+                        "primary-container": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F7F6F2] text-on-surface min-h-screen pb-24 md:pb-0">
+<!-- Top Navigation (Task-focused, so standard shell is suppressed, custom back nav instead) -->
+<header class="w-full max-w-xl mx-auto pt-8 pb-4 px-6 flex items-center gap-4">
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-container-lowest text-on-surface hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div>
+<h1 class="font-headline font-extrabold text-[2.0rem] tracking-tight leading-[1.1] text-on-surface">Room Booking</h1>
+<p class="font-body text-[1.0rem] font-normal text-on-surface-variant mt-1">Submitted Apr 18 · Room 302</p>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-xl mx-auto px-6 space-y-6">
+<!-- Status Tracker Card -->
+<section class="bg-surface-container-lowest rounded-xl p-6">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline text-[1.125rem] font-semibold text-on-surface">Request Status</h2>
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-[0.75rem] font-medium">In Progress</span>
+</div>
+<!-- Horizontal Tracker -->
+<div class="flex items-start justify-between relative">
+<!-- Connector Lines (Background) -->
+<div class="absolute top-5 left-0 w-full h-[2px] bg-surface-variant -z-0"></div>
+<div class="absolute top-5 left-0 w-1/2 h-[2px] bg-secondary -z-0"></div>
+<!-- Stage 1: HoD -->
+<div class="flex flex-col items-center gap-3 relative z-10 w-1/3">
+<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-on-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="text-center">
+<p class="font-label text-[0.75rem] font-bold text-on-surface">HoD</p>
+<p class="font-body text-[0.75rem] text-secondary">Approved</p>
+<p class="font-body text-[0.75rem] text-on-surface-variant">Apr 18</p>
+</div>
+</div>
+<!-- Stage 2: Stucco (Active) -->
+<div class="flex flex-col items-center gap-3 relative z-10 w-1/3">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest border-4 border-on-surface flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-on-surface"></div>
+</div>
+<div class="text-center">
+<p class="font-label text-[0.75rem] font-bold text-on-surface">Stucco</p>
+<p class="font-body text-[0.75rem] text-on-surface">Pending</p>
+<p class="font-body text-[0.75rem] text-on-surface-variant">~2 hrs avg</p>
+</div>
+</div>
+<!-- Stage 3: Dean -->
+<div class="flex flex-col items-center gap-3 relative z-10 w-1/3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+</div>
+<div class="text-center">
+<p class="font-label text-[0.75rem] font-bold text-outline">Dean</p>
+<p class="font-body text-[0.75rem] text-outline">Waiting</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Request Detail Card -->
+<section class="bg-[#EAE7F8] rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="font-headline text-[1.125rem] font-bold text-on-surface mb-1">Room 302 · CSE Dept</h3>
+<p class="font-body text-[1.0rem] text-on-surface-variant mb-4">Apr 19, 10:00 AM – 12:00 PM</p>
+</div>
+<span class="material-symbols-outlined text-on-surface opacity-50">meeting_room</span>
+</div>
+<div class="space-y-1">
+<p class="font-label text-[0.75rem] font-medium text-on-surface-variant uppercase tracking-wider">Purpose</p>
+<p class="font-body text-[1.0rem] text-on-surface">Weekly AI Research Group Meeting &amp; Presentation Rehearsal.</p>
+</div>
+</section>
+<!-- Approver Note Card -->
+<section class="bg-[#F5F0D0] rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3 text-on-surface">
+<span class="material-symbols-outlined text-[1.25rem]">edit_note</span>
+<p class="font-label text-[0.75rem] font-bold uppercase tracking-wider">HoD Note</p>
+</div>
+<p class="font-body text-[1.0rem] text-on-surface italic mb-4">"Approved. Please ensure the projector is turned off after use."</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-on-surface text-surface-container-lowest flex items-center justify-center text-[0.5rem] font-bold">DR</div>
+<p class="font-label text-[0.75rem] font-medium text-on-surface-variant">Dr. Roberts · Apr 18, 2:15 PM</p>
+</div>
+</section>
+<!-- Cancel Action -->
+<div class="flex justify-center pt-4 pb-8">
+<button class="font-label text-[0.75rem] font-medium text-on-surface-variant hover:text-error transition-colors">
+                Cancel this request
+            </button>
+</div>
+</main>
+</body></html>

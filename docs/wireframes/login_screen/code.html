@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - Aether</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#fbf8f8",
+                        "on-error": "#fff7f6",
+                        "error": "#a83836",
+                        "on-secondary-fixed": "#33433c",
+                        "primary-dim": "#545353",
+                        "surface-container": "#eeeee9",
+                        "inverse-surface": "#0d0f0d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#555461",
+                        "secondary": "#52635c",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "primary-container": "#e5e2e1",
+                        "surface-container-high": "#e8e9e3",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "outline": "#797b76",
+                        "on-secondary-fixed-variant": "#4f5f58",
+                        "tertiary": "#5f5e6c",
+                        "surface-tint": "#605f5f",
+                        "error-container": "#fa746f",
+                        "tertiary-dim": "#53525f",
+                        "primary-fixed": "#e5e2e1",
+                        "on-background": "#30332f",
+                        "on-surface": "#30332f",
+                        "inverse-primary": "#ffffff",
+                        "tertiary-fixed": "#e9e6f7",
+                        "on-primary-fixed": "#403f3f",
+                        "surface-variant": "#e1e3dd",
+                        "surface-dim": "#d9dbd4",
+                        "tertiary-fixed-dim": "#dbd8e9",
+                        "surface-container-highest": "#e1e3dd",
+                        "secondary-container": "#d5e7de",
+                        "on-tertiary": "#fbf7ff",
+                        "surface": "#faf9f5",
+                        "tertiary-container": "#e9e6f7",
+                        "on-primary-container": "#525151",
+                        "error-dim": "#67040d",
+                        "background": "#faf9f5",
+                        "outline-variant": "#b0b3ad",
+                        "inverse-on-surface": "#9d9d9a",
+                        "on-surface-variant": "#5d605b",
+                        "primary": "#605f5f",
+                        "secondary-dim": "#465750",
+                        "secondary-fixed-dim": "#c7d9d0",
+                        "on-secondary": "#ebfdf4",
+                        "surface-bright": "#faf9f5",
+                        "on-error-container": "#6e0a12",
+                        "surface-container-low": "#f4f4ef",
+                        "on-tertiary-fixed": "#42424f",
+                        "on-tertiary-fixed-variant": "#5f5e6c",
+                        "secondary-fixed": "#d5e7de",
+                        "on-secondary-container": "#45554f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-body text-on-surface">
+<!-- Decorative Sage Green Blob -->
+<div class="absolute top-[-10%] right-[-10%] w-64 h-64 bg-secondary-container rounded-full blur-[80px] opacity-60 z-0"></div>
+<!-- Main Content Card -->
+<main class="bg-surface-container-lowest w-full max-w-md rounded-xl p-8 relative z-10 shadow-[0_20px_40px_rgba(26,26,26,0.05)] flex flex-col min-h-[618px]">
+<div class="flex-grow flex flex-col justify-center gap-12">
+<!-- Header Section -->
+<header class="space-y-4">
+<p class="text-on-surface-variant text-sm font-medium tracking-wide">Aether Institution</p>
+<h1 class="font-headline text-[2.5rem] font-extrabold leading-[1.1] text-on-surface">Welcome<br/>back.</h1>
+</header>
+<!-- Login Form -->
+<form class="space-y-8">
+<div class="space-y-6">
+<!-- Email Input -->
+<div class="relative">
+<label class="block text-xs font-medium text-on-surface-variant mb-2" for="email">Email Address</label>
+<input class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant/20 focus:border-primary focus:ring-0 rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 transition-colors" id="email" placeholder="hello@example.com" type="email"/>
+</div>
+<!-- Password Input -->
+<div class="relative">
+<label class="block text-xs font-medium text-on-surface-variant mb-2" for="password">Password</label>
+<input class="w-full bg-surface-container-low border-none border-b-2 border-outline-variant/20 focus:border-primary focus:ring-0 rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 transition-colors" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col items-end gap-8 pt-4">
+<button class="w-16 h-16 bg-[#1A1A1A] rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-300 shadow-[0_10px_30px_rgba(26,26,26,0.2)]" type="submit">
+<span class="material-symbols-outlined text-[#FFFFFF] text-3xl" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<a class="w-full text-center text-sm text-on-surface-variant font-medium hover:text-on-surface transition-colors mt-8" href="#">
+                        Forgot password?
+                    </a>
+</div>
+</form>
+</div>
+</main>
+</body></html>
