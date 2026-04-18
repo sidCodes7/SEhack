@@ -164,19 +164,19 @@ git add -A && git commit -m "chore: scaffold monorepo + shared-types + backend s
 
 > ⚡ Can start immediately after Sprint 0 push.
 
-- [ ] **Auth module** (`apps/backend/src/modules/auth/`):
-  - [ ] `auth.service.ts` — Register, login (JWT generation), logout, get current user, update language preference
-  - [ ] `auth.controller.ts` — HTTP handlers calling auth.service
-  - [ ] `auth.routes.ts` — Replace stub with real routes: POST register, POST login, POST logout, GET me, PATCH language
-  - [ ] `auth.middleware.ts` — (Module-specific auth logic if different from shared)
-- [ ] **Users module** (`apps/backend/src/modules/users/`):
-  - [ ] `users.service.ts` — Get user by ID, list users by role/dept
-  - [ ] `users.controller.ts` — HTTP handlers
-  - [ ] `users.routes.ts` — GET user, list users
-- [ ] **Dashboard module** (`apps/backend/src/modules/dashboard/`):
-  - [ ] `dashboard.service.ts` — Aggregate data for student/professor/admin dashboards
-  - [ ] `dashboard.controller.ts` — HTTP handlers
-  - [ ] `dashboard.routes.ts` — GET /student, GET /professor, GET /admin
+- [x] **Auth module** (`apps/backend/src/modules/auth/`):
+  - [x] `auth.service.ts` — Register, login (JWT generation), logout, get current user, update language preference
+  - [x] `auth.controller.ts` — HTTP handlers calling auth.service
+  - [x] `auth.routes.ts` — Replace stub with real routes: POST register, POST login, POST logout, GET me, PATCH language
+  - [x] `auth.middleware.ts` — (Shared middleware used; module-specific not needed)
+- [x] **Users module** (`apps/backend/src/modules/users/`):
+  - [x] `users.service.ts` — Get user by ID, list users by role/dept
+  - [x] `users.controller.ts` — HTTP handlers
+  - [x] `users.routes.ts` — GET user, list users
+- [x] **Dashboard module** (`apps/backend/src/modules/dashboard/`):
+  - [x] `dashboard.service.ts` — Aggregate data for student/professor/admin dashboards
+  - [x] `dashboard.controller.ts` — HTTP handlers
+  - [x] `dashboard.routes.ts` — GET /student, GET /professor, GET /admin
 
 ### 🟢 PUSH CHECKPOINT S1
 ```bash
