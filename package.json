@@ -1,0 +1,16 @@
+{
+  "name": "aether",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aether — Autonomous Campus Operating System",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "cd apps/backend && npm run dev",
+    "install:all": "npm install"
+  },
+  "keywords": ["campus", "education", "monorepo"],
+  "license": "MIT"
+}

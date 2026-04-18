@@ -74,15 +74,15 @@ apps/backend/src/modules/dashboard/*
 
 ## Sprint 0 — Scaffold & Foundation (HIGHEST PRIORITY)
 
-> ⚠️ **PUSH CHECKPOINT S0**: Push this immediately. Everything else is blocked.
+> ✅ **PUSH CHECKPOINT S0**: All scaffold work complete and verified.
 
-- [ ] Create root `package.json` with npm workspaces: `["packages/*", "apps/*"]`
-- [ ] Create `.gitignore` (node_modules, .env, dist, .expo, etc.)
-- [ ] Create `README.md` with project overview
-- [ ] Scaffold `packages/shared-types/`:
-  - [ ] `package.json` with `"name": "@aether/shared-types"`
-  - [ ] `tsconfig.json`
-  - [ ] ALL TypeScript interfaces in `src/`:
+- [x] Create root `package.json` with npm workspaces: `["packages/*", "apps/*"]`
+- [x] Create `.gitignore` (node_modules, .env, dist, .expo, etc.)
+- [x] Create `README.md` with project overview
+- [x] Scaffold `packages/shared-types/`:
+  - [x] `package.json` with `"name": "@aether/shared-types"`
+  - [x] `tsconfig.json`
+  - [x] ALL TypeScript interfaces in `src/`:
     - `user.ts` — User, UserRole, AuthResponse
     - `approval.ts` — WorkflowRequest, ApprovalStage, WorkflowType
     - `issue.ts` — Issue, IssueCategory, IssuePriority, HeatmapPoint
@@ -94,12 +94,12 @@ apps/backend/src/modules/dashboard/*
     - `plugin.ts` — Plugin, PluginSubmission, SecurityClearanceCertificate
     - `analytics.ts` — AnalyticsSummary, ApprovalBottleneck, IssueStat
     - `index.ts` — barrel export of all above
-- [ ] Scaffold `apps/backend/`:
-  - [ ] `package.json` with all dependencies (express, drizzle-orm, socket.io, zod, multer, node-cron, axios, cors, dotenv, etc.)
-  - [ ] `tsconfig.json` (strict mode)
-  - [ ] `.env.example` with ALL env var placeholders
-  - [ ] `src/server.ts` — entry point, starts Express + Socket.IO
-  - [ ] `src/app.ts` — Express app setup with CORS, body-parser, error middleware, and **ALL route imports pre-wired** (even if modules are empty stubs):
+- [x] Scaffold `apps/backend/`:
+  - [x] `package.json` with all dependencies (express, drizzle-orm, socket.io, zod, multer, node-cron, axios, cors, dotenv, etc.)
+  - [x] `tsconfig.json` (strict mode)
+  - [x] `.env.example` with ALL env var placeholders
+  - [x] `src/server.ts` — entry point, starts Express + Socket.IO
+  - [x] `src/app.ts` — Express app setup with CORS, body-parser, error middleware, and **ALL route imports pre-wired** (even if modules are empty stubs):
     ```typescript
     // Pre-wire all routes so Dev/Het don't need to edit this file
     app.use('/api/auth', authRoutes);
@@ -117,7 +117,7 @@ apps/backend/src/modules/dashboard/*
     app.use('/api/karma', authMiddleware, karmaRoutes);
     app.use('/api/plugins', authMiddleware, pluginsRoutes);
     ```
-- [ ] Create **EMPTY STUB route files** for ALL modules (so `app.ts` compiles):
+- [x] Create **EMPTY STUB route files** for ALL modules (so `app.ts` compiles):
   - Each stub is just: `const router = Router(); export default router;`
   - Create these stubs in EVERY module directory:
     - `apps/backend/src/modules/workflow/workflow.routes.ts`
@@ -132,25 +132,25 @@ apps/backend/src/modules/dashboard/*
     - `apps/backend/src/modules/karma/karma.routes.ts`
     - `apps/backend/src/modules/plugins/plugins.routes.ts`
   - ‼️ **IMPORTANT:** ONLY create the `.routes.ts` stub file in each module. Do NOT create controller/service files — those belong to Dev or Het.
-- [ ] Implement all `shared/` infrastructure:
-  - [ ] `shared/db/neon.client.ts` — Drizzle ORM + Neon client
-  - [ ] `shared/db/schema.ts` — Full Drizzle schema for ALL tables (see architecture.md §4)
-  - [ ] `shared/websocket/ws.server.ts` — Socket.IO server setup, `emitToUser()`, `emitToRoom()` helpers
-  - [ ] `shared/websocket/ws.rooms.ts` — Room join/leave management
-  - [ ] `shared/middleware/auth.middleware.ts` — JWT validation, attaches `req.user`
-  - [ ] `shared/middleware/error.middleware.ts` — Global error handler
-  - [ ] `shared/middleware/logger.middleware.ts` — Request logging
-  - [ ] `shared/middleware/rate-limit.middleware.ts` — Basic rate limiter
-  - [ ] `shared/storage/cloudinary.service.ts` — Upload image, return URL
-  - [ ] `shared/notifications/fcm.service.ts` — Firebase push notification sender
-  - [ ] `shared/email/resend.service.ts` — Email sender via Resend
-- [ ] Create startup scripts:
-  - [ ] `scripts/start.sh` — Starts backend + mobile
-  - [ ] `scripts/start.bat` — Windows equivalent
-  - [ ] `scripts/backend.sh` — Backend only
-  - [ ] `scripts/backend.bat` — Backend only Windows
-- [ ] Run `npm install` at root — verify workspaces resolve correctly
-- [ ] Verify `npx tsc --noEmit` passes with stubs
+- [x] Implement all `shared/` infrastructure:
+  - [x] `shared/db/neon.client.ts` — Drizzle ORM + Neon client
+  - [x] `shared/db/schema.ts` — Full Drizzle schema for ALL tables (see architecture.md §4)
+  - [x] `shared/websocket/ws.server.ts` — Socket.IO server setup, `emitToUser()`, `emitToRoom()` helpers
+  - [x] `shared/websocket/ws.rooms.ts` — Room join/leave management
+  - [x] `shared/middleware/auth.middleware.ts` — JWT validation, attaches `req.user`
+  - [x] `shared/middleware/error.middleware.ts` — Global error handler
+  - [x] `shared/middleware/logger.middleware.ts` — Request logging
+  - [x] `shared/middleware/rate-limit.middleware.ts` — Basic rate limiter
+  - [x] `shared/storage/cloudinary.service.ts` — Upload image, return URL
+  - [x] `shared/notifications/fcm.service.ts` — Firebase push notification sender
+  - [x] `shared/email/resend.service.ts` — Email sender via Resend
+- [x] Create startup scripts:
+  - [x] `scripts/start.sh` — Starts backend + mobile
+  - [x] `scripts/start.bat` — Windows equivalent
+  - [x] `scripts/backend.sh` — Backend only
+  - [x] `scripts/backend.bat` — Backend only Windows
+- [x] Run `npm install` at root — verify workspaces resolve correctly
+- [x] Verify `npx tsc --noEmit` passes with stubs
 
 ### 🟢 PUSH CHECKPOINT S0
 ```bash
