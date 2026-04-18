@@ -72,19 +72,19 @@ apps/backend/src/modules/karma/karma.routes.ts              ← replace stub
 
 ### Workflow Module
 
-- [ ] `approver-resolver.ts`:
-  - [ ] Given a request type (`room_booking` | `certificate` | `leave`) and requester's department, return the ordered approval chain
-  - [ ] Chain: `[HoD of department] → [Stucco coordinator] → [Dean]`
-  - [ ] Query `users` table to find approvers by role + department
-- [ ] `workflow.service.ts`:
-  - [ ] `createRequest(requesterId, type, metadata)` → Create `workflow_requests` row + auto-generate `approval_stages` using approver-resolver
-  - [ ] `getRequestsByUser(userId)` → List all requests with their approval stage statuses
-  - [ ] `getRequestById(requestId)` → Single request + full approval chain
-  - [ ] `getPendingForApprover(approverId)` → Requests awaiting this approver's action
-  - [ ] `approveStage(requestId, approverId, note?)` → Mark stage as approved, advance to next stage. If final stage → mark request `approved`, emit `approval:updated` WebSocket event, emit `notification:push` to requester
-  - [ ] `rejectStage(requestId, approverId, note)` → Mark stage + request as rejected, emit events
-- [ ] `workflow.controller.ts` — HTTP layer calling service methods
-- [ ] `workflow.routes.ts` — Replace stub with real routes:
+- [x] `approver-resolver.ts`:
+  - [x] Given a request type (`room_booking` | `certificate` | `leave`) and requester's department, return the ordered approval chain
+  - [x] Chain: `[HoD of department] → [Admin coordinator] → [Dean]`
+  - [x] Query `users` table to find approvers by role + department
+- [x] `workflow.service.ts`:
+  - [x] `createRequest(requesterId, type, metadata)` → Create `workflow_requests` row + auto-generate `approval_stages` using approver-resolver
+  - [x] `getRequestsByUser(userId)` → List all requests with their approval stage statuses
+  - [x] `getRequestById(requestId)` → Single request + full approval chain
+  - [x] `getPendingForApprover(approverId)` → Requests awaiting this approver's action
+  - [x] `approveStage(requestId, approverId, note?)` → Mark stage as approved, advance to next stage. If final stage → mark request `approved`, emit `approval:updated` WebSocket event, emit `notification:push` to requester
+  - [x] `rejectStage(requestId, approverId, note)` → Mark stage + request as rejected, emit events
+- [x] `workflow.controller.ts` — HTTP layer calling service methods
+- [x] `workflow.routes.ts` — Replace stub with real routes:
   - POST `/request` — submit request
   - GET `/requests` — my requests
   - GET `/requests/:id` — single request
@@ -96,13 +96,13 @@ apps/backend/src/modules/karma/karma.routes.ts              ← replace stub
 
 ### Notices Module
 
-- [ ] `notices.service.ts`:
-  - [ ] `createNotice(authorId, title, content, targetRole, department)` → INSERT into notices table. **NO RAG indexing, NO external calls.** Just a DB insert.
-  - [ ] `getNotices(filters: { department?, targetRole? })` → List notices, filterable
-  - [ ] `getNoticeById(noticeId)` → Single notice
-  - [ ] After insert: emit `notice:new` WebSocket event
-- [ ] `notices.controller.ts` — HTTP layer
-- [ ] `notices.routes.ts` — Replace stub:
+- [x] `notices.service.ts`:
+  - [x] `createNotice(authorId, title, content, targetRole, department)` → INSERT into notices table. **NO RAG indexing, NO external calls.** Just a DB insert.
+  - [x] `getNotices(filters: { department?, targetRole? })` → List notices, filterable
+  - [x] `getNoticeById(noticeId)` → Single notice
+  - [x] After insert: emit `notice:new` WebSocket event
+- [x] `notices.controller.ts` — HTTP layer
+- [x] `notices.routes.ts` — Replace stub:
   - POST `/` — publish notice (professor only)
   - GET `/` — list notices
   - GET `/:id` — single notice
@@ -119,19 +119,19 @@ git add -A && git commit -m "feat: workflow engine + approver resolver + notices
 
 > ⚠️ **CRITICAL RULE:** Do NOT implement any RAG pipeline. No Pinecone. No LangChain. No vector embeddings. See PRD F3 and project-context.md.
 
-- [ ] `context-builder.ts`:
-  - [ ] `buildCopilotContext(userId)`:
+- [x] `context-builder.ts`:
+  - [x] `buildCopilotContext(userId)`:
     1. Fetch last 10 notices for user's department from DB
     2. Fetch pending `workflow_requests` for user
     3. Fetch pending `finance_dues` for user
     4. Fetch user profile (name, role, department, karma_score, preferred_language)
     5. Return structured context object
-- [ ] `translation.service.ts`:
-  - [ ] `translate(text, targetLanguage)` — Call LibreTranslate API (or Google Translate fallback)
-  - [ ] Only called when `preferred_language !== 'en'`
-  - [ ] Called AFTER Grok responds, never before
-- [ ] `copilot.service.ts`:
-  - [ ] `chat(userId, message)`:
+- [x] `translation.service.ts`:
+  - [x] `translate(text, targetLanguage)` — Call LibreTranslate API (or Google Translate fallback)
+  - [x] Only called when `preferred_language !== 'en'`
+  - [x] Called AFTER Grok responds, never before
+- [x] `copilot.service.ts`:
+  - [x] `chat(userId, message)`:
     1. Call `buildCopilotContext(userId)`
     2. Compose Grok prompt:
        ```
@@ -148,14 +148,14 @@ git add -A && git commit -m "feat: workflow engine + approver resolver + notices
     4. If `preferred_language !== 'en'` → call `translate(response)`
     5. Append to `copilot_sessions` in DB
     6. Return response
-  - [ ] `getSession(userId)` — Fetch conversation history from `copilot_sessions`
-  - [ ] `getProactiveAlerts(userId)` — **Deterministic DB queries ONLY, no Grok call:**
+  - [x] `getSession(userId)` — Fetch conversation history from `copilot_sessions`
+  - [x] `getProactiveAlerts(userId)` — **Deterministic DB queries ONLY, no Grok call:**
     - Check `workflow_requests` where status='pending'
     - Check `finance_dues` where status='pending'
     - Check `calendar_events` where deadline < NOW()+2days
     - Return structured alert array
-- [ ] `copilot.controller.ts` — HTTP handlers
-- [ ] `copilot.routes.ts` — Replace stub:
+- [x] `copilot.controller.ts` — HTTP handlers
+- [x] `copilot.routes.ts` — Replace stub:
   - POST `/chat` — send message
   - GET `/session` — conversation memory
   - POST `/proactive` — fetch alerts
@@ -171,21 +171,21 @@ git add -A && git commit -m "feat: AI copilot — direct Grok API + context buil
 
 ## Sprint 3 — Calendar + Clash Detection
 
-- [ ] `clash-detector.ts`:
-  - [ ] `detectClash(room, startTime, endTime)` → Query `calendar_events` for overlapping ranges in the same room. Return `{ hasClash: boolean, conflictingEvents: [] }`
-  - [ ] `suggestSlots(room, date, userSchedule)` → Find 3 available time slots for the given room that don't conflict with user's existing events
-- [ ] `calendar.service.ts`:
-  - [ ] `getEvents(userId, startDate, endDate)` → List all events in range for user
-  - [ ] `getRoomAvailability(room)` → Check room's booked/free slots
-  - [ ] `bookRoom(userId, room, startTime, endTime)` → Run clash detection first; if clear, create event with `is_locked = true`. If clash, return suggestions.
-  - [ ] `checkClash(room, startTime, endTime)` → Expose clash detection as standalone endpoint
-  - [ ] `getSmartSuggestions(room, date, userId)` → Return 3 best slots
-- [ ] `calendar.controller.ts` — HTTP handlers
-- [ ] `calendar.routes.ts` — Replace stub:
+- [x] `clash-detector.ts`:
+  - [x] `detectClash(room, startTime, endTime)` → Query `calendar_events` for overlapping ranges in the same room. Return `{ hasClash: boolean, conflictingEvents: [] }`
+  - [x] `suggestSlots(room, date, userSchedule)` → Find 3 available time slots for the given room that don't conflict with user's existing events
+- [x] `calendar.service.ts`:
+  - [x] `getEvents(userId, startDate, endDate)` → List all events in range for user
+  - [x] `getRoomAvailability(room)` → Check room's booked/free slots
+  - [x] `bookRoom(userId, room, startTime, endTime)` → Run clash detection first; if clear, create event with `is_locked = true`. If clash, return suggestions.
+  - [x] `checkClash(room, startTime, endTime)` → Expose clash detection as standalone endpoint
+  - [x] `getSmartSuggestions(room, date, userId)` → Return 3 best slots
+- [x] `calendar.controller.ts` — HTTP handlers
+- [x] `calendar.routes.ts` — Replace stub:
   - GET `/events` — list events
   - GET `/rooms` — list rooms with availability
   - POST `/book` — book slot
-  - GET `/clash-check` — ccheck clash
+  - GET `/clash-check` — check clash
   - GET `/suggestions` — smart suggestions
 
 ### 🟢 PUSH CHECKPOINT D3
@@ -200,26 +200,26 @@ git add -A && git commit -m "feat: calendar module + clash detection + smart sug
 
 ### Analytics Module
 
-- [ ] `analytics.service.ts`:
-  - [ ] `getAttendanceTrends()` → Aggregate attendance by department/class
-  - [ ] `getApprovalBottlenecks()` → Avg time per approval stage, identify the slowest approver
-  - [ ] `getIssueStats()` → Open/closed count, age distribution, resolution rate, category breakdown
-  - [ ] Use seeded data — real DB queries but against Sid's seed data
-- [ ] `analytics.controller.ts` — HTTP handlers
-- [ ] `analytics.routes.ts` — Replace stub:
+- [x] `analytics.service.ts`:
+  - [x] `getAttendanceTrends()` → Aggregate attendance by department/class
+  - [x] `getApprovalBottlenecks()` → Avg time per approval stage, identify the slowest approver
+  - [x] `getIssueStats()` → Open/closed count, age distribution, resolution rate, category breakdown
+  - [x] Use seeded data — real DB queries but against Sid's seed data
+- [x] `analytics.controller.ts` — HTTP handlers
+- [x] `analytics.routes.ts` — Replace stub:
   - GET `/attendance`
   - GET `/approvals`
   - GET `/issues`
 
 ### Karma Module
 
-- [ ] `karma.service.ts`:
-  - [ ] `getScore(userId)` → Sum of `karma_events.points` for user
-  - [ ] `getBreakdown(userId)` → List of karma events with types + points
-  - [ ] `getLeaderboard()` → Top 10 students by karma
-  - [ ] `addKarmaEvent(userId, eventType, points)` — Called by other modules (issues, attendance, etc.)
-- [ ] `karma.controller.ts` — HTTP handlers
-- [ ] `karma.routes.ts` — Replace stub:
+- [x] `karma.service.ts`:
+  - [x] `getScore(userId)` → Sum of `karma_events.points` for user
+  - [x] `getBreakdown(userId)` → List of karma events with types + points
+  - [x] `getLeaderboard()` → Top 10 students by karma
+  - [x] `addKarmaEvent(userId, eventType, points)` — Called by other modules (issues, attendance, etc.)
+- [x] `karma.controller.ts` — HTTP handlers
+- [x] `karma.routes.ts` — Replace stub:
   - GET `/score`
   - GET `/leaderboard`
 
