@@ -1,0 +1,149 @@
+/* CalendarView — matches calendar_view wireframe */
+
+.calendar-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 16px;
+}
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cal-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--text-primary);
+}
+.cal-month {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Calendar grid card */
+.cal-grid-card {
+  padding: 20px;
+}
+
+.cal-days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 8px;
+}
+.cal-day-label {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.cal-cell.empty { cursor: default; }
+.cal-cell:hover:not(.empty) { background: var(--surface); }
+.cal-cell.today {
+  background: var(--text-primary);
+  color: #fff;
+}
+.cal-cell.selected:not(.today) {
+  background: var(--lavender);
+}
+
+.cal-date {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.cal-dots {
+  display: flex;
+  gap: 2px;
+  position: absolute;
+  bottom: 4px;
+}
+.cal-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+/* Schedule section */
+.cal-schedule {
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+}
+
+.cal-schedule-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+.cal-events {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cal-event-item {
+  display: flex;
+  gap: 12px;
+}
+
+.cal-event-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: #8B6FC0;
+  flex-shrink: 0;
+}
+
+.cal-event-card {
+  flex: 1;
+  padding: 16px;
+}
+
+.cal-event-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.cal-event-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.cal-event-detail {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

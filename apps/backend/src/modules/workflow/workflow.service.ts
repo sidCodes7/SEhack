@@ -10,6 +10,7 @@ import { eq, and, desc, sql } from 'drizzle-orm';
 import { resolveApprovalChain } from './approver-resolver.js';
 import { emitToUser, emitToRoom } from '../../shared/websocket/ws.server.js';
 import { createError } from '../../shared/middleware/error.middleware.js';
+import { sendApprovalEmail } from '../../shared/email/resend.service.js';
 // Local type mirror — avoids rootDir cross-package TS resolution issue
 type WorkflowType = 'room_booking' | 'certificate' | 'leave';
 
@@ -231,6 +232,14 @@ export async function approveStage(
       body: `Your ${request.type} request has been fully approved.`,
       requestId,
     });
+
+    // Send email notification to requester
+    try {
+      const [requester] = await db.select().from(users).where(eq(users.id, request.requesterId!)).limit(1);
+      if (requester?.email) {
+        sendApprovalEmail(requester.email, requester.name, request.type!, 'approved').catch(() => {});
+      }
+    } catch {}
   } else {
     // Advance to next stage
     const nextStage = request.currentStage! + 1;

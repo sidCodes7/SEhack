@@ -1,8 +1,6 @@
 // ──────────────────────────────────────────────
-// IframeContainer — Sandboxed Plugin Viewer
+// IframeContainer — Sandboxed Plugin Viewer (Aether theme)
 // ──────────────────────────────────────────────
-// Opens plugin in a sandboxed iframe and sends
-// scoped user data via postMessage (AETHER_INIT).
 
 import { useRef, useEffect } from 'react';
 import './IframeContainer.css';
@@ -15,13 +13,11 @@ export default function IframeContainer({ plugin, user, onBack }) {
     if (!iframe) return;
 
     const handleLoad = () => {
-      // Send scoped user data to the mini-app
-      // ⚠️ Only userName, role, department — NO auth tokens
       iframe.contentWindow.postMessage(
         {
           type: 'AETHER_INIT',
           payload: {
-            userName: user.userName,
+            userName: user.name,
             role: user.role,
             department: user.department,
           },
@@ -35,18 +31,18 @@ export default function IframeContainer({ plugin, user, onBack }) {
   }, [plugin, user]);
 
   return (
-    <div className="iframe-container">
+    <div className="iframe-container animate-in">
       <div className="iframe-header">
-        <button className="btn btn-outline" onClick={onBack}>
-          ← Back
+        <button className="iframe-back" onClick={onBack}>
+          <span className="material-symbols-outlined">arrow_back</span>
         </button>
-        <div className="iframe-title">
-          <h2>{plugin.name}</h2>
+        <div className="iframe-title-wrap">
+          <h2 className="iframe-name">{plugin.name}</h2>
           <span className="iframe-url">{plugin.deploymentUrl}</span>
         </div>
       </div>
 
-      <div className="iframe-wrapper">
+      <div className="iframe-wrapper card">
         <iframe
           ref={iframeRef}
           src={plugin.deploymentUrl}

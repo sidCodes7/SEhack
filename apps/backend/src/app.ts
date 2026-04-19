@@ -29,8 +29,8 @@ import pluginsRoutes from './modules/plugins/plugins.routes.js';
 // ── App Setup ──────────────────────────────────
 export const app = express();
 
-// Parse CORS origins from env
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:8081')
+// Parse CORS origins from env (default includes Vite dev server)
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:8081,http://localhost:5173,http://localhost:3001')
   .split(',')
   .map((o) => o.trim());
 
@@ -61,7 +61,7 @@ app.use('/api/pyq', authMiddleware, pyqRoutes);
 app.use('/api/finance', authMiddleware, financeRoutes);
 app.use('/api/analytics', authMiddleware, analyticsRoutes);
 app.use('/api/karma', authMiddleware, karmaRoutes);
-app.use('/api/plugins', authMiddleware, pluginsRoutes);
+app.use('/api/plugins', pluginsRoutes); // Plugin list is semi-public; submit uses middleware internally
 
 // ── Global Error Handler (must be LAST) ────────
 app.use(errorMiddleware);

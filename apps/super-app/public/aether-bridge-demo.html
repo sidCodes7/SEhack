@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aether Mini-App Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #F7F6F2;
+      color: #1A1A1A;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 1.2rem; margin-bottom: 4px; }
+    .subtitle { font-size: 0.75rem; color: #6B6B6B; margin-bottom: 20px; }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .card-sage { background: #D8EAE1; }
+    .card-lavender { background: #EAE7F8; }
+    .label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6B6B6B; margin-bottom: 4px; }
+    .value { font-size: 1.4rem; font-weight: 800; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; border-radius: 999px;
+      border: none; background: #1A1A1A; color: #fff;
+      font-size: 0.8rem; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: transform 0.2s;
+    }
+    .btn:hover { transform: scale(1.03); }
+    .btn-outline { background: transparent; color: #1A1A1A; border: 1.5px solid rgba(0,0,0,0.1); }
+    .log { font-family: 'SF Mono', monospace; font-size: 0.7rem; color: #6B6B6B; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .log-success { color: #2CB67D; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; background: linear-gradient(135deg, #EAE7F8, #F5F0D0); font-size: 0.6rem; font-weight: 700; }
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .menu-item { text-align: center; padding: 16px 8px; border-radius: 16px; background: #EEEEE9; cursor: pointer; transition: transform 0.2s; }
+    .menu-item:hover { transform: scale(1.03); }
+    .menu-icon { font-size: 1.5rem; margin-bottom: 4px; }
+    .menu-label { font-size: 0.7rem; font-weight: 600; }
+    #console-log { max-height: 120px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h1>🍽️ Campus Canteen</h1>
+  <p class="subtitle">Aether Mini-App · Running via aether-bridge.js</p>
+
+  <div class="card card-sage">
+    <div class="label">Connected User</div>
+    <div class="value" id="user-name">Loading...</div>
+    <div style="font-size: 0.75rem; color: #6B6B6B;" id="user-role">—</div>
+  </div>
+
+  <div class="menu-grid">
+    <div class="menu-item" onclick="orderItem('Masala Dosa', 45)">
+      <div class="menu-icon">🥘</div>
+      <div class="menu-label">Masala Dosa</div>
+      <div style="font-size: 0.7rem; color: #6B6B6B;">₹45</div>
+    </div>
+    <div class="menu-item" onclick="orderItem('Veg Biryani', 80)">
+      <div class="menu-icon">🍚</div>
+      <div class="menu-label">Veg Biryani</div>
+      <div style="font-size: 0.7rem; color: #6B6B6B;">₹80</div>
+    </div>
+    <div class="menu-item" onclick="orderItem('Chai', 15)">
+      <div class="menu-icon">☕</div>
+      <div class="menu-label">Chai</div>
+      <div style="font-size: 0.7rem; color: #6B6B6B;">₹15</div>
+    </div>
+    <div class="menu-item" onclick="orderItem('Samosa', 20)">
+      <div class="menu-icon">🥟</div>
+      <div class="menu-label">Samosa</div>
+      <div style="font-size: 0.7rem; color: #6B6B6B;">₹20</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <div class="label">Bridge Console</div>
+    <div id="console-log"></div>
+  </div>
+
+  <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+    <button class="btn" onclick="requestNotification()">🔔 Request Notification</button>
+    <button class="btn btn-outline" onclick="getHostData()">📡 Get Host Data</button>
+  </div>
+
+  <script>
+    // ── Aether Bridge SDK (inline for demo) ────────
+    const AetherBridge = {
+      _ready: false,
+      _callbacks: {},
+      _log: function(msg, type) {
+        const el = document.getElementById('console-log');
+        const div = document.createElement('div');
+        div.className = 'log' + (type === 'success' ? ' log-success' : '');
+        div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        el.prepend(div);
+      },
+
+      init: function() {
+        window.addEventListener('message', (e) => {
+          if (e.data?.type === 'aether:init') {
+            this._ready = true;
+            const user = e.data.user || {};
+            document.getElementById('user-name').textContent = user.name || 'Guest';
+            document.getElementById('user-role').textContent = `${user.role || 'student'} · ${user.department || 'CSE'}`;
+            this._log('✅ Connected to Aether Host', 'success');
+          }
+          if (e.data?.type === 'aether:response') {
+            this._log(`📥 Host response: ${JSON.stringify(e.data.payload)}`, 'success');
+          }
+        });
+
+        // Request init from host
+        window.parent.postMessage({ type: 'aether:ready', appId: 'canteen' }, '*');
+        this._log('📤 Sent aether:ready to host');
+      },
+
+      sendToHost: function(action, payload) {
+        window.parent.postMessage({ type: 'aether:action', action, payload }, '*');
+        this._log(`📤 Action: ${action} → ${JSON.stringify(payload)}`);
+      },
+
+      requestPermission: function(perm) {
+        window.parent.postMessage({ type: 'aether:permission', permission: perm }, '*');
+        this._log(`🔐 Requested permission: ${perm}`);
+      }
+    };
+
+    AetherBridge.init();
+
+    function orderItem(name, price) {
+      AetherBridge.sendToHost('order', { item: name, price, currency: 'INR' });
+      AetherBridge._log(`🛒 Ordered: ${name} (₹${price})`, 'success');
+    }
+
+    function requestNotification() {
+      AetherBridge.requestPermission('notification');
+    }
+
+    function getHostData() {
+      AetherBridge.sendToHost('getData', { request: 'userProfile' });
+    }
+  </script>
+</body>
+</html>

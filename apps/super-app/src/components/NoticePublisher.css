@@ -1,0 +1,58 @@
+/* NoticePublisher — matches notice_publisher wireframe */
+
+.notice-publisher { display: flex; flex-direction: column; gap: 24px; padding-bottom: 16px; }
+
+.np-header { display: flex; align-items: center; gap: 14px; }
+.np-back {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--surface-card); border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.np-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+
+.np-compose { display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden; }
+.np-compose::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); filter: blur(40px);
+}
+
+.np-input-white {
+  background: #fff !important; border-radius: var(--radius-lg) !important;
+  padding: 16px 20px !important; border: none !important;
+  font-size: 1rem !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+textarea.np-input-white { resize: none; line-height: 1.5; }
+
+.np-targets { display: flex; flex-wrap: wrap; gap: 10px; }
+.np-target-pill {
+  padding: 12px 24px; border-radius: var(--radius-full);
+  font-size: 0.8rem; font-weight: 600; border: none;
+  cursor: pointer; font-family: inherit;
+  background: rgba(255,255,255,0.5); color: var(--text-secondary);
+  backdrop-filter: blur(8px); transition: all 0.2s;
+}
+.np-target-active { background: var(--text-primary); color: #fff; box-shadow: var(--shadow-md); }
+
+.np-copilot-badge {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 14px 16px; border-left: 4px solid var(--sage);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.np-badge-title { font-size: 0.85rem; font-weight: 700; }
+.np-badge-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+.np-publish-row { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+.np-success-text { font-size: 0.85rem; font-weight: 600; color: var(--success); }
+
+/* Past notices */
+.np-past { display: flex; flex-direction: column; gap: 12px; }
+.np-past h2 { font-size: 1.3rem; font-weight: 700; margin-left: 4px; }
+.np-past-item {
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.np-past-item:hover { opacity: 0.8; }
+.np-past-title { font-size: 1rem; font-weight: 600; }
+.np-past-date { font-size: 0.8rem; color: var(--text-muted); }

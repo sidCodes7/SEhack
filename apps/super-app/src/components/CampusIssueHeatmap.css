@@ -1,0 +1,175 @@
+/* CampusIssueHeatmap — matches heatmap wireframe */
+
+.heatmap-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.heatmap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.heatmap-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2CB67D;
+  animation: pulse 2s infinite;
+}
+
+.heatmap-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* Map */
+.heatmap-map {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.map-canvas {
+  position: relative;
+  height: 280px;
+  background: linear-gradient(135deg, #e8e8e4 0%, #d8d8d4 100%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.map-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.map-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.marker-label {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.marker-dots {
+  display: flex;
+  gap: 3px;
+}
+.mdot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.mdot.critical { background: #E53836; }
+.mdot.high { background: #D4A843; }
+.mdot.normal { background: #2CB67D; }
+
+.map-legend {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0 0;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.ldot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Stats */
+.heatmap-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.heatmap-stat {
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.heatmap-stat-num {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.heatmap-stat-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Recent Issues */
+.recent-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.issue-item {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-left: 4px solid var(--pink);
+}
+
+.issue-content { flex: 1; }
+
+.issue-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.issue-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.issue-loc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.issue-time {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}

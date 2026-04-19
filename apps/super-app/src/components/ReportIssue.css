@@ -1,0 +1,114 @@
+/* ReportIssue — matches report_an_issue wireframe */
+
+.report-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 16px;
+}
+
+.report-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.report-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-container);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.report-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Photo upload */
+.report-photo {
+  position: relative;
+  border: 2px dashed var(--surface-container);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.report-photo:hover { border-color: var(--text-muted); }
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+.photo-text { font-size: 0.9rem; font-weight: 600; }
+.photo-hint { font-size: 0.75rem; color: var(--text-muted); }
+.photo-optional {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* Category pills */
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cat-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Form card */
+.report-form {
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Auto-priority pill */
+.auto-priority {
+  border-radius: var(--radius-full);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+/* Submit */
+.report-submit-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Success */
+.report-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 60vh;
+  text-align: center;
+}
+.report-success h2 { font-size: 1.5rem; font-weight: 700; }
+.report-success p { color: var(--text-secondary); }

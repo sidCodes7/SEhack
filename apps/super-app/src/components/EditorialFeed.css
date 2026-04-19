@@ -1,0 +1,40 @@
+/* EditorialFeed — notices list */
+
+.editorial-feed { display: flex; flex-direction: column; gap: 20px; padding-bottom: 16px; }
+
+.ef-header { display: flex; align-items: center; gap: 14px; }
+.ef-back {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--surface-card); border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.ef-title { font-size: 2rem; font-weight: 800; flex: 1; letter-spacing: -0.02em; }
+.ef-badge {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--lavender); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700;
+}
+
+.ef-list { display: flex; flex-direction: column; gap: 12px; }
+
+.ef-card { cursor: pointer; transition: transform 0.2s; }
+.ef-card:hover { transform: translateY(-2px); }
+
+.ef-card-header { display: flex; justify-content: space-between; align-items: center; }
+.ef-card-info { flex: 1; }
+.ef-card-title { font-size: 1rem; font-weight: 600; }
+.ef-card-date { font-size: 0.78rem; color: var(--text-muted); }
+.ef-chevron { color: var(--text-muted); transition: transform 0.2s; }
+
+.ef-card-body {
+  padding-top: 14px; margin-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.ef-card-body p { font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); }
+
+.ef-copilot-hint {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 12px; font-size: 0.75rem;
+  color: var(--text-muted); font-weight: 500;
+}

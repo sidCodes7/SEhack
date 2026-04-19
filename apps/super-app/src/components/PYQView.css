@@ -1,0 +1,89 @@
+/* PYQView — matches pyq_discovery wireframe */
+
+.pyq-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.pyq-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+/* Search */
+.pyq-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+.pyq-search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9rem;
+  box-shadow: none !important;
+}
+.pyq-search-input:focus { box-shadow: none !important; }
+
+/* Filters */
+.pyq-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+/* Paper cards */
+.pyq-card {
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.pyq-card-lavender { background: var(--lavender); }
+.pyq-card-cream { background: var(--cream); }
+.pyq-card-surface { background: var(--surface-container); }
+
+.pyq-card-content { flex: 1; }
+
+.pyq-subject {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.pyq-meta {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.pyq-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.pyq-download {
+  flex-shrink: 0;
+}
+
+.pyq-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: var(--text-muted);
+  font-weight: 500;
+}

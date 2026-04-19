@@ -44,28 +44,48 @@ export async function resolveApprovalChain(
 
   const approvers: ApproverInfo[] = [];
 
+  // Fallback role map: if the primary role isn't found, try fallbacks
+  const ROLE_FALLBACKS: Record<string, string[]> = {
+    hod: ['hod', 'professor'],   // Fall back to any professor in the department
+    admin: ['admin'],
+    dean: ['dean', 'admin'],     // Fall back to admin if no dean exists
+  };
+
   for (let i = 0; i < chain.length; i++) {
     const role = chain[i];
+    const rolesToTry = ROLE_FALLBACKS[role] || [role];
 
-    // HoD is department-scoped; admin and dean are global roles
+    // HoD/professor is department-scoped; admin and dean are global
     const isDepartmentScoped = role === 'hod';
 
-    const whereClause = isDepartmentScoped && department
-      ? and(eq(users.role, role), eq(users.department, department))
-      : eq(users.role, role);
+    let approver: { id: string; role: string } | null = null;
 
-    const [approver] = await db
-      .select({ id: users.id, role: users.role })
-      .from(users)
-      .where(whereClause)
-      .limit(1);
+    for (const tryRole of rolesToTry) {
+      const whereClause = isDepartmentScoped && department
+        ? and(eq(users.role, tryRole), eq(users.department, department))
+        : eq(users.role, tryRole);
+
+      const [found] = await db
+        .select({ id: users.id, role: users.role })
+        .from(users)
+        .where(whereClause)
+        .limit(1);
+
+      if (found) {
+        approver = found;
+        break;
+      }
+    }
 
     if (approver) {
-      approvers.push({
-        approverId: approver.id,
-        approverRole: approver.role,
-        stageNumber: i + 1,
-      });
+      // Avoid duplicate approvers (e.g., admin used as both 'admin' and 'dean' fallback)
+      if (!approvers.some(a => a.approverId === approver!.id)) {
+        approvers.push({
+          approverId: approver.id,
+          approverRole: role,  // Use the original role name for display
+          stageNumber: approvers.length + 1,
+        });
+      }
     }
   }
 

@@ -1,0 +1,112 @@
+/* AdminDashboard — matches admin_dashboard wireframe */
+
+.admin-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.admin-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+
+/* Alert card */
+.admin-alert {
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-start;
+}
+.alert-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alert-text { flex: 1; min-width: 150px; }
+.alert-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.alert-detail { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* Stat cards */
+.admin-stat {
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.admin-stat:hover { opacity: 0.95; }
+.admin-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.admin-stat-num {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Activity list */
+.activity-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--surface-container);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.activity-desc { font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; }
+.activity-time { font-size: 0.7rem; color: var(--text-muted); }
+
+/* Quick actions */
+.quick-actions-card {
+  border-radius: var(--radius-xl);
+  padding: 24px;
+}
+.quick-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  width: 100%;
+  transition: background 0.2s;
+}
+.quick-action-row:hover { background: rgba(255, 255, 255, 0.8); }
+.quick-action-row:last-child { margin-bottom: 0; }

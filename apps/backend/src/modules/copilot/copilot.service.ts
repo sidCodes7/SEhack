@@ -16,6 +16,7 @@ import { eq, and, sql, desc } from 'drizzle-orm';
 import { buildCopilotContext, formatContextForPrompt } from './context-builder.js';
 import { translate } from './translation.service.js';
 import { createError } from '../../shared/middleware/error.middleware.js';
+import { SPIT_KNOWLEDGE_BASE, retrieveRelevantChunks } from './spit-knowledge-base.js';
 
 type SupportedLanguage = 'en' | 'hi' | 'ta' | 'mr' | 'te';
 
@@ -61,14 +62,25 @@ export async function chat(userId: string, message: string) {
   let session = await getOrCreateSession(userId);
   const previousMessages = (session.messages as CopilotMessage[]) || [];
 
-  // 3. Compose Grok prompt
+  // 3. RAG-style retrieval: find relevant knowledge chunks
+  const relevantChunks = retrieveRelevantChunks(message, 3);
+  const ragContext = relevantChunks.length > 0
+    ? `\n\nRetrieved Knowledge (RAG):\n${relevantChunks.map(c => `  - ${c}`).join('\n')}`
+    : '';
+
+  // 4. Compose Grok prompt with institutional knowledge
   const systemPrompt = [
-    'You are Aether Copilot, the campus AI assistant.',
+    'You are Aether Copilot, the AI assistant for SPIT (Sardar Patel Institute of Technology).',
     'You help students, professors, and staff with campus-related questions.',
-    'Answer concisely. Provide 2-3 actionable next steps when appropriate.',
+    'Answer concisely and accurately using the knowledge base below.',
+    'When answering about SPIT policies, exams, attendance, fees, or calendar — ALWAYS use the institutional data provided.',
+    'Provide 2-3 actionable next steps when appropriate.',
     '',
-    'Context:',
+    'Student Context:',
     contextBlock,
+    ragContext,
+    '',
+    SPIT_KNOWLEDGE_BASE,
   ].join('\n');
 
   // Build messages array for Grok (last 10 messages for context window)
@@ -265,4 +277,51 @@ export async function getProactiveAlerts(userId: string): Promise<ProactiveAlert
 
 export function getSupportedLanguages() {
   return SUPPORTED_LANGUAGES;
+}
+
+// ── AI Summarize (used by PYQ, Finance, Issues) ──
+
+export async function aiSummarize(text: string, context: string = 'campus') {
+  if (!XAI_API_KEY) throw createError('Grok API key not configured', 500);
+  const response = await axios.post(XAI_API_URL, {
+    model: GROK_MODEL,
+    messages: [
+      { role: 'system', content: `You are a helpful campus AI. Generate a brief, actionable insight (2-3 sentences max) about the following ${context}. Be specific and practical.` },
+      { role: 'user', content: text },
+    ],
+    temperature: 0.6, max_tokens: 256,
+  }, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${XAI_API_KEY}` }, timeout: 15000 });
+  return response.data?.choices?.[0]?.message?.content || 'Unable to generate insight.';
+}
+
+// ── AI Analyze Issue ─────────────────────────
+
+export async function aiAnalyzeIssue(description: string) {
+  if (!XAI_API_KEY) throw createError('Grok API key not configured', 500);
+  const response = await axios.post(XAI_API_URL, {
+    model: GROK_MODEL,
+    messages: [
+      { role: 'system', content: 'You are a campus facility management AI. Given an issue description, classify it. Return ONLY valid JSON: {"priority":"P1"|"P2"|"P3","category":"infrastructure"|"electrical"|"plumbing"|"IT"|"safety"|"other","suggestedFix":"brief suggestion","severity":"critical"|"high"|"medium"|"low"}' },
+      { role: 'user', content: description },
+    ],
+    temperature: 0.3, max_tokens: 200,
+  }, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${XAI_API_KEY}` }, timeout: 15000 });
+  const raw = response.data?.choices?.[0]?.message?.content || '{}';
+  try { const m = raw.match(/\{[\s\S]*\}/); return m ? JSON.parse(m[0]) : { priority: 'P2', category: 'other', suggestedFix: raw, severity: 'medium' }; }
+  catch { return { priority: 'P2', category: 'other', suggestedFix: raw, severity: 'medium' }; }
+}
+
+// ── AI Rewrite (used by NoticePublisher) ─────
+
+export async function aiRewrite(text: string) {
+  if (!XAI_API_KEY) throw createError('Grok API key not configured', 500);
+  const response = await axios.post(XAI_API_URL, {
+    model: GROK_MODEL,
+    messages: [
+      { role: 'system', content: 'You are a professional academic communicator. Rewrite the following notice to be clearer, more professional, and well-structured. Keep it concise. Return ONLY the rewritten text.' },
+      { role: 'user', content: text },
+    ],
+    temperature: 0.5, max_tokens: 512,
+  }, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${XAI_API_KEY}` }, timeout: 15000 });
+  return response.data?.choices?.[0]?.message?.content || text;
 }

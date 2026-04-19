@@ -1,0 +1,100 @@
+/* SubmitRequest — matches submit_request wireframe */
+
+.submit-request {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 24px;
+}
+
+.sr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sr-back {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--surface-card); border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.sr-title {
+  font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;
+  text-align: center; flex: 1;
+}
+
+.sr-section { display: flex; flex-direction: column; gap: 12px; }
+
+.sr-type-pills { display: flex; gap: 10px; overflow-x: auto; }
+.sr-type-pill {
+  padding: 12px 24px; border-radius: var(--radius-full);
+  font-size: 0.85rem; font-weight: 600; border: none;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+  transition: all 0.2s;
+}
+.sr-pill-active { background: var(--text-primary); color: #fff; }
+.sr-pill-cream { background: var(--cream); color: var(--text-primary); }
+.sr-pill-pink { background: var(--pink); color: var(--text-primary); }
+
+.sr-form { display: flex; flex-direction: column; gap: 20px; }
+
+.sr-select-wrap {
+  position: relative;
+}
+.sr-select-wrap select {
+  width: 100%; appearance: none;
+  padding-right: 40px;
+}
+.sr-select-icon {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none;
+}
+
+.sr-date-wrap {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface-container); border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+.sr-date-wrap input {
+  background: none; border: none; padding: 0;
+  font-size: 0.9rem; font-weight: 500;
+  box-shadow: none !important;
+}
+
+.sr-time-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Chain */
+.sr-chain {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text-muted);
+}
+.sr-chain-node {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  position: relative;
+}
+.sr-chain-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--surface-container);
+  display: flex; align-items: center; justify-content: center;
+}
+.sr-chain-label {
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.sr-chain-arrow {
+  position: absolute; right: -20px; top: 8px;
+  color: var(--text-muted);
+}
+
+.sr-submit-row {
+  display: flex; justify-content: flex-end; padding-top: 16px;
+}
+
+/* Success */
+.sr-success {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 16px;
+  min-height: 60vh; text-align: center;
+}
+.sr-success h2 { font-size: 1.5rem; font-weight: 800; }
+.sr-success p { color: var(--text-secondary); max-width: 300px; }

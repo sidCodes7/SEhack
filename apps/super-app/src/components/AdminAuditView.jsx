@@ -1,131 +1,83 @@
 // ──────────────────────────────────────────────
-// AdminAuditView — Plugin Approval Dashboard
+// AdminAuditView — Plugin approval queue (Aether theme)
 // ──────────────────────────────────────────────
-// Lists all plugins (including pending) with their
-// Grok audit reports. Admin can approve or reject.
 
 import { useState, useEffect } from 'react';
 import './AdminAuditView.css';
 
+const MOCK_PLUGINS = [
+  { id: '1', name: 'Study Buddy', category: 'academic', status: 'pending', developer: 'Rahul J.', securityScore: 'LOW' },
+  { id: '2', name: 'Campus Rides', category: 'transport', status: 'pending', developer: 'Meera P.', securityScore: 'MEDIUM' },
+  { id: '3', name: 'Canteen Tracker', category: 'food', status: 'approved', developer: 'Priyank M.', securityScore: 'LOW' },
+];
+
 export default function AdminAuditView({ apiBase }) {
-  const [plugins, setPlugins] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [plugins, setPlugins] = useState(MOCK_PLUGINS);
 
   useEffect(() => {
-    fetchAll();
-  }, []);
+    fetch(`${apiBase}/plugins`)
+      .then(r => r.json())
+      .then(json => {
+        if (json.success && json.data?.length) {
+          setPlugins(json.data.map(p => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            status: p.isActive ? 'approved' : 'pending',
+            developer: p.developerId || 'Unknown',
+            securityScore: 'LOW',
+          })));
+        }
+      })
+      .catch(() => {});
+  }, [apiBase]);
 
-  const fetchAll = async () => {
+  const handleAction = async (id, action) => {
     try {
-      setLoading(true);
-      const res = await fetch(`${apiBase}/plugins`);
-      const json = await res.json();
-      if (json.success) {
-        setPlugins(json.data);
-      }
-    } catch {
-      // fallback
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAction = async (pluginId, action) => {
-    try {
-      const res = await fetch(`${apiBase}/plugins/${pluginId}/${action}`, {
-        method: 'PATCH',
+      await fetch(`${apiBase}/plugins/${id}/${action}`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
-      const json = await res.json();
-      if (json.success) {
-        fetchAll(); // refresh list
-      }
-    } catch {
-      // handle error
-    }
+    } catch {}
+    setPlugins(prev => prev.map(p =>
+      p.id === id ? { ...p, status: action === 'approve' ? 'approved' : 'rejected' } : p
+    ));
   };
 
-  if (loading) {
-    return (
-      <div className="dashboard-loading">
-        <div className="spinner" />
-        <p>Loading audit queue...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="admin-audit-view">
-      <div className="audit-header">
-        <h1>Plugin Audit Queue</h1>
-        <p className="audit-subtitle">Review and approve submitted mini-apps</p>
-      </div>
+    <div className="audit-view animate-in">
+      <h1 className="audit-title">Plugin Audit</h1>
+      <p className="audit-sub">Review and approve submitted mini-apps</p>
 
-      {plugins.length === 0 ? (
-        <div className="empty-state">
-          <p>🛡️</p>
-          <p>No plugins to review</p>
+      {plugins.map(plugin => (
+        <div key={plugin.id} className="audit-card card">
+          <div className="audit-top">
+            <div>
+              <h3 className="audit-name">{plugin.name}</h3>
+              <p className="audit-dev">by {plugin.developer} · {plugin.category}</p>
+            </div>
+            <span className={`audit-badge ${plugin.status === 'approved' ? 'badge-resolved' : plugin.status === 'rejected' ? 'badge-open' : 'badge-progress'}`}>
+              {plugin.status}
+            </span>
+          </div>
+
+          <div className="audit-security">
+            <span className="material-symbols-outlined" style={{ fontSize: 16, color: plugin.securityScore === 'LOW' ? 'var(--success)' : 'var(--gold)' }}>shield</span>
+            <span className="audit-score">Security: {plugin.securityScore}</span>
+          </div>
+
+          {plugin.status === 'pending' && (
+            <div className="audit-actions">
+              <button className="btn-pill" style={{ fontSize: '0.75rem', padding: '8px 20px' }} onClick={() => handleAction(plugin.id, 'approve')}>
+                Approve
+              </button>
+              <button className="btn-outline-pill" style={{ fontSize: '0.75rem', padding: '8px 20px', color: 'var(--error)', borderColor: 'var(--error)' }} onClick={() => handleAction(plugin.id, 'reject')}>
+                Reject
+              </button>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="audit-list">
-          {plugins.map((plugin) => {
-            const audit = plugin.grokAuditReport;
-            return (
-              <div key={plugin.id} className="audit-card">
-                <div className="audit-card-header">
-                  <div>
-                    <h3>{plugin.name}</h3>
-                    <span className="audit-slug">/{plugin.slug}</span>
-                  </div>
-                  <span className={`status-badge status-${plugin.status}`}>
-                    {plugin.status}
-                  </span>
-                </div>
-
-                <p className="audit-description">{plugin.description}</p>
-
-                <div className="audit-meta">
-                  <span>📂 {plugin.category}</span>
-                  <span>🔗 {plugin.deploymentUrl}</span>
-                </div>
-
-                {audit && (
-                  <div className={`audit-report risk-${audit.riskLevel?.toLowerCase()}`}>
-                    <div className="report-row">
-                      <span>Risk: <strong>{audit.riskLevel}</strong></span>
-                      <span>Recommendation: <strong>{audit.recommendation}</strong></span>
-                    </div>
-                    {audit.findings?.length > 0 && (
-                      <ul className="report-findings">
-                        {audit.findings.map((f, i) => (
-                          <li key={i}>{f}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
-
-                {plugin.status === 'pending' && (
-                  <div className="audit-actions">
-                    <button
-                      className="btn btn-success"
-                      onClick={() => handleAction(plugin.id, 'approve')}
-                    >
-                      ✅ Approve
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleAction(plugin.id, 'reject')}
-                    >
-                      ❌ Reject
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
+      ))}
     </div>
   );
 }

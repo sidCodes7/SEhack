@@ -1,0 +1,53 @@
+/* ApprovalsQueue — matches approvals_queue wireframe */
+
+.approvals-queue { display: flex; flex-direction: column; gap: 20px; padding-bottom: 16px; }
+
+.aq-header { display: flex; justify-content: space-between; align-items: center; }
+.aq-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; }
+.aq-badge-count {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface-container); padding: 8px 16px;
+  border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600;
+}
+.aq-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--error); }
+
+.aq-grid { display: flex; flex-direction: column; gap: 16px; }
+
+.aq-card { display: flex; flex-direction: column; gap: 20px; }
+
+.aq-card-top { display: flex; align-items: flex-start; gap: 14px; }
+.aq-avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--lavender); display: flex; align-items: center;
+  justify-content: center; font-size: 1.2rem; font-weight: 700;
+  flex-shrink: 0;
+}
+.aq-info { flex: 1; padding-top: 4px; }
+.aq-name { font-size: 1.1rem; font-weight: 700; }
+.aq-dept { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+
+.chip-lavender { background: var(--lavender); }
+.chip-cream { background: var(--cream); color: #D4A843; }
+.chip-pink { background: var(--pink); }
+
+.aq-detail {
+  background: var(--surface); border-radius: var(--radius-lg);
+  padding: 16px; font-size: 0.9rem; color: var(--text-secondary); font-weight: 500;
+}
+
+.aq-note-wrap { position: relative; }
+.aq-note-input {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 8px 0; font-size: 0.85rem; color: var(--text-primary);
+  font-family: inherit; box-shadow: none !important;
+}
+.aq-note-input:focus { border-bottom-color: var(--text-primary); box-shadow: none !important; }
+
+.aq-actions { display: flex; gap: 12px; padding-top: 4px; }
+.aq-actions .btn-pill, .aq-actions .btn-outline-pill { flex: 1; justify-content: center; }
+
+.aq-empty {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px; min-height: 40vh; text-align: center;
+}

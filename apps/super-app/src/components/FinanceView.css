@@ -1,0 +1,112 @@
+/* FinanceView — matches finance_dues wireframe */
+
+.finance-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.finance-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* Total card */
+.finance-total {
+  border-radius: var(--radius-xl);
+  padding: 28px;
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+.total-amount {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.total-warn-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.total-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Due items */
+.due-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.due-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.due-icon-wrap .material-symbols-outlined { font-size: 22px; }
+.due-icon-sage { background: var(--sage); }
+.due-icon-cream { background: var(--cream); }
+.due-icon-lavender { background: var(--lavender); }
+.due-icon-pink { background: var(--pink); }
+
+.due-info { flex: 1; }
+.due-type { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+.due-detail { font-size: 0.8rem; color: var(--text-secondary); }
+.due-detail.overdue { color: var(--error); font-weight: 500; }
+
+.due-right { text-align: right; }
+.due-amount { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+.due-pay-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  background: var(--text-primary);
+  color: #fff;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s;
+}
+.due-pay-btn:hover { transform: scale(1.02); }
+.due-pay-btn:disabled { opacity: 0.6; }
+
+/* Razorpay badge */
+.finance-badge {
+  border-radius: var(--radius-xl);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.test-badge {
+  background: var(--text-primary);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
