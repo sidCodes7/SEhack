@@ -14,7 +14,7 @@ export default function PaymentScreen() {
   const handlePay = async () => {
     setStage('processing');
     try {
-      const order = (await api.post(`/finance/pay/${dueId}`)).data;
+      const order = (await api.post(`/finance/pay/${params.dueId}`)).data;
       // In production, open Razorpay checkout here with order.orderId
       // Simulating success for demo:
       setTimeout(async () => {

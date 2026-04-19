@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import api from '../../services/api';
 
 export default function KarmaScreen() {
   const router = useRouter();
-  const [karmaData, setKarmaData] = useState(null);
+  const [karmaData, setKarmaData] = useState<any>(null);
 
   useEffect(() => {
     loadKarma();
@@ -39,8 +39,8 @@ export default function KarmaScreen() {
   const leaderboard = karmaData?.leaderboard ?? [];
   const percentile = karmaData?.percentile ?? 72;
 
-  const formatEvent = (type) => {
-    const map = {
+  const formatEvent = (type: string) => {
+    const map: Record<string, string> = {
       issue_reported: 'Issue Reported',
       class_attended: 'Class Attended',
       room_returned_early: 'Room Returned Early',
@@ -57,10 +57,10 @@ export default function KarmaScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={{ fontSize: 20 }}>ðŸ”</Text>
+        <Text style={{ fontSize: 18, fontWeight: '800', letterSpacing: 1, color: '#1A1A1A' }}>A</Text>
         <Text style={styles.headerTitle}>AETHER</Text>
         <View style={styles.headerAvatar}>
-          <Text style={{ fontSize: 16 }}>ðŸ‘¤</Text>
+          <Text style={{ fontSize: 14, fontWeight: '700', color: '#1A1A1A' }}>P</Text>
         </View>
       </View>
 
@@ -85,7 +85,7 @@ export default function KarmaScreen() {
         {/* How you earned it */}
         <View style={[styles.card, styles.cardWhite]}>
           <Text style={styles.cardTitleMed}>How you earned it</Text>
-          {events.map((event, i) => (
+          {events.map((event: any, i: number) => (
             <View key={i} style={styles.eventRow}>
               <View style={[styles.eventDot, { backgroundColor: event.points >= 15 ? colors.accentGold : colors.cardGreen }]} />
               <Text style={styles.eventName}>{formatEvent(event.eventType)}</Text>
@@ -100,15 +100,15 @@ export default function KarmaScreen() {
         <View style={[styles.card, styles.cardLavender]}>
           <Text style={styles.cardTitleMed}>Top Students</Text>
           {leaderboard.length > 0 ? (
-            leaderboard.slice(0, 5).map((student, i) => (
+            leaderboard.slice(0, 5).map((student: any, i: number) => (
               <View key={i} style={[styles.leaderRow, i === 2 && styles.leaderRowHighlight]}>
                 <Text style={styles.leaderRank}>{i + 1}</Text>
                 <View style={styles.leaderAvatar}>
-                  <Text style={{ fontSize: 14 }}>ðŸ‘¤</Text>
+                  <Text style={{ fontSize: 12, fontWeight: '700', color: '#1A1A1A' }}>{student.name?.charAt(0) ?? 'S'}</Text>
                 </View>
                 <Text style={styles.leaderName}>{student.name}</Text>
                 <Text style={styles.leaderScore}>{student.karmaScore} pts</Text>
-                <Text style={{ fontSize: 14 }}>ðŸ…</Text>
+                <Text style={{ fontSize: 12, fontWeight: '800', color: '#D4A843' }}>{i === 0 ? '1st' : i === 1 ? '2nd' : '3rd'}</Text>
               </View>
             ))
           ) : (
@@ -120,11 +120,11 @@ export default function KarmaScreen() {
               <View key={i} style={[styles.leaderRow, i === 2 && styles.leaderRowHighlight]}>
                 <Text style={styles.leaderRank}>{i + 1}</Text>
                 <View style={styles.leaderAvatar}>
-                  <Text style={{ fontSize: 14 }}>ðŸ‘¤</Text>
+                  <Text style={{ fontSize: 12, fontWeight: '700', color: '#1A1A1A' }}>{s.name.charAt(0)}</Text>
                 </View>
                 <Text style={styles.leaderName}>{s.name}</Text>
                 <Text style={styles.leaderScore}>{s.score} pts</Text>
-                <Text style={{ fontSize: 14 }}>ðŸ…</Text>
+                <Text style={{ fontSize: 12, fontWeight: '800', color: '#D4A843' }}>{i === 0 ? '1st' : i === 1 ? '2nd' : '3rd'}</Text>
               </View>
             ))
           )}
@@ -278,4 +278,3 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
   },
 });
-

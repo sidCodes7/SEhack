@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   RefreshControl,
-  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
@@ -17,8 +16,8 @@ import api from '../../services/api';
 
 export default function StudentDashboard() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [dashboard, setDashboard] = useState(null);
+  const [user, setUser] = useState<any>(null);
+  const [dashboard, setDashboard] = useState<any>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadData = useCallback(async () => {
@@ -77,7 +76,10 @@ export default function StudentDashboard() {
             </Text>
           </View>
           <TouchableOpacity style={styles.bellButton}>
-            <Text style={{ fontSize: 22 }}>ðŸ””</Text>
+            <View style={styles.bellContainer}>
+              <Text style={styles.bellIcon}>{'●'}</Text>
+              <View style={styles.notifDot} />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -90,14 +92,14 @@ export default function StudentDashboard() {
           <View style={styles.cardHeader}>
             <Text style={styles.sectionLabel}>NEXT CLASS</Text>
             <View style={styles.arrowButton}>
-              <Text style={styles.arrowText}>â†—</Text>
+              <Text style={styles.arrowText}>{'↗'}</Text>
             </View>
           </View>
           <Text style={styles.cardTitleBig}>
             {nextClass?.subject ?? 'Data Structures'}
           </Text>
           <Text style={styles.cardCaption}>
-            {nextClass?.time ?? '10:30 AM'} Â· {nextClass?.room ?? 'Room 302'} Â· {nextClass?.professor ?? 'Dr. Harshav'}
+            {nextClass?.time ?? '10:30 AM'} · {nextClass?.room ?? 'Room 302'} · {nextClass?.professor ?? 'Dr. Harshav'}
           </Text>
         </TouchableOpacity>
 
@@ -124,14 +126,14 @@ export default function StudentDashboard() {
             <View style={styles.cardHeader}>
               <Text style={styles.sectionLabel}>FINANCE DUE</Text>
               <View style={styles.arrowButton}>
-                <Text style={styles.arrowText}>â†—</Text>
+                <Text style={styles.arrowText}>{'↗'}</Text>
               </View>
             </View>
             <Text style={styles.bigNumber}>
-              â‚¹{financeDue?.totalDue ?? '120'}
+              {'₹'}{financeDue?.totalDue ?? '120'}
             </Text>
             <Text style={styles.cardCaptionSmall}>
-              {financeDue?.topDueType ?? 'Library fine'} <Text style={{ color: colors.accentRed }}>â—</Text>
+              {financeDue?.topDueType ?? 'Library fine'} <Text style={{ color: colors.accentRed }}>{'●'}</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -146,7 +148,7 @@ export default function StudentDashboard() {
           <View style={styles.requestsRow}>
             <Text style={styles.bigNumber}>{pendingRequests?.count ?? 2}</Text>
             <View style={styles.requestTags}>
-              {(pendingRequests?.types ?? ['Room booking', 'Leave']).map((t, i) => (
+              {(pendingRequests?.types ?? ['Room booking', 'Leave']).map((t: string, i: number) => (
                 <View key={i} style={styles.tag}>
                   <Text style={styles.tagText}>{t}</Text>
                 </View>
@@ -165,16 +167,21 @@ export default function StudentDashboard() {
           activeOpacity={0.85}
         >
           <View style={styles.cardHeader}>
-            <Text style={styles.sectionLabel}>CLUB ALERT</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <View style={styles.csiBadge}>
+                <Text style={styles.csiBadgeText}>SPIT CSI</Text>
+              </View>
+              <Text style={styles.sectionLabel}>CLUB ALERT</Text>
+            </View>
             <View style={styles.arrowButton}>
-              <Text style={styles.arrowText}>â†—</Text>
+              <Text style={styles.arrowText}>{'↗'}</Text>
             </View>
           </View>
           <Text style={styles.cardTitleBig}>
-            {upcomingEvent?.title ?? 'Hackathon meeting'}
+            {upcomingEvent?.title ?? 'Tech Workshop: AI Agents'}
           </Text>
           <Text style={styles.cardCaption}>
-            {upcomingEvent?.time ?? 'Today, 4:00 PM'} Â· {upcomingEvent?.room ?? 'Room 101'}
+            {upcomingEvent?.time ?? 'Today, 4:00 PM'} · {upcomingEvent?.room ?? 'Room 101'}
           </Text>
         </TouchableOpacity>
 
@@ -183,10 +190,10 @@ export default function StudentDashboard() {
           <Text style={styles.sectionLabel}>MINI APPS</Text>
           <View style={styles.miniAppsGrid}>
             {[
-              { emoji: 'ðŸ½', label: 'Canteen', route: null },
-              { emoji: 'ðŸ“š', label: 'Library', route: null },
-              { emoji: 'ðŸ“„', label: 'PYQ', route: '/(student)/pyq' },
-              { emoji: 'ðŸŽ¯', label: 'More', route: null },
+              { icon: '◎', label: 'PYQ', route: '/(student)/pyq', bg: colors.cardLavender },
+              { icon: '△', label: 'Issues', route: '/(student)/issues/heatmap', bg: colors.cardGreen },
+              { icon: '◈', label: 'Request', route: '/(student)/bookings/request', bg: colors.cardYellow },
+              { icon: '□', label: 'Finance', route: '/(student)/finance', bg: colors.cardPink },
             ].map((app, i) => (
               <TouchableOpacity
                 key={i}
@@ -194,13 +201,24 @@ export default function StudentDashboard() {
                 onPress={() => app.route && router.push(app.route)}
                 activeOpacity={0.7}
               >
-                <View style={[styles.miniAppIcon, { backgroundColor: [colors.cardYellow, colors.cardGreen, colors.cardLavender, colors.surfaceAlt][i] }]}>
-                  <Text style={{ fontSize: 24 }}>{app.emoji}</Text>
+                <View style={[styles.miniAppIcon, { backgroundColor: app.bg }]}>
+                  <Text style={{ fontSize: 20, color: '#1A1A1A', fontWeight: '700' }}>{app.icon}</Text>
                 </View>
                 <Text style={styles.miniAppLabel}>{app.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
+        </View>
+
+        {/* AI Insight Card */}
+        <View style={styles.aiInsightCard}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <Text style={{ fontSize: 14, color: colors.accentGold }}>{'✦'}</Text>
+            <Text style={styles.aiInsightLabel}>AI INSIGHT</Text>
+          </View>
+          <Text style={styles.aiInsightText}>
+            You have 2 assignments due this week. Your attendance in OS is at 72% — attend the next 3 classes to stay above the 75% threshold.
+          </Text>
         </View>
 
         {/* Spacer for tab bar */}
@@ -213,7 +231,7 @@ export default function StudentDashboard() {
         onPress={() => router.push('/(student)/copilot')}
         activeOpacity={0.85}
       >
-        <Text style={{ fontSize: 20 }}>âœ¦</Text>
+        <Text style={{ fontSize: 18, color: '#FFF', fontWeight: '700' }}>{'✦'}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -266,6 +284,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  bellContainer: {
+    position: 'relative',
+  },
+  bellIcon: {
+    fontSize: 18,
+    color: '#1A1A1A',
+  },
+  notifDot: {
+    position: 'absolute',
+    top: -2,
+    right: -4,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.accentRed,
+  },
 
   // Cards
   card: {
@@ -312,6 +346,20 @@ const styles = StyleSheet.create({
   cardCaptionSmall: {
     ...typography.small,
     marginTop: spacing.xs,
+  },
+
+  // CSI Badge
+  csiBadge: {
+    backgroundColor: '#1A1A1A',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  csiBadgeText: {
+    color: '#FFF',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1,
   },
 
   // Row layout
@@ -408,6 +456,28 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
   },
 
+  // AI Insight Card
+  aiInsightCard: {
+    borderRadius: spacing.cardRadius,
+    padding: spacing.cardPadding,
+    marginBottom: spacing.cardGap,
+    backgroundColor: colors.cardLavender,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.04)',
+  },
+  aiInsightLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    color: colors.textSecondary,
+  },
+  aiInsightText: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+    color: colors.textPrimary,
+  },
+
   // FAB
   fab: {
     position: 'absolute',
@@ -426,4 +496,3 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 });
-

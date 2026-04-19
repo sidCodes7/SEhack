@@ -18,35 +18,65 @@ import { typography } from '../../constants/typography';
 import { spacing } from '../../constants/spacing';
 import api from '../../services/api';
 
+const DEMO_USERS = [
+  { email: 'priyank@aether.edu', password: 'aether123', name: 'Priyank', role: 'student', department: 'Computer Science' },
+  { email: 'harshav@aether.edu', password: 'aether123', name: 'Prof. Harshav', role: 'professor', department: 'Computer Science' },
+  { email: 'admin@aether.edu', password: 'aether123', name: 'Admin', role: 'admin', department: 'Administration' },
+];
+
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password');
+      setError('Please enter both email and password');
       return;
     }
 
     setLoading(true);
-    try {
-      let user = { id: 'prof-priyank', name: 'Dr. Priyank', email: 'priyank@aether.edu', role: 'professor' };
-      let token = 'dev-offline-mode-token';
-      
-      // Artificial delay for feel
-      await new Promise((resolve) => setTimeout(resolve, 600));
+    setError('');
 
-      // Just bypass all network checks to unblock demo
+    try {
+      // Try real API first
+      const res = await api.post('/auth/login', { email, password });
+      if (res.data?.success && res.data?.data?.token) {
+        const { token, user } = res.data.data;
+        await SecureStore.setItemAsync('auth_token', token);
+        await SecureStore.setItemAsync('user', JSON.stringify(user));
+        routeByRole(user.role);
+        return;
+      }
+    } catch {
+      // API unavailable — try demo fallback
+    }
+
+    // Demo user fallback
+    const demoUser = DEMO_USERS.find(u => u.email === email && u.password === password);
+    if (demoUser) {
+      const token = 'demo-jwt-token';
+      const user = { id: demoUser.email, name: demoUser.name, email: demoUser.email, role: demoUser.role, department: demoUser.department };
       await SecureStore.setItemAsync('auth_token', token);
       await SecureStore.setItemAsync('user', JSON.stringify(user));
+      routeByRole(user.role);
+      return;
+    }
 
+    setError('Invalid email or password');
+    setLoading(false);
+  };
+
+  const routeByRole = (role: string) => {
+    setLoading(false);
+    if (role === 'professor' || role === 'hod') {
       router.replace('/(professor)/dashboard');
-    } catch (error) {
-      Alert.alert('Login Failed', 'Invalid email or password. Try priyank / aether123');
-    } finally {
-      setLoading(false);
+    } else if (role === 'admin') {
+      router.replace('/(admin)/analytics');
+    } else {
+      router.replace('/(student)/dashboard');
     }
   };
 
@@ -72,7 +102,7 @@ export default function LoginScreen() {
               placeholder="hello@example.com"
               placeholderTextColor={colors.textMuted}
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(t) => { setEmail(t); setError(''); }}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -84,11 +114,13 @@ export default function LoginScreen() {
               placeholder="••••••••"
               placeholderTextColor={colors.textMuted}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(t) => { setPassword(t); setError(''); }}
               secureTextEntry
               autoCapitalize="none"
             />
           </View>
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <View style={styles.bottomArea}>
             <TouchableOpacity
@@ -100,13 +132,23 @@ export default function LoginScreen() {
               {loading ? (
                 <ActivityIndicator color={colors.textWhite} />
               ) : (
-                <Text style={styles.loginButtonArrow}>Login</Text>
+                <Text style={styles.loginButtonArrow}>→</Text>
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.forgotLink} onPress={() => Alert.alert('Test Bypass', 'Username: priyank\nPassword: aether123')}>
-              <Text style={styles.forgotText}>Forgot password?</Text>
+            <TouchableOpacity
+              style={styles.demoLink}
+              onPress={() => router.push('/(auth)/role-select')}
+            >
+              <Text style={styles.demoText}>Quick demo login →</Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Demo hint */}
+          <View style={styles.demoHint}>
+            <Text style={styles.demoHintText}>
+              Demo: priyank@aether.edu / aether123
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -127,7 +169,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.xl,
     paddingBottom: spacing.lg,
-    minHeight: 500,
+    minHeight: 520,
   },
   institution: {
     fontSize: 16,
@@ -157,11 +199,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textPrimary,
   },
+  errorText: {
+    color: colors.accentRed,
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: spacing.sm,
+    textAlign: 'center',
+  },
   bottomArea: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     paddingTop: spacing.xl,
+    gap: spacing.md,
   },
   loginButton: {
     width: spacing.buttonSize,
@@ -170,19 +220,36 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: spacing.lg,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 24,
+    elevation: 8,
   },
   loginButtonArrow: {
     color: colors.textWhite,
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 24,
+    fontWeight: '600',
   },
-  forgotLink: {
+  demoLink: {
     alignSelf: 'center',
+    paddingVertical: 8,
   },
-  forgotText: {
-    ...typography.caption,
-    color: colors.textSecondary,
+  demoText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.accent,
+  },
+  demoHint: {
+    marginTop: spacing.md,
+    padding: 12,
+    backgroundColor: colors.surfaceAlt,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  demoHintText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.textMuted,
   },
 });
-

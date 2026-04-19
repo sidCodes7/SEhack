@@ -48,7 +48,7 @@ export default function RootLayout() {
 
       if (!liveToken && !inAuthGroup) {
         router.replace('/(auth)/login');
-      } else if (liveToken && (inAuthGroup || segments.length === 0)) {
+      } else if (liveToken && (inAuthGroup || (segments.length as unknown as number) === 0)) {
         if (liveUser?.role === 'professor' || liveUser?.role === 'hod') {
           router.replace('/(professor)/dashboard');
         } else if (liveUser?.role === 'admin') {

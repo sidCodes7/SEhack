@@ -18,7 +18,7 @@ const API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL?.replace('/api', '') || 'h
 
 export default function FinanceScreen() {
   const router = useRouter();
-  const [dues, setDues] = useState([]);
+  const [dues, setDues] = useState<any[]>([]);
 
   useEffect(() => {
     loadDues();
@@ -41,19 +41,19 @@ export default function FinanceScreen() {
   const pendingDues = dues.filter((d) => d.status === 'pending');
   const totalDue = pendingDues.reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
 
-  const typeIcons = {
+  const typeIcons: Record<string, string> = {
     library: 'ðŸ“š',
     canteen: 'ðŸ½',
     lab: 'ðŸ”¬',
   };
 
-  const typeLabels = {
+  const typeLabels: Record<string, string> = {
     library: 'Library Fine',
     canteen: 'Canteen Bill',
     lab: 'Lab Materials',
   };
 
-  const typeColors = {
+  const typeColors: Record<string, string> = {
     library: colors.cardLavender,
     canteen: colors.cardYellow,
     lab: colors.cardGreen,
@@ -63,10 +63,10 @@ export default function FinanceScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={{ fontSize: 20 }}>ðŸ”</Text>
+        <Text style={{ fontSize: 18, fontWeight: '800', letterSpacing: 1, color: '#1A1A1A' }}>A</Text>
         <Text style={styles.headerTitle}>AETHER</Text>
         <View style={styles.headerAvatar}>
-          <Text style={{ fontSize: 16 }}>ðŸ‘¤</Text>
+          <Text style={{ fontSize: 14, fontWeight: '700', color: '#1A1A1A' }}>P</Text>
         </View>
       </View>
 

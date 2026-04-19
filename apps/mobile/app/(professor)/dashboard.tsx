@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,8 @@ import api from '../../services/api';
 
 export default function ProfessorDashboard() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [data, setData] = useState(null);
+  const [user, setUser] = useState<any>(null);
+  const [data, setData] = useState<any>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = async () => {
@@ -52,18 +52,29 @@ export default function ProfessorDashboard() {
     return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   };
 
+  const handleLogout = async () => {
+    await SecureStore.deleteItemAsync('auth_token');
+    await SecureStore.deleteItemAsync('user');
+    router.replace('/(auth)/login');
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <View style={styles.titleRow}>
-          <TouchableOpacity><Text style={{ fontSize: 28 }}>â‰¡</Text></TouchableOpacity>
+          <TouchableOpacity><Text style={{ fontSize: 24, color: '#1A1A1A' }}>{'☰'}</Text></TouchableOpacity>
           <Text style={styles.title}>Workspace</Text>
         </View>
         <View style={styles.headerRight}>
-          <TouchableOpacity><Text style={{ fontSize: 22 }}>ðŸ””</Text></TouchableOpacity>
-          <View style={styles.avatar}>
-            <Text style={{ fontSize: 16 }}>{user?.name?.charAt(0) ?? 'P'}</Text>
-          </View>
+          <TouchableOpacity>
+            <View style={{ position: 'relative' }}>
+              <Text style={{ fontSize: 18, color: '#1A1A1A' }}>{'●'}</Text>
+              <View style={{ position: 'absolute', top: -2, right: -4, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.accentRed }} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleLogout} style={styles.avatar}>
+            <Text style={{ fontSize: 14, fontWeight: '700', color: '#1A1A1A' }}>{user?.name?.charAt(0) ?? 'P'}</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -88,8 +99,19 @@ export default function ProfessorDashboard() {
               ))}
             </View>
           </View>
-          <Text style={styles.cardSub}>CSE Sem 5 Â· Section A</Text>
+          <Text style={styles.cardSub}>CSE Sem 5 · Section A</Text>
         </TouchableOpacity>
+
+        {/* AI Attendance Alert */}
+        <View style={styles.aiCard}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <Text style={{ color: colors.accentGold, fontSize: 14 }}>{'✦'}</Text>
+            <Text style={styles.aiLabel}>AI RISK ALERT</Text>
+          </View>
+          <Text style={styles.aiText}>
+            3 students are at risk of dropping below 75% attendance threshold. Consider reaching out before the next MSE.
+          </Text>
+        </View>
 
         {/* Stats Row */}
         <View style={styles.row}>
@@ -118,9 +140,9 @@ export default function ProfessorDashboard() {
               <Text style={styles.publishBtn}>+ Publish</Text>
             </TouchableOpacity>
           </View>
-          {(data?.notices ?? []).map((n, i) => (
+          {(data?.notices ?? []).map((n: any, i: number) => (
             <View key={i} style={styles.noticeItem}>
-              <Text style={{ fontSize: 16 }}>ðŸ“</Text>
+              <View style={styles.noticeDot} />
               <View style={{ flex: 1, marginLeft: 10 }}>
                 <Text style={styles.noticeTitle}>{n.title}</Text>
                 <Text style={styles.noticeSub}>{n.time}</Text>
@@ -164,7 +186,31 @@ const styles = StyleSheet.create({
   noticeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   publishBtn: { fontSize: 14, fontWeight: '700', color: colors.accent },
   noticeItem: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 10, borderTopWidth: 1, borderTopColor: colors.borderLight },
+  noticeDot: {
+    width: 8, height: 8, borderRadius: 4, backgroundColor: colors.accentGold, marginTop: 6,
+  },
   noticeTitle: { fontSize: 15, fontWeight: '600', color: colors.textPrimary },
   noticeSub: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
-});
 
+  // AI Card
+  aiCard: {
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 12,
+    backgroundColor: colors.cardLavender,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.04)',
+  },
+  aiLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    color: colors.textSecondary,
+  },
+  aiText: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+    color: colors.textPrimary,
+  },
+});

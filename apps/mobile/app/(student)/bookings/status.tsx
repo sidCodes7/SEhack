@@ -65,7 +65,10 @@ export default function BookingStatusScreen() {
         <View style={styles.statusCard}>
           <View style={styles.statusHeader}>
             <Text style={styles.statusTitle}>Request Status</Text>
-            <Badge label="In Progress" variant="pending" />
+            <View style={{ backgroundColor: '#F5F0D0', paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#D4A843' }} />
+              <Text style={{ fontSize: 12, fontWeight: '600', color: '#8B7D3A' }}>In Progress</Text>
+            </View>
           </View>
           <View />
         </View>

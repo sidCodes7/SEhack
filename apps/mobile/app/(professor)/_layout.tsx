@@ -2,6 +2,14 @@ import { Text, View, StyleSheet } from 'react-native';
 import { Tabs } from 'expo-router';
 import { colors } from '../../constants/colors';
 
+function TabIcon({ label, focused }: { label: string; focused: boolean }) {
+  return (
+    <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
+      <Text style={[styles.iconText, focused && styles.iconTextActive]}>{label}</Text>
+    </View>
+  );
+}
+
 export default function ProfessorLayout() {
   return (
     <Tabs
@@ -24,47 +32,53 @@ export default function ProfessorLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
-          title: '',
-          tabBarIcon: ({ focused }) => (
-            <View style={focused ? styles.activeIcon : null}>
-              <Text style={{ fontSize: 22, color: focused ? '#FFF' : '#6B6B6B' }}>⊞</Text>
-            </View>
-          ),
+          title: 'Home',
+          tabBarIcon: ({ focused }) => <TabIcon label="⊞" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="attendance/index"
         options={{
-          title: 'Attendance',
-          tabBarIcon: () => <Text style={{ fontSize: 22 }}>📝</Text>,
+          title: 'Attend.',
+          tabBarIcon: ({ focused }) => <TabIcon label="☰" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="leave-approvals/index"
         options={{
           title: 'Approvals',
-          tabBarIcon: () => <Text style={{ fontSize: 22 }}>✅</Text>,
+          tabBarIcon: ({ focused }) => <TabIcon label="◉" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="notices/index"
         options={{
           title: 'Notices',
-          tabBarIcon: () => <Text style={{ fontSize: 22 }}>📢</Text>,
+          tabBarIcon: ({ focused }) => <TabIcon label="◈" focused={focused} />,
         }}
       />
-      <Tabs.Screen name="follow-ups/index" options={{ tabBarButton: () => null }} />
+      <Tabs.Screen name="follow-ups/index" options={{ href: null }} />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
-  activeIcon: {
-    backgroundColor: '#1A1A1A',
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconContainerActive: {
+    backgroundColor: '#1A1A1A',
+  },
+  iconText: {
+    fontSize: 20,
+    color: '#6B6B6B',
+    fontWeight: '600',
+  },
+  iconTextActive: {
+    color: '#FFFFFF',
   },
 });

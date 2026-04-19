@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,8 @@ import {
   Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-
-
-
+import * as SecureStore from 'expo-secure-store';
+import { useAuthStore } from '../../store/auth.store';
 
 type Role = 'student' | 'professor' | 'admin';
 
@@ -21,15 +20,21 @@ interface RoleOption {
   bgColor: string;
 }
 
+const DEMO_USERS = {
+  student: { id: 'student-priyank', name: 'Priyank', email: 'priyank@aether.edu', role: 'student' as const, department: 'Computer Science' },
+  professor: { id: 'prof-harshav', name: 'Prof. Harshav', email: 'harshav@aether.edu', role: 'professor' as const, department: 'Computer Science' },
+  admin: { id: 'admin-staff', name: 'Admin', email: 'admin@aether.edu', role: 'admin' as const, department: 'Administration' },
+};
+
 const ROLES: RoleOption[] = [
-  { role: 'student', title: 'Student', subtitle: 'Priyank', icon: 'ðŸŽ“', bgColor: '#E9E6F7' },
-  { role: 'professor', title: 'Professor', subtitle: 'Harshav', icon: 'ðŸ“–', bgColor: '#F5F0D0' },
-  { role: 'admin', title: 'Admin / Dean', subtitle: 'Staff Portal', icon: 'ðŸ›ï¸', bgColor: '#D5E7DE' },
+  { role: 'student', title: 'Student', subtitle: 'Priyank', icon: '◈', bgColor: '#E9E6F7' },
+  { role: 'professor', title: 'Professor', subtitle: 'Harshav', icon: '▣', bgColor: '#F5F0D0' },
+  { role: 'admin', title: 'Admin / Dean', subtitle: 'Staff Portal', icon: '◫', bgColor: '#D5E7DE' },
 ];
 
 export default function RoleSelectScreen() {
   const router = useRouter();
-  const { user, setAuth, token } = useAuthStore();
+  const { setAuth } = useAuthStore();
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const buttonScale = new Animated.Value(1);
 
@@ -37,15 +42,18 @@ export default function RoleSelectScreen() {
     setSelectedRole(role);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!selectedRole) return;
 
-    // In a real app the role would already be set by the backend during login.
-    // This screen is primarily for demo purposes.
-    if (user && token) {
-      const updatedUser = { ...user, role: selectedRole };
-      setAuth(updatedUser, token);
-    }
+    const demoUser = DEMO_USERS[selectedRole];
+    const token = 'demo-jwt-token';
+
+    // Save to secure store
+    await SecureStore.setItemAsync('auth_token', token);
+    await SecureStore.setItemAsync('user', JSON.stringify(demoUser));
+
+    // Update zustand store
+    setAuth(demoUser, token);
 
     if (selectedRole === 'professor') {
       router.replace('/(professor)/dashboard');
@@ -109,9 +117,13 @@ export default function RoleSelectScreen() {
             disabled={!selectedRole}
             activeOpacity={1}
           >
-            <Text style={styles.nextArrow}>â†’</Text>
+            <Text style={styles.nextArrow}>→</Text>
           </TouchableOpacity>
         </Animated.View>
+
+        <TouchableOpacity onPress={() => router.back()} style={styles.backLink}>
+          <Text style={styles.backText}>← Back to login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -176,10 +188,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 22,
+    color: '#1A1A1A',
   },
   bottomAction: {
     alignItems: 'flex-end',
     marginTop: 32,
+    gap: 20,
   },
   nextButton: {
     width: 64,
@@ -202,5 +216,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '500',
   },
+  backLink: {
+    alignSelf: 'center',
+  },
+  backText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#6B6B6B',
+  },
 });
-
