@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -57,10 +57,48 @@ export default function CopilotScreen() {
         },
       ]);
     } catch (e) {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'Sorry, I couldn\'t process that. Please try again.' },
-      ]);
+      // SPIT Knowledge Base fallback (RAG simulation)
+      const q = userMsg.content.toLowerCase();
+      const SPIT_KB: Array<{keywords: string[], answer: string, source: string}> = [
+        { keywords: ['semester', 'start', 'when', 'begin'], answer: 'The Even Semester (2024-25) starts on 20th January 2025.', source: 'Academic Calendar 2024-25' },
+        { keywords: ['oculus', 'fest', 'cultural'], answer: 'OCULUS 2025 (Annual Cultural Fest) is scheduled for 21st-23rd March 2025.', source: 'Academic Calendar' },
+        { keywords: ['convocation'], answer: 'Convocation Day is scheduled for 5th April 2025.', source: 'Academic Calendar' },
+        { keywords: ['annual day'], answer: 'SPIT Annual Day is on 25th April 2025.', source: 'Academic Calendar' },
+        { keywords: ['attempt', 'exam', 'special'], answer: 'SPIT allows only 2 attempts per academic year (Regular + Re-exam in July). No special exams.', source: 'Exam Cell Guidelines' },
+        { keywords: ['re-exam', 'reexam', 'july'], answer: 'Re-exams are in the 3rd week of July. If you miss it, you must wait until next academic year.', source: 'Exam Regulations' },
+        { keywords: ['backlog'], answer: 'Backlogs can be given along with regular exams, but ERP registration is compulsory. Only 2 attempts per year.', source: 'Exam Cell' },
+        { keywords: ['attendance', 'rule', 'percent'], answer: '75% attendance is mandatory for ESE. Below 50% = blocked. 65-74% = 15-day improvement program. 50-64% = Rs 2000 fine + program.', source: 'Attendance Policy' },
+        { keywords: ['fee', 'fine', 'erp', 'late'], answer: 'Late ERP registration: Rs 2000/sem. Re-exam fee: Rs 1000 (normal), Rs 5000 (low attendance), Rs 10000 (malpractice).', source: 'Fee Structure' },
+        { keywords: ['grade', 'grading', 'cgpa'], answer: 'SPIT uses hybrid grading (absolute + relative). "SA" is a dept cutoff for AA grade. Grades based on class distribution.', source: 'Grading Policy' },
+        { keywords: ['promotion', 'fy', 'sy', 'ty', 'credit'], answer: 'FY to SY: 50% credits. SY to TY: 70% total credits. No odd-to-even semester restriction.', source: 'Promotion Rules' },
+        { keywords: ['degree', 'btech', 'duration'], answer: 'B.Tech requires 160 credits minimum, 4.0 CGPA, max 6 years duration.', source: 'Degree Requirements' },
+        { keywords: ['malpractice', 'cheat', 'copy'], answer: 'First offense: grade reduced + Rs 10000 fine + summer term. Second: year down + re-admission.', source: 'Academic Integrity Policy' },
+        { keywords: ['mse', 'mid sem', 'midsem'], answer: 'MSE is 30 marks, 1 hour. No re-exam for MSE. Absent students get pro-rata marks with valid reason.', source: 'Evaluation System' },
+        { keywords: ['ese', 'end sem', 'endsem'], answer: 'ESE is worth 100 marks, 3 hours duration. 75% attendance mandatory for ESE eligibility.', source: 'Evaluation System' },
+        { keywords: ['improvement', 'program'], answer: 'Academic Improvement Program: 15-day compulsory program for students with attendance between 65-74%.', source: 'Student Affairs' },
+      ];
+
+      let bestMatch = null;
+      let bestScore = 0;
+      for (const entry of SPIT_KB) {
+        const score = entry.keywords.filter(kw => q.includes(kw)).length;
+        if (score > bestScore) {
+          bestScore = score;
+          bestMatch = entry;
+        }
+      }
+
+      if (bestMatch && bestScore > 0) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: bestMatch.answer, source: bestMatch.source },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: 'I couldn\'t find specific info on that. Try asking about attendance rules, exam policies, fees, grading, or the academic calendar!' },
+        ]);
+      }
     } finally {
       setLoading(false);
     }

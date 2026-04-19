@@ -1,10 +1,9 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import api from '../../../services/api';
-import { useWebSocket } from '../../../hooks/useWebSocket';
 
 
 
@@ -13,7 +12,6 @@ import { useWebSocket } from '../../../hooks/useWebSocket';
 export default function BookingStatusScreen() {
   const router = useRouter();
   const [requests, setRequests] = useState<any[]>([]);
-  const { socket } = useWebSocket();
 
   const fetchRequests = async () => {
     try {
@@ -44,11 +42,7 @@ export default function BookingStatusScreen() {
 
   useEffect(() => {
     fetchRequests();
-    if (socket) {
-      socket.on('approval:updated', fetchRequests);
-      return () => { socket.off('approval:updated', fetchRequests); };
-    }
-  }, [socket]);
+  }, []);
 
   if (requests.length === 0) return null;
   const req = requests[0]; // Show first request detail for demo

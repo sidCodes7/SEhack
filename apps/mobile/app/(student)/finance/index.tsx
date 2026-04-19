@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Linking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors } from '../../../constants/colors';
 import { typography } from '../../../constants/typography';
 import { spacing } from '../../../constants/spacing';
 import api from '../../../services/api';
+
+const API_BASE = process.env.EXPO_PUBLIC_API_BASE_URL?.replace('/api', '') || 'http://10.10.125.45:3000';
 
 export default function FinanceScreen() {
   const router = useRouter();
@@ -26,7 +29,12 @@ export default function FinanceScreen() {
       const res = await api.get('/finance/dues');
       setDues(res.data.data ?? []);
     } catch (e) {
-      console.warn('Finance load error:', e);
+      // Mock data for demo
+      setDues([
+        { id: '1', type: 'library', amount: '250', status: 'pending' },
+        { id: '2', type: 'canteen', amount: '1500', status: 'pending' },
+        { id: '3', type: 'lab', amount: '500', status: 'pending' },
+      ]);
     }
   };
 
@@ -91,7 +99,14 @@ export default function FinanceScreen() {
               <Text style={styles.dueAmount}>â‚¹{parseFloat(due.amount).toFixed(0)}</Text>
               <TouchableOpacity
                 style={styles.payButton}
-                onPress={() => Alert.alert('Payment', `Paying â‚¹${due.amount} via Razorpay (Test Mode)`)}
+                onPress={() => {
+                  const amt = parseFloat(due.amount);
+                  const label = encodeURIComponent(typeLabels[due.type] || due.type);
+                  const url = `${API_BASE}/pay/checkout/${amt}/${label}`;
+                  Linking.openURL(url).catch(() =>
+                    Alert.alert('Payment', `Razorpay checkout for ${due.amount}`)
+                  );
+                }}
                 activeOpacity={0.8}
               >
                 <Text style={styles.payButtonText}>PAY{'\n'}NOW</Text>

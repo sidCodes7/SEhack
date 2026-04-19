@@ -1,63 +1,125 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, SafeAreaView, ActivityIndicator, View, StatusBar } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
+import { Slot, useRouter, useSegments } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { colors } from '../constants/colors';
+import { spacing } from '../constants/spacing';
 
 export default function RootLayout() {
-  const [loading, setLoading] = useState(true);
-  const webviewRef = useRef(null);
+  const segments = useSegments();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const fadeAnim = new Animated.Value(1);
 
-  // The local Vite dev server IP
-  const AETHER_WEB_URL = 'http://10.10.125.254:5174'; 
+  useEffect(() => {
+    const bootstrapAuth = async () => {
+      try {
+        const storedToken = await SecureStore.getItemAsync('auth_token');
+        const storedUser = await SecureStore.getItemAsync('user');
+        if (storedToken && storedUser) {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        await SecureStore.deleteItemAsync('auth_token');
+        await SecureStore.deleteItemAsync('user');
+      } finally {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 600,
+          useNativeDriver: true,
+        }).start(() => setIsLoading(false));
+      }
+    };
+    bootstrapAuth();
+  }, []);
 
-  // Handle postMessage from Web to Native (e.g., Push Notifications, GPS, Biometrics)
-  const onMessage = (event) => {
-    try {
-      const data = JSON.parse(event.nativeEvent.data);
-      console.log('Message from WebView:', data);
-    } catch {}
-  };
+  useEffect(() => {
+    if (isLoading) return;
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      
-      {loading && (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#1A1A1A" />
+    const inAuthGroup = segments[0] === '(auth)';
+
+    const enforceAuth = async () => {
+      const liveToken = token || (await SecureStore.getItemAsync('auth_token'));
+      const liveUserStr = await SecureStore.getItemAsync('user');
+      const liveUser = user || (liveUserStr ? JSON.parse(liveUserStr) : null);
+
+      if (!liveToken && !inAuthGroup) {
+        router.replace('/(auth)/login');
+      } else if (liveToken && (inAuthGroup || segments.length === 0)) {
+        if (liveUser?.role === 'professor' || liveUser?.role === 'hod') {
+          router.replace('/(professor)/dashboard');
+        } else if (liveUser?.role === 'admin') {
+          router.replace('/(admin)/analytics');
+        } else {
+          router.replace('/(student)/dashboard');
+        }
+      }
+    };
+    enforceAuth();
+  }, [token, segments, isLoading, user]);
+
+  if (isLoading) {
+    return (
+      <Animated.View style={[styles.splash, { opacity: fadeAnim }]}>
+        <View style={styles.splashContent}>
+          <Text style={styles.splashHeadline}>Above the{'\n'}chaos.</Text>
+          <View style={styles.splashBrand}>
+            <Text style={styles.splashName}>Aether</Text>
+            <View style={styles.splashBadge}>
+              <Text style={styles.splashBadgeText}>CAMPUS OS</Text>
+            </View>
+          </View>
         </View>
-      )}
+      </Animated.View>
+    );
+  }
 
-      <WebView
-        ref={webviewRef}
-        source={{ uri: AETHER_WEB_URL }}
-        style={styles.webview}
-        onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
-        onMessage={onMessage}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        allowFileAccessFromFileURLs={true}
-        bounces={false}
-        showsVerticalScrollIndicator={false}
-      />
-    </SafeAreaView>
-  );
+  return <Slot />;
 }
 
 const styles = StyleSheet.create({
-  container: {
+  splash: {
     flex: 1,
-    backgroundColor: '#F7F6F2', // Match Aether's CSS var(--background)
+    backgroundColor: '#D5E7DE',
+    justifyContent: 'space-between',
+    paddingTop: 80,
+    paddingBottom: 60,
+    paddingHorizontal: spacing.xl,
   },
-  webview: {
+  splashContent: {
     flex: 1,
-    backgroundColor: 'transparent',
+    justifyContent: 'flex-start',
   },
-  loaderContainer: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#F7F6F2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
+  splashHeadline: {
+    fontSize: 52,
+    fontWeight: '900',
+    lineHeight: 56,
+    color: '#1A1A1A',
+    letterSpacing: -1,
+  },
+  splashBrand: {
+    marginTop: spacing.lg,
+  },
+  splashName: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1A1A1A',
+    marginBottom: spacing.sm,
+  },
+  splashBadge: {
+    backgroundColor: '#1A1A1A',
+    alignSelf: 'flex-start',
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  splashBadgeText: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    letterSpacing: 2,
   },
 });

@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
 import api from '../../../services/api';
 
@@ -14,7 +14,7 @@ export default function PYQScreen() {
 
   const fetchPapers = async () => {
     try {
-      const data = (await api.get(`/pyq/papers?q=${q}`)).data;
+      const data = (await api.get(`/pyq/papers?q=${query}`)).data;
       setPapers(data);
     } catch {
       setPapers([
