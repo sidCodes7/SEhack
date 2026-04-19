@@ -114,10 +114,10 @@ export default function KarmaScreen() {
           ) : (
             [
               { name: 'Sneha Patel', score: 312 },
-              { name: 'Priyank Sharma', score: 287 },
-              { name: 'Vikram Singh', score: 240 },
+              { name: 'Priyank Sharma', score: 240 },
+              { name: 'Vikram Singh', score: 215 },
             ].map((s, i) => (
-              <View key={i} style={[styles.leaderRow, i === 2 && styles.leaderRowHighlight]}>
+              <View key={i} style={[styles.leaderRow, i === 1 && styles.leaderRowHighlight]}>
                 <Text style={styles.leaderRank}>{i + 1}</Text>
                 <View style={styles.leaderAvatar}>
                   <Text style={{ fontSize: 12, fontWeight: '700', color: '#1A1A1A' }}>{s.name.charAt(0)}</Text>

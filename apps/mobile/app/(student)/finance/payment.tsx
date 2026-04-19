@@ -42,7 +42,7 @@ export default function PaymentScreen() {
             <Text style={styles.title}>Confirm Payment</Text>
             <View style={styles.card}>
               <Text style={styles.type}>{params.type || 'Library Fine'}</Text>
-              <Text style={styles.amount}>â‚¹{params.amount || '120'}</Text>
+              <Text style={styles.amount}>{`\u20B9${params.amount || '120'}`}</Text>
               <Text style={styles.info}>Payment via Razorpay</Text>
             </View>
             <TouchableOpacity style={styles.payBtn} onPress={handlePay}>
@@ -57,17 +57,17 @@ export default function PaymentScreen() {
         {stage === 'processing' && (
           <View style={styles.center}>
             <ActivityIndicator size="large" color="#1A1A1A" />
-            <Text style={styles.statusText}>Processing paymentâ€¦</Text>
+            <Text style={styles.statusText}>Processing payment...</Text>
           </View>
         )}
 
         {stage === 'success' && (
           <View style={styles.center}>
             <View style={styles.successCircle}>
-              <Text style={styles.successIcon}>âœ“</Text>
+              <Text style={styles.successIcon}>{'\u2713'}</Text>
             </View>
             <Text style={styles.successTitle}>Payment Successful!</Text>
-            <Text style={styles.successSub}>â‚¹{params.amount || '120'} paid for {params.type || 'Library Fine'}</Text>
+            <Text style={styles.successSub}>{`\u20B9${params.amount || '120'} paid for ${params.type || 'Library Fine'}`}</Text>
             <TouchableOpacity style={styles.doneBtn} onPress={() => router.back()}>
               <Text style={styles.doneBtnText}>Done</Text>
             </TouchableOpacity>
@@ -77,7 +77,7 @@ export default function PaymentScreen() {
         {stage === 'failed' && (
           <View style={styles.center}>
             <View style={styles.failCircle}>
-              <Text style={styles.failIcon}>âœ•</Text>
+              <Text style={styles.failIcon}>{'\u2717'}</Text>
             </View>
             <Text style={styles.failTitle}>Payment Failed</Text>
             <Text style={styles.failSub}>Something went wrong. Please try again.</Text>

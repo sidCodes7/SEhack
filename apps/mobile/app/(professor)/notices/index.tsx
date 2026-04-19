@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity, Alert,
 } from 'react-native';
@@ -42,13 +42,13 @@ export default function NoticesScreen() {
         <View style={styles.formCard}>
           <View style={styles.field}>
             <Text style={styles.label}>Title</Text>
-            <TextInput style={styles.input} placeholder="Notice titleâ€¦" placeholderTextColor="#A7A9BE" value={title} onChangeText={setTitle} />
+            <TextInput style={styles.input} placeholder="Notice title..." placeholderTextColor="#A7A9BE" value={title} onChangeText={setTitle} />
           </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Content</Text>
             <TextInput
-              style={styles.textArea} placeholder="Write your noticeâ€¦"
+              style={styles.textArea} placeholder="Write your notice..."
               placeholderTextColor="#A7A9BE" multiline numberOfLines={6}
               value={content} onChangeText={setContent} textAlignVertical="top"
             />

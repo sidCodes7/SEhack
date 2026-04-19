@@ -42,9 +42,9 @@ export default function FinanceScreen() {
   const totalDue = pendingDues.reduce((sum, d) => sum + parseFloat(d.amount || 0), 0);
 
   const typeIcons: Record<string, string> = {
-    library: 'ðŸ“š',
-    canteen: 'ðŸ½',
-    lab: 'ðŸ”¬',
+    library: 'B',
+    canteen: 'C',
+    lab: 'L',
   };
 
   const typeLabels: Record<string, string> = {
@@ -77,8 +77,8 @@ export default function FinanceScreen() {
         <View style={[styles.card, styles.cardLavender]}>
           <Text style={styles.sectionLabel}>TOTAL DUES</Text>
           <View style={styles.totalRow}>
-            <Text style={styles.totalAmount}>â‚¹{totalDue.toFixed(0)}</Text>
-            <Text style={{ fontSize: 32 }}>âš ï¸</Text>
+            <Text style={styles.totalAmount}>{'\u20B9'}{totalDue.toFixed(0)}</Text>
+            <Text style={{ fontSize: 28, color: '#D4A843' }}>{'!'}</Text>
           </View>
           <Text style={styles.totalSub}>{pendingDues.length} items pending</Text>
         </View>
@@ -87,7 +87,7 @@ export default function FinanceScreen() {
         {pendingDues.map((due, i) => (
           <View key={due.id || i} style={[styles.dueCard, { backgroundColor: typeColors[due.type] || colors.surface }]}>
             <View style={styles.dueIconContainer}>
-              <Text style={{ fontSize: 24 }}>{typeIcons[due.type] || 'ðŸ’°'}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '800', color: '#1A1A1A' }}>{typeIcons[due.type] || '$'}</Text>
             </View>
             <View style={styles.dueInfo}>
               <Text style={styles.dueTitle}>{typeLabels[due.type] || due.type}</Text>
@@ -96,7 +96,7 @@ export default function FinanceScreen() {
               </Text>
             </View>
             <View style={styles.dueRight}>
-              <Text style={styles.dueAmount}>â‚¹{parseFloat(due.amount).toFixed(0)}</Text>
+              <Text style={styles.dueAmount}>{'\u20B9'}{parseFloat(due.amount).toFixed(0)}</Text>
               <TouchableOpacity
                 style={styles.payButton}
                 onPress={() => {
@@ -117,15 +117,15 @@ export default function FinanceScreen() {
 
         {pendingDues.length === 0 && (
           <View style={[styles.card, styles.cardWhite]}>
-            <Text style={styles.emptyText}>âœ… No pending dues!</Text>
+            <Text style={styles.emptyText}>No pending dues!</Text>
           </View>
         )}
 
         {/* Razorpay badge */}
         <View style={[styles.card, styles.cardMint]}>
           <View style={styles.razorpayRow}>
-            <Text style={{ fontSize: 14 }}>ðŸ”’</Text>
-            <Text style={styles.razorpayText}>Payments secured via Razorpay</Text>
+            <Text style={{ fontSize: 14, color: '#6B6B6B' }}>{'SECURED'}</Text>
+            <Text style={styles.razorpayText}>Payments via Razorpay</Text>
           </View>
           <View style={styles.testBadge}>
             <Text style={styles.testBadgeText}>TEST MODE</Text>

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { useRouter } from 'expo-router';
+import * as Speech from 'expo-speech';
 import { colors } from '../../../constants/colors';
 import { spacing } from '../../../constants/spacing';
-import { typography } from '../../../constants/typography';
+import api from '../../../services/api';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -11,58 +13,150 @@ const LANGUAGES = [
   { code: 'ta', label: 'TA' },
 ];
 
+// SPIT Knowledge Base for offline RAG simulation
+const SPIT_KB = [
+  { keywords: ['semester', 'start', 'when', 'begin', 'even'], answer: 'The Even Semester (2024-25) starts on 20th January 2025.', source: 'Academic Calendar 2024-25' },
+  { keywords: ['oculus', 'fest', 'cultural'], answer: 'OCULUS 2025 (Annual Cultural Fest) is scheduled for 21st-23rd March 2025.', source: 'Academic Calendar' },
+  { keywords: ['convocation'], answer: 'Convocation Day is scheduled for 5th April 2025.', source: 'Academic Calendar' },
+  { keywords: ['annual day'], answer: 'SPIT Annual Day is on 25th April 2025.', source: 'Academic Calendar' },
+  { keywords: ['presentation', 'project', 'paper', 'submit', 'deadline', 'mini'], answer: 'Technical Paper/Project presentations (BE) are on 28th-30th April and 2nd May 2025. Mini project deadline is typically 22nd April.', source: 'Academic Calendar' },
+  { keywords: ['attempt', 'exam', 'special'], answer: 'SPIT allows only 2 attempts per academic year (Regular + Re-exam in July). No special exams are offered.', source: 'Exam Cell Guidelines' },
+  { keywords: ['re-exam', 'reexam', 'july', 'miss'], answer: 'Re-exams are in the 3rd week of July. If you miss it, you must wait until the next academic year (May/July).', source: 'Exam Regulations' },
+  { keywords: ['backlog'], answer: 'Backlogs can be given along with regular exams, but ERP registration is compulsory. Only 2 attempts per academic year.', source: 'Exam Cell' },
+  { keywords: ['attendance', 'rule', 'percent', 'absent'], answer: '75% attendance is mandatory for ESE eligibility. Below 50% = blocked from exam. 65-74% = 15-day improvement program. 50-64% = Rs 2000 fine + improvement program.', source: 'Attendance Policy' },
+  { keywords: ['fee', 'fine', 'erp', 'late', 'cost'], answer: 'Late ERP registration: Rs 2000/sem. Re-exam fee: Rs 1000 (normal), Rs 5000 (low attendance), Rs 10000 (malpractice).', source: 'Fee Structure' },
+  { keywords: ['grade', 'grading', 'cgpa', 'aa', 'sa'], answer: 'SPIT uses hybrid grading (absolute + relative). "SA" is a department cutoff for AA grade. Final grades are based on class distribution.', source: 'Grading Policy' },
+  { keywords: ['promotion', 'fy', 'sy', 'ty', 'credit', 'year'], answer: 'FY to SY: need 50% credits. SY to TY: need 70% total credits. No odd-to-even semester restriction.', source: 'Promotion Rules' },
+  { keywords: ['degree', 'btech', 'duration', 'graduate'], answer: 'B.Tech requires minimum 160 credits, 4.0 CGPA, and must be completed within max 6 years.', source: 'Degree Requirements' },
+  { keywords: ['malpractice', 'cheat', 'copy'], answer: 'First offense: grade reduced + Rs 10000 fine + summer term. Second offense: year down + re-admission required.', source: 'Academic Integrity' },
+  { keywords: ['mse', 'mid sem', 'midsem', 'midterm'], answer: 'MSE is 30 marks, 1 hour duration. No re-exam for MSE. Absent students get pro-rata marks with valid reason.', source: 'Evaluation System' },
+  { keywords: ['ese', 'end sem', 'endsem', 'final'], answer: 'ESE is worth 100 marks, 3 hours duration. 75% attendance is mandatory for ESE eligibility.', source: 'Evaluation System' },
+  { keywords: ['room', 'available', 'book', 'free'], answer: 'Room 302 and Lab 201 are available at 2 PM tomorrow. Shall I book one for you?', source: 'Room Booking System', action: { label: 'Book Room 302', target: 'bookings/request' } },
+  { keywords: ['karma', 'score', 'points', 'rank'], answer: 'Your current karma score is 240 points. You are in the top 28% of students! Attend more classes and submit assignments on time to boost it.', source: 'Karma System' },
+  { keywords: ['canteen', 'food', 'menu', 'lunch'], answer: 'Today\'s canteen specials: Paneer Butter Masala (Rs 80), Chicken Biryani (Rs 120), Vada Pav (Rs 20). Canteen hours: 8 AM - 6 PM.', source: 'Canteen System' },
+  { keywords: ['library', 'book', 'borrow', 'return'], answer: 'Library hours: 9 AM - 8 PM. You can borrow up to 4 books for 14 days. Overdue fine: Rs 5/day. Digital resources available 24/7 via OPAC portal.', source: 'Library System' },
+  { keywords: ['club', 'csi', 'workshop', 'hackathon', 'event'], answer: 'SPIT CSI Chapter has an AI Agents Workshop today at 4:00 PM in Room 101. Upcoming: Internal Hackathon on Apr 25th.', source: 'CSI Club' },
+  { keywords: ['hello', 'hi', 'hey', 'help'], answer: 'Hello! I\'m Aether Copilot, powered by Grok AI. I can help you with:\n- Academic calendar & deadlines\n- Exam rules & grading policies\n- Attendance requirements\n- Room bookings\n- Finance & fees\n- Club events\n\nJust ask me anything!', source: 'Copilot' },
+];
+
+function findKBAnswer(query: string) {
+  const q = query.toLowerCase();
+  let bestMatch = null;
+  let bestScore = 0;
+  for (const entry of SPIT_KB) {
+    const score = entry.keywords.filter(kw => q.includes(kw)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = entry;
+    }
+  }
+  return bestMatch && bestScore > 0 ? bestMatch : null;
+}
+
 export default function CopilotChatScreen() {
+  const router = useRouter();
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState('');
   const [lang, setLang] = useState('en');
   const [loading, setLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
-    // Initial mock state matching web exactly
     setMessages([
       { id: 'alert-1', type: 'alert', title: 'Scholarship deadline in 2 days', message: '3 steps still pending' },
       { id: 'user-1', type: 'user', text: 'Mini project kab submit karna hai?' },
-      { id: 'bot-1', type: 'bot', text: '22 April, raat 11:59 baje tak submit karna hai.', source: "Source: Prof. Harshav's notice", canSpeak: true },
+      { id: 'bot-1', type: 'bot', text: 'Technical Paper/Project presentations (BE) are on 28th-30th April and 2nd May 2025. Mini project deadline is typically 22nd April.', source: 'Source: Academic Calendar', canSpeak: true },
       { id: 'user-2', type: 'user', text: 'What rooms are available tomorrow at 2pm?' },
-      { id: 'bot-2', type: 'bot', text: 'Room 302 and Lab 201 are free at 2 PM tomorrow.', canSpeak: true, action: { label: 'Book Room 302', icon: '↗' } },
+      { id: 'bot-2', type: 'bot', text: 'Room 302 and Lab 201 are free at 2 PM tomorrow.', canSpeak: true, action: { label: 'Book Room 302', target: 'bookings/request' } },
     ]);
   }, []);
 
-  const sendMessage = () => {
+  const handleSpeak = (text: string) => {
+    if (isSpeaking) {
+      Speech.stop();
+      setIsSpeaking(false);
+      return;
+    }
+    setIsSpeaking(true);
+    Speech.speak(text, {
+      language: lang === 'hi' ? 'hi-IN' : lang === 'mr' ? 'mr-IN' : lang === 'ta' ? 'ta-IN' : 'en-US',
+      rate: 0.9,
+      onDone: () => setIsSpeaking(false),
+      onError: () => setIsSpeaking(false),
+    });
+  };
+
+  const handleAction = (action: any) => {
+    if (action?.target === 'bookings/request') {
+      router.push('/(student)/bookings/request');
+    } else if (action?.target) {
+      router.push(`/(student)/${action.target}`);
+    } else {
+      Alert.alert('Action', action?.label || 'Done!');
+    }
+  };
+
+  const sendMessage = async () => {
     if (!input.trim()) return;
-    const userMsg = { id: `user-${Date.now()}`, type: 'user', text: input };
+    const userText = input.trim();
+    const userMsg = { id: `user-${Date.now()}`, type: 'user', text: userText };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setLoading(true);
 
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 100);
+    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
 
-    // Mock response
-    setTimeout(() => {
-      const demoReplies = [
-        { text: 'I found that information for you. The deadline is next Friday at 5 PM.', source: 'Source: Academic Calendar' },
-        { text: 'Based on the latest notices, you have 2 pending assignments this week.', source: 'Source: Recent Notices' },
-        { text: 'Room 302 and Lab 201 are available. Shall I book one for you?', action: { label: 'Book Room 302', icon: '↗' } },
-        { text: 'Your current karma score is 240 points. You\'re in the top 28% of students!', source: 'Source: Karma System' },
-      ];
-      const reply = demoReplies[Math.floor(Math.random() * demoReplies.length)];
-      setMessages(prev => [...prev, { id: `bot-${Date.now()}`, type: 'bot', ...reply, canSpeak: true }]);
+    // Try real API first
+    try {
+      const res = await api.post('/copilot/chat', {
+        message: userText,
+        language: lang,
+      });
+      const reply = res.data.data;
+      setMessages(prev => [...prev, {
+        id: `bot-${Date.now()}`,
+        type: 'bot',
+        text: reply.response || reply.message || 'I found that for you!',
+        source: reply.source ? `Source: ${reply.source}` : undefined,
+        canSpeak: true,
+        action: reply.action,
+      }]);
       setLoading(false);
-      setTimeout(() => {
-        scrollViewRef.current?.scrollToEnd({ animated: true });
-      }, 100);
-    }, 1500);
+      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
+      return;
+    } catch {}
+
+    // Fallback: SPIT Knowledge Base RAG
+    const kbMatch = findKBAnswer(userText);
+    if (kbMatch) {
+      setMessages(prev => [...prev, {
+        id: `bot-${Date.now()}`,
+        type: 'bot',
+        text: kbMatch.answer,
+        source: `Source: ${kbMatch.source}`,
+        canSpeak: true,
+        action: kbMatch.action,
+      }]);
+    } else {
+      setMessages(prev => [...prev, {
+        id: `bot-${Date.now()}`,
+        type: 'bot',
+        text: 'I don\'t have specific info on that. Try asking about attendance rules, exam policies, fees, grading, room availability, or the academic calendar!',
+        canSpeak: true,
+      }]);
+    }
+    setLoading(false);
+    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
   };
 
   return (
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView 
         style={styles.container} 
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 20}
       >
         {/* Header */}
         <View style={styles.header}>
@@ -88,7 +182,7 @@ export default function CopilotChatScreen() {
             </View>
           </ScrollView>
           <View style={styles.grokBadge}>
-            <Text style={styles.grokIcon}>✦</Text>
+            <Text style={styles.grokIcon}>{'✦'}</Text>
             <Text style={styles.grokText}>Grok</Text>
           </View>
         </View>
@@ -106,10 +200,10 @@ export default function CopilotChatScreen() {
                 <View key={msg.id} style={styles.alertCard}>
                   <View style={styles.alertTopRow}>
                     <View style={styles.alertLeft}>
-                      <Text style={{fontSize: 14, color: colors.textSecondary}}>★</Text>
+                      <Text style={{fontSize: 14, color: colors.textSecondary}}>{'★'}</Text>
                       <Text style={styles.alertLabel}>HEADS UP</Text>
                     </View>
-                    <View style={styles.alertBtn}><Text style={{fontSize: 14}}>→</Text></View>
+                    <View style={styles.alertBtn}><Text style={{fontSize: 14}}>{'→'}</Text></View>
                   </View>
                   <Text style={styles.alertTitle}>{msg.title}</Text>
                   <Text style={styles.alertSub}>{msg.message}</Text>
@@ -137,16 +231,16 @@ export default function CopilotChatScreen() {
                   
                   <View style={styles.botRow}>
                     {msg.canSpeak && (
-                      <TouchableOpacity style={styles.ttsBtn}>
-                        <Text style={styles.ttsIcon}>▶</Text>
-                        <Text style={styles.ttsText}>Listen</Text>
+                      <TouchableOpacity style={styles.ttsBtn} onPress={() => handleSpeak(msg.text)}>
+                        <Text style={styles.ttsIcon}>{isSpeaking ? '◼' : '▶'}</Text>
+                        <Text style={styles.ttsText}>{isSpeaking ? 'Stop' : 'Listen'}</Text>
                       </TouchableOpacity>
                     )}
                     
                     {msg.action && (
-                      <TouchableOpacity style={styles.actionBtn}>
+                      <TouchableOpacity style={styles.actionBtn} onPress={() => handleAction(msg.action)}>
                         <Text style={styles.actionText}>{msg.action.label}</Text>
-                        <Text style={styles.actionIcon}>{msg.action.icon}</Text>
+                        <Text style={styles.actionIcon}>{'→'}</Text>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -159,7 +253,7 @@ export default function CopilotChatScreen() {
             <View style={styles.msgBotWrap}>
               <View style={[styles.bubbleBot, { paddingVertical: 12 }]}>
                 <View style={{flexDirection:'row', alignItems:'center', gap:6}}>
-                  <Text style={{color: colors.accentGold, fontSize:12}}>✦</Text>
+                  <Text style={{color: colors.accentGold, fontSize:12}}>{'✦'}</Text>
                   <Text style={{fontSize: 12, fontWeight:'600', color: colors.textMuted}}>Grok is thinking...</Text>
                 </View>
               </View>
@@ -181,9 +275,13 @@ export default function CopilotChatScreen() {
               <Text style={styles.listeningText}>Listening via Sarvam...</Text>
               <TouchableOpacity 
                 style={[styles.micBtn, {backgroundColor: colors.accentRed}]}
-                onPress={() => setIsRecording(false)}
+                onPress={() => {
+                  setIsRecording(false);
+                  // Simulate voice input for demo
+                  setInput('What is the attendance rule?');
+                }}
               >
-                <Text style={{color: '#FFF', fontSize: 20}}>◼</Text>
+                <Text style={{color: '#FFF', fontSize: 20}}>{'◼'}</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -192,7 +290,7 @@ export default function CopilotChatScreen() {
                 style={styles.micBtn}
                 onPress={() => setIsRecording(true)}
               >
-                <Text style={{fontSize: 20}}>🎙</Text>
+                <Text style={{fontSize: 20}}>{'🎙'}</Text>
               </TouchableOpacity>
               <TextInput
                 style={styles.textInput}
@@ -201,13 +299,14 @@ export default function CopilotChatScreen() {
                 value={input}
                 onChangeText={setInput}
                 onSubmitEditing={sendMessage}
+                returnKeyType="send"
               />
               <TouchableOpacity 
                 style={[styles.sendBtn, !input.trim() && {opacity: 0.5}]}
                 onPress={sendMessage}
                 disabled={!input.trim() || loading}
               >
-                <Text style={{color: '#FFF', fontSize: 20}}>↑</Text>
+                <Text style={{color: '#FFF', fontSize: 20}}>{'↑'}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -256,7 +355,7 @@ const styles = StyleSheet.create({
   botActions: { marginTop: 8, marginLeft: 12 },
   sourceText: { fontSize: 11, color: colors.textMuted, fontStyle: 'italic', marginBottom: 8 },
   botRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  ttsBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surfaceAlt, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, borderCurve: 'continuous' },
+  ttsBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surfaceAlt, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16 },
   ttsIcon: { fontSize: 10, color: colors.textSecondary, marginRight: 4 },
   ttsText: { fontSize: 11, fontWeight: '600', color: colors.textSecondary },
   actionBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F0F0FF', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16 },

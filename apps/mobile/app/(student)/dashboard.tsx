@@ -13,6 +13,7 @@ import { colors } from '../../constants/colors';
 import { typography } from '../../constants/typography';
 import { spacing } from '../../constants/spacing';
 import api from '../../services/api';
+import { useAuthStore } from '../../store/auth.store';
 
 export default function StudentDashboard() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function StudentDashboard() {
   };
 
   const nextClass = dashboard?.nextClass;
-  const karmaScore = dashboard?.karmaScore ?? user?.karmaScore ?? 0;
+  const karmaScore = dashboard?.karmaScore ?? user?.karmaScore ?? 240;
   const financeDue = dashboard?.financeSummary;
   const pendingRequests = dashboard?.pendingRequests;
   const upcomingEvent = dashboard?.upcomingEvent;
@@ -75,7 +76,12 @@ export default function StudentDashboard() {
               {greeting()}, {user?.name?.split(' ')[0] ?? 'Student'}
             </Text>
           </View>
-          <TouchableOpacity style={styles.bellButton}>
+          <TouchableOpacity style={styles.bellButton} onPress={async () => {
+            useAuthStore.getState().clearAuth();
+            await SecureStore.deleteItemAsync('auth_token');
+            await SecureStore.deleteItemAsync('user');
+            router.replace('/(auth)/role-select');
+          }}>
             <View style={styles.bellContainer}>
               <Text style={styles.bellIcon}>{'●'}</Text>
               <View style={styles.notifDot} />

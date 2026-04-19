@@ -5,22 +5,22 @@ import * as SecureStore from 'expo-secure-store';
 import { colors } from '../constants/colors';
 import { spacing } from '../constants/spacing';
 
+import { useAuthStore } from '../store/auth.store';
+
 export default function RootLayout() {
   const segments = useSegments();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
   const fadeAnim = new Animated.Value(1);
+  const { token, user, setAuth } = useAuthStore();
 
   useEffect(() => {
     const bootstrapAuth = async () => {
       try {
         const storedToken = await SecureStore.getItemAsync('auth_token');
-        const storedUser = await SecureStore.getItemAsync('user');
-        if (storedToken && storedUser) {
-          setToken(storedToken);
-          setUser(JSON.parse(storedUser));
+        const storedUserStr = await SecureStore.getItemAsync('user');
+        if (storedToken && storedUserStr) {
+          setAuth(JSON.parse(storedUserStr), storedToken);
         }
       } catch (error) {
         await SecureStore.deleteItemAsync('auth_token');
@@ -42,9 +42,8 @@ export default function RootLayout() {
     const inAuthGroup = segments[0] === '(auth)';
 
     const enforceAuth = async () => {
-      const liveToken = token || (await SecureStore.getItemAsync('auth_token'));
-      const liveUserStr = await SecureStore.getItemAsync('user');
-      const liveUser = user || (liveUserStr ? JSON.parse(liveUserStr) : null);
+      const liveToken = token;
+      const liveUser = user;
 
       if (!liveToken && !inAuthGroup) {
         router.replace('/(auth)/login');

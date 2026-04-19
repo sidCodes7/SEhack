@@ -25,7 +25,7 @@ export default function LeaveApprovalsScreen() {
         {
           id: '2', type: 'Leave Request', requesterName: 'Ananya Shah',
           program: 'B.Tech', department: 'CSE', semester: 3,
-          details: 'Apr 20â€“21 Â· Medical',
+          details: 'Apr 20-21 - Medical',
         },
       ]);
     }
@@ -75,7 +75,23 @@ export default function LeaveApprovalsScreen() {
 
         {/* Cards */}
         {requests.map((req) => (
-          <View />
+          <View key={req.id} style={{ backgroundColor: '#fff', borderRadius: 16, padding: 20, gap: 12 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <View>
+                <Text style={{ fontWeight: '700', fontSize: 16, color: '#1A1A1A' }}>{req.requesterName}</Text>
+                <Text style={{ fontWeight: '500', fontSize: 12, color: '#6B6B6B', marginTop: 2 }}>{req.type}</Text>
+              </View>
+              <Text style={{ fontSize: 12, color: '#6B6B6B' }}>{req.details}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <TouchableOpacity onPress={() => handleApprove(req.id)} style={{ flex: 1, backgroundColor: '#1A1A1A', borderRadius: 12, paddingVertical: 12, alignItems: 'center' }}>
+                <Text style={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>Approve</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleReject(req.id)} style={{ flex: 1, backgroundColor: '#F4F4EF', borderRadius: 12, paddingVertical: 12, alignItems: 'center' }}>
+                <Text style={{ color: '#1A1A1A', fontWeight: '700', fontSize: 14 }}>Reject</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         ))}
       </ScrollView>
     </SafeAreaView>

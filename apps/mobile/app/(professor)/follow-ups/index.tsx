@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity,
 } from 'react-native';
@@ -46,7 +46,7 @@ export default function FollowUpsScreen() {
         <View style={styles.addCard}>
           <TextInput
             style={styles.input}
-            placeholder="Add a follow-up noteâ€¦"
+            placeholder="Add a follow-up note..."
             placeholderTextColor="#A7A9BE"
             value={note}
             onChangeText={setNote}

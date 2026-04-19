@@ -13,6 +13,7 @@ import * as SecureStore from 'expo-secure-store';
 import { colors } from '../../constants/colors';
 import { spacing } from '../../constants/spacing';
 import api from '../../services/api';
+import { useAuthStore } from '../../store/auth.store';
 
 export default function ProfessorDashboard() {
   const router = useRouter();
@@ -52,10 +53,13 @@ export default function ProfessorDashboard() {
     return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   };
 
+
+
   const handleLogout = async () => {
+    useAuthStore.getState().clearAuth();
     await SecureStore.deleteItemAsync('auth_token');
     await SecureStore.deleteItemAsync('user');
-    router.replace('/(auth)/login');
+    router.replace('/(auth)/role-select');
   };
 
   return (

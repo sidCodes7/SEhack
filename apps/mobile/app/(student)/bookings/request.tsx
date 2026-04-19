@@ -79,14 +79,14 @@ export default function SubmitRequestScreen() {
             <Text style={styles.label}>Room</Text>
             <TouchableOpacity style={styles.dropdown}>
               <Text style={styles.dropdownText}>{room}</Text>
-              <Text style={styles.chevron}>âŒ„</Text>
+              <Text style={styles.chevron}>{'\u25BC'}</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Date</Text>
             <TouchableOpacity style={styles.dateInput}>
-              <Text style={styles.dateIcon}>ðŸ“…</Text>
+              <Text style={styles.dateIcon}>{'\u2630'}</Text>
               <Text style={styles.dateText}>{date || 'Select date'}</Text>
             </TouchableOpacity>
           </View>
@@ -96,14 +96,14 @@ export default function SubmitRequestScreen() {
               <Text style={styles.label}>From</Text>
               <TouchableOpacity style={styles.timeInput}>
                 <Text style={styles.timeText}>{fromTime || '09:00 AM'}</Text>
-                <Text style={styles.timeIcon}>ðŸ•</Text>
+                <Text style={styles.timeIcon}>🕒</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.timeField}>
               <Text style={styles.label}>To</Text>
               <TouchableOpacity style={styles.timeInput}>
                 <Text style={styles.timeText}>{toTime || '11:00 AM'}</Text>
-                <Text style={styles.timeIcon}>ðŸ•</Text>
+                <Text style={styles.timeIcon}>🕒</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -112,7 +112,7 @@ export default function SubmitRequestScreen() {
             <Text style={styles.label}>Purpose</Text>
             <TextInput
               style={styles.textArea}
-              placeholder="Briefly describe the reason for bookingâ€¦"
+              placeholder="Briefly describe the reason for booking..."
               placeholderTextColor="#A7A9BE"
               multiline
               numberOfLines={4}
@@ -130,11 +130,11 @@ export default function SubmitRequestScreen() {
             <React.Fragment key={stage}>
               <View style={styles.chainNode}>
                 <View style={styles.chainCircle}>
-                  <Text style={styles.chainIcon}>ðŸ‘¤</Text>
+                  <Text style={styles.chainIcon}>{'\u25CF'}</Text>
                 </View>
                 <Text style={styles.chainLabel}>{stage}</Text>
               </View>
-              {i < 2 && <Text style={styles.chainArrow}>â†’</Text>}
+              {i < 2 && <Text style={styles.chainArrow}>→</Text>}
             </React.Fragment>
           ))}
         </View>

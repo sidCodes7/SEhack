@@ -25,7 +25,7 @@ export default function BookingStatusScreen() {
         status: 'in_progress',
         room: '302',
         department: 'CSE Dept',
-        date: 'Apr 19, 10:00 AM â€“ 12:00 PM',
+        date: 'Apr 19, 10:00 AM - 12:00 PM',
         purpose: 'Weekly AI Research Group Meeting & Presentation Rehearsal.',
         submittedDate: 'Apr 18',
         stages: [
@@ -53,11 +53,11 @@ export default function BookingStatusScreen() {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-            <Text style={styles.backArrow}>â†</Text>
+            <Text style={styles.backArrow}>← </Text>
           </TouchableOpacity>
           <View>
             <Text style={styles.title}>Room Booking</Text>
-            <Text style={styles.subtitle}>Submitted {req.submittedDate} Â· Room {req.room}</Text>
+            <Text style={styles.subtitle}>Submitted {req.submittedDate} - Room {req.room}</Text>
           </View>
         </View>
 
@@ -76,8 +76,8 @@ export default function BookingStatusScreen() {
         {/* Details Card */}
         <View style={styles.detailsCard}>
           <View style={styles.detailsHeader}>
-            <Text style={styles.detailsTitle}>Room {req.room} Â· {req.department}</Text>
-            <Text style={styles.detailsIcon}>ðŸ“‹</Text>
+            <Text style={styles.detailsTitle}>Room {req.room} - {req.department}</Text>
+            <Text style={styles.detailsIcon}>{'\u2630'}</Text>
           </View>
           <Text style={styles.detailsTime}>{req.date}</Text>
           <Text style={styles.purposeLabel}>PURPOSE</Text>
@@ -88,7 +88,7 @@ export default function BookingStatusScreen() {
         {req.notes?.map((note: any, i: number) => (
           <View key={i} style={styles.noteCard}>
             <View style={styles.noteHeader}>
-              <Text style={styles.noteIcon}>ðŸ“</Text>
+              <Text style={styles.noteIcon}>{'\u270E'}</Text>
               <Text style={styles.noteLabel}>HOD NOTE</Text>
             </View>
             <Text style={styles.noteText}>{note.text}</Text>
@@ -96,7 +96,7 @@ export default function BookingStatusScreen() {
               <View style={styles.noteInitials}>
                 <Text style={styles.noteInitialsText}>{note.initials}</Text>
               </View>
-              <Text style={styles.noteAuthorText}>{note.author} Â· {note.time}</Text>
+              <Text style={styles.noteAuthorText}>{note.author} - {note.time}</Text>
             </View>
           </View>
         ))}
