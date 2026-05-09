@@ -1,19 +1,9 @@
 {
-  "name": "aether",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Aether — Autonomous Campus Operating System",
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "libs/*"
-  ],
-  "scripts": {
-    "dev:backend": "cd apps/backend && npm run dev",
-    "dev:super-app": "cd apps/super-app && npm run dev",
-    "dev:canteen-tracker": "cd apps/canteen-tracker && npm run dev",
-    "install:all": "npm install"
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.20.0"
   },
-  "keywords": ["campus", "education", "monorepo"],
-  "license": "MIT"
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0"
+  }
 }

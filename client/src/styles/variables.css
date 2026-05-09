@@ -1,0 +1,103 @@
+/* ============================================
+   AquaSentinel Design System — CSS Variables
+   "Bloomberg Terminal meets NASA Mission Control"
+   ============================================ */
+
+:root {
+  /* ── Core Background ── */
+  --bg-primary:     #050a18;
+  --bg-secondary:   #0a1628;
+  --bg-tertiary:    #0f1f3d;
+  --bg-glass:       rgba(15, 31, 61, 0.7);
+  --bg-glass-dense: rgba(15, 31, 61, 0.85);
+  --bg-overlay:     rgba(5, 10, 24, 0.85);
+
+  /* ── Accent Colors ── */
+  --accent-primary:   #00d4aa;
+  --accent-secondary: #3b82f6;
+  --accent-glow:      #00d4aa33;
+  --accent-glow-strong: #00d4aa55;
+
+  /* ── Severity Colors ── */
+  --severity-critical:   #ff3b5c;
+  --severity-warning:    #ff9f43;
+  --severity-watch:      #ffd93d;
+  --severity-normal:     #00d4aa;
+  --severity-suppressed: #4a5568;
+
+  /* ── Text ── */
+  --text-primary:   #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-dim:       #475569;
+  --text-accent:    #00d4aa;
+
+  /* ── Chart Colors (per metric) ── */
+  --chart-sst:       #ff6b6b;
+  --chart-chlor:     #51cf66;
+  --chart-o2:        #339af0;
+  --chart-ph:        #cc5de8;
+  --chart-turbidity: #ff922b;
+  --chart-salinity:  #20c997;
+
+  /* ── Typography ── */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --text-xs:   0.65rem;
+  --text-sm:   0.75rem;
+  --text-base: 0.875rem;
+  --text-lg:   1rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-hero: 2.5rem;
+
+  /* ── Spacing ── */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  12px;
+  --space-lg:  16px;
+  --space-xl:  24px;
+  --space-2xl: 32px;
+  --space-3xl: 48px;
+
+  /* ── Borders & Radii ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  --border-glass:       1px solid rgba(255, 255, 255, 0.06);
+  --border-glass-hover: 1px solid rgba(0, 212, 170, 0.15);
+  --border-subtle:      1px solid rgba(255, 255, 255, 0.03);
+
+  /* ── Shadows ── */
+  --shadow-glass:      0 4px 30px rgba(0, 0, 0, 0.3);
+  --shadow-glass-glow: 0 4px 30px rgba(0, 212, 170, 0.08);
+  --shadow-elevated:   0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-deep:       0 20px 60px rgba(0, 0, 0, 0.6);
+
+  /* ── Transitions ── */
+  --transition-fast:   150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow:   500ms ease;
+  --transition-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Layout ── */
+  --header-height: 52px;
+  --agent-strip-height: 64px;
+  --timeline-height: 40px;
+  --sidebar-width: 320px;
+  --charts-height: 200px;
+  --zone-detail-width: 480px;
+  --settings-width: 360px;
+
+  /* ── Z-index layers ── */
+  --z-base:      1;
+  --z-map:       10;
+  --z-sidebar:   100;
+  --z-header:    200;
+  --z-overlay:   500;
+  --z-modal:     1000;
+  --z-toast:     2000;
+}

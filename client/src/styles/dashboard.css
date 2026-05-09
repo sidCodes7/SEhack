@@ -1,0 +1,73 @@
+/* Dashboard layout — CSS Grid master layout */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.dashboard-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.dashboard-center {
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+  min-height: 0;
+  min-width: 0;
+  gap: var(--space-sm);
+}
+
+.dashboard-map-area {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  border: var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 1440px) {
+  .charts-strip {
+    flex-wrap: wrap;
+    height: auto;
+    max-height: 260px;
+  }
+  .chart-card {
+    min-width: 160px;
+    height: 140px;
+  }
+  .sidebar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-main {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    max-height: 300px;
+  }
+}

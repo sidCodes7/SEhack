@@ -1,0 +1,2 @@
+# No external dependencies — smtplib is Python stdlib
+# This file exists to document that fact

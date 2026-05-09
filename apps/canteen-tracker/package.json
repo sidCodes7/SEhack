@@ -1,9 +1,0 @@
-{
-  "name": "@aether/canteen-tracker",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Demo canteen tracker mini-app for Aether Super App",
-  "scripts": {
-    "dev": "npx -y serve ."
-  }
-}
